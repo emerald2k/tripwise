@@ -3,8 +3,8 @@
 SRS.md is the product specification and source of truth.
 
 tripwise is the reusable white-label travel-guide product/engine.
-The current application brand is Voya.
-Do not hardcode Voya into core application logic.
+The current application brand is Volala.
+Do not hardcode Volala into core application logic.
 
 DATA is authored product content. Do not invent, redesign, translate, or modify DATA unless explicitly instructed.
 

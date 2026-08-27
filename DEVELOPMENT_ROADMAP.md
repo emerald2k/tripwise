@@ -22,8 +22,10 @@ Phase 1:
 - production build: PASS;
 - old schema references: PASS;
 - DATA files: PASS;
-- manual validation: PENDING;
-- Gate 1: PENDING.
+- manual validation: PASS;
+- branding alignment: PASS (`Voya` → `Volala`);
+- environment configuration audit: PASS (no variables required);
+- Gate 1: PASS after acceptance documentation.
 
 ## Standard Phase Lifecycle
 
@@ -271,7 +273,7 @@ Manual validation:
 - confirm all authored days and locations remain represented;
 - confirm the application can load the itinerary.
 
-Gate 1: DATA Contract PENDING.
+Gate 1: DATA Contract PASS.
 
 ## Phase 2. Core Domain Logic
 

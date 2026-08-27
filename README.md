@@ -58,15 +58,19 @@ The application is deliberately not a trip-planning engine. Travel decisions are
 
 `tripwise` is the technical product, repository, and reusable white-label travel-guide engine.
 
-The current application deployment is branded:
+The current application build is branded:
 
 ```text
 Product / Engine: tripwise
 Repository: tripwise
 Package / Project: tripwise
-Application Brand: Voya
-Deployment: voya.netlify.app
+Application Brand: Volala
+Deployment: volala.netlify.app
 ```
+
+The production site is reachable at `https://volala.netlify.app/`; its
+currently deployed bundle remains the pre-Phase-1 Voya version until the
+Phase 1 branch is published and deployed.
 
 The application brand is configuration-driven and must not be hardcoded into core application logic.
 
@@ -109,9 +113,14 @@ A phase can be closed only after:
 - acceptance criteria pass;
 - no known blocking defects remain.
 
-Current phase: **Phase 1 — DATA MODEL & RUNTIME CONTRACT**.
+Current phase: **Phase 1 — DATA MODEL & RUNTIME CONTRACT** (accepted on the
+Phase Branch; pending publication to `master`).
 
-Phase 0 automated and manual validation passed, and Gate 0 passed. For Phase 1, implementation, DATA validation, unit tests, production build, old schema reference checks, and DATA file checks passed; manual validation and Gate 1 are pending.
+The DATA contract was already substantially implemented and validated on the
+accepted Phase 0 baseline. Phase 1 completed acceptance validation and aligned
+the application branding from Voya to Volala. Automated validation, manual
+application/production validation, and Gate 1 acceptance checks passed. No
+DATA content was changed and no schema redesign was required.
 
 No later phase should be used to bypass an unresolved quality gate.
 
@@ -747,7 +756,7 @@ Items
   └── Transport Item → transport
 ```
 
-`tripwise` is the white-label engine. Itinerary DATA is authored outside the runtime application. For the current deployment, the generated trip is `Canada 2026` and the application brand is `Voya`.
+`tripwise` is the white-label engine. Itinerary DATA is authored outside the runtime application. For the current deployment, the generated trip is `Canada 2026` and the application brand is `Volala`.
 
 ```text
 data/

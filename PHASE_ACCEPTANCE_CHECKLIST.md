@@ -2,6 +2,27 @@
 
 Use this checklist before closing any development phase.
 
+## Phase 1 — DATA Model and Runtime Contract
+
+The DATA contract was already substantially implemented and validated on the
+accepted Phase 0 baseline. Phase 1 completed the remaining acceptance and
+branding alignment work on `phase/1-data-contract`; no authored DATA content
+or schema design was changed.
+
+### Acceptance
+
+- [x] Canonical strict Zod schemas and unknown-field rejection verified
+- [x] Manifest consistency, cross-references, unique IDs, valid dates/times,
+      chronology, and transport enums verified
+- [x] `npm run validate:data` passes, including translation-key parity
+- [x] Regression, unit, E2E, and accessibility tests pass
+- [x] Production build passes
+- [x] Local application and Netlify production routes manually validated
+- [x] Branding aligned from `Voya` to `Volala`
+- [x] Environment audit confirms no variables or API keys are required
+- [x] No DATA content was changed and no schema redesign was required
+- [x] Phase 1 acceptance documentation updated
+
 ## Automated
 
 - [ ] Relevant unit tests pass
