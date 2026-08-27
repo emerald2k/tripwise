@@ -181,4 +181,98 @@ describe('day item presentation', () => {
     scrollIntoView.mockRestore()
     vi.useRealTimers()
   })
+
+  it('shows a first-visit install awareness prompt', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Install Tripwise' }),
+    ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Not now' })).toBeVisible()
+  })
+
+  it('dismisses and persists the install awareness prompt', () => {
+    const view = render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Not now' }))
+    expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
+    expect(
+      screen.queryByRole('heading', { name: 'Install Tripwise' }),
+    ).not.toBeInTheDocument()
+
+    view.unmount()
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(
+      screen.queryByRole('heading', { name: 'Install Tripwise' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('navigates to Settings and persists when the prompt CTA is used', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('link', { name: 'Go to Settings' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
+    expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
+  })
+
+  it('renders the install awareness prompt in Romanian', () => {
+    localStorage.setItem('tripwise.language', 'ro')
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Instalează Tripwise' }),
+    ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Nu acum' })).toBeVisible()
+  })
+
+  it('does not show the prompt in standalone display mode', () => {
+    const originalMatchMedia = window.matchMedia
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      value: (query: string) => ({
+        matches: query === '(display-mode: standalone)',
+        media: query,
+        onchange: null,
+        addListener: () => undefined,
+        removeListener: () => undefined,
+        addEventListener: () => undefined,
+        removeEventListener: () => undefined,
+        dispatchEvent: () => false,
+      }),
+    })
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.queryByRole('heading', { name: 'Install Tripwise' }),
+    ).not.toBeInTheDocument()
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      value: originalMatchMedia,
+    })
+  })
 })

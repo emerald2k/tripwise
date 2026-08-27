@@ -32,6 +32,37 @@ test('settings persists the selected language', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Setări' })).toBeVisible()
 })
 
+test('first visit prompt directs users to the existing Settings install flow', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await expect(
+    page.getByRole('heading', { name: 'Install Tripwise' }),
+  ).toBeVisible()
+  await expect(page.getByText(/better offline experience/i)).toBeVisible()
+  await page.getByRole('link', { name: 'Go to Settings' }).click()
+  await expect(page).toHaveURL(/\/settings$/)
+  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Install Tripwise' }),
+  ).not.toBeVisible()
+})
+
+test('Settings keeps the browser installation control when available', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperty(event, 'prompt', {
+      value: () => Promise.resolve(),
+    })
+    window.dispatchEvent(event)
+  })
+  await page.getByRole('link', { name: 'Settings', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Install App' })).toBeVisible()
+})
+
 test('timeline supports DONE, UNDO, and Google Maps actions', async ({
   page,
 }) => {
