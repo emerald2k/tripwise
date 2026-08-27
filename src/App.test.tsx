@@ -7,7 +7,9 @@ import {
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import packageJson from '../package.json'
 import App from './App'
+import { appVersion } from './version'
 
 describe('day item presentation', () => {
   beforeEach(() => localStorage.clear())
@@ -81,5 +83,18 @@ describe('day item presentation', () => {
 
     expect(document.documentElement.lang).toBe('ro')
     expect(localStorage.getItem('tripwise.language')).toBe('ro')
+  })
+
+  it('renders the package version in Settings', () => {
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(appVersion).toBe(packageJson.version)
+    expect(screen.getByRole('paragraph')).toHaveTextContent(
+      `Version ${packageJson.version}`,
+    )
   })
 })

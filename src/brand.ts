@@ -1,3 +1,3 @@
 export const brand = {
-  name: 'Voya',
+  name: 'Volala',
 } as const

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 test('loads Today and navigates through core pages', async ({ page }) => {
   await page.goto('/')
-  await expect(page.getByText('Voya')).toBeVisible()
+  await expect(page.getByText('Volala')).toBeVisible()
   await page.getByRole('link', { name: 'Days' }).click()
   await expect(page.getByRole('heading', { name: 'Days' })).toBeVisible()
   await page.getByRole('link', { name: /05/ }).click()
@@ -25,6 +25,7 @@ test('search returns days only', async ({ page }) => {
 
 test('settings persists the selected language', async ({ page }) => {
   await page.goto('/settings')
+  await expect(page.getByText('Version 0.1.0')).toBeVisible()
   await page.getByRole('button', { name: 'RO', exact: true }).click()
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
   await page.reload()

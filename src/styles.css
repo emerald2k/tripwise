@@ -293,6 +293,12 @@ main {
   background: #4569ad;
   color: #fff;
 }
+.app-version {
+  margin: 1.25rem 0 0;
+  color: #8995a7;
+  font-size: 0.8rem;
+  text-align: center;
+}
 .wide-button {
   display: block;
   width: 100%;
