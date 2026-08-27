@@ -37,14 +37,14 @@ test('first visit prompt directs users to the existing Settings install flow', a
 }) => {
   await page.goto('/')
   await expect(
-    page.getByRole('heading', { name: 'Install Tripwise' }),
+    page.getByRole('heading', { name: 'Install Volala' }),
   ).toBeVisible()
   await expect(page.getByText(/better offline experience/i)).toBeVisible()
   await page.getByRole('link', { name: 'Go to Settings' }).click()
   await expect(page).toHaveURL(/\/settings$/)
   await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
   await expect(
-    page.getByRole('heading', { name: 'Install Tripwise' }),
+    page.getByRole('heading', { name: 'Install Volala' }),
   ).not.toBeVisible()
 })
 
@@ -138,6 +138,30 @@ test('mobile shell has usable navigation without horizontal overflow', async ({
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(375)
+})
+
+test('bottom navigation has usable controls and updates its active state', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  await page.goto('/')
+  const navigation = page.getByRole('navigation').last()
+  const links = navigation.getByRole('link')
+  await expect(links).toHaveCount(3)
+  for (const label of ['Today', 'Days', 'Search']) {
+    const link = navigation.getByRole('link', { name: label })
+    await expect(link).toBeVisible()
+    expect((await link.boundingBox())?.height).toBeGreaterThanOrEqual(44)
+  }
+  await expect(navigation.getByRole('link', { name: 'Today' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  )
+  await navigation.getByRole('link', { name: 'Search' }).click()
+  await expect(page).toHaveURL(/\/search$/)
+  await expect(
+    navigation.getByRole('link', { name: 'Search' }),
+  ).toHaveAttribute('aria-current', 'page')
 })
 
 test('Today has no detectable accessibility violations', async ({ page }) => {
