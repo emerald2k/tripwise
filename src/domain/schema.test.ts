@@ -7,7 +7,7 @@ import {
   type Day,
 } from '../data/schema'
 import { localDate } from './date'
-import { currentItem, dayProgress, sortItems } from './itinerary'
+import { currentItem, dayProgress, nextItem, sortItems } from './itinerary'
 import { validateDataPackage, validateItineraryData } from './validation'
 
 const day: Day = {
@@ -32,6 +32,35 @@ const day: Day = {
       title: 'Later',
       startTime: '20:00',
       locationId: 'location',
+    },
+  ],
+}
+
+const behaviorDay: Day = {
+  date: '2026-08-27',
+  items: [
+    {
+      itemId: 'first',
+      title: 'First',
+      startTime: '10:00',
+      locationId: 'location',
+      durationMinutes: 60,
+      progress: true,
+    },
+    {
+      itemId: 'second',
+      title: 'Second',
+      startTime: '12:00',
+      locationId: 'location',
+      durationMinutes: 60,
+      progress: true,
+    },
+    {
+      itemId: 'final',
+      title: 'Final',
+      startTime: '20:00',
+      locationId: 'location',
+      progress: true,
     },
   ],
 }
@@ -149,6 +178,51 @@ describe('itinerary domain rules', () => {
     expect(currentItem(day, {}, new Date(2026, 7, 28, 13, 0))).toBeNull()
   })
 
+  it('resolves CURRENT and UP NEXT at deterministic time boundaries', () => {
+    const beforeFirst = new Date(2026, 7, 27, 9, 59)
+    expect(currentItem(behaviorDay, {}, beforeFirst)).toBeNull()
+    expect(nextItem(behaviorDay, {}, beforeFirst)?.itemId).toBe('first')
+
+    const firstStart = new Date(2026, 7, 27, 10, 0)
+    expect(currentItem(behaviorDay, {}, firstStart)?.itemId).toBe('first')
+    expect(nextItem(behaviorDay, {}, firstStart)?.itemId).toBe('second')
+
+    const duringFirst = new Date(2026, 7, 27, 10, 30)
+    expect(currentItem(behaviorDay, {}, duringFirst)?.itemId).toBe('first')
+
+    const betweenItems = new Date(2026, 7, 27, 11, 59)
+    expect(currentItem(behaviorDay, {}, betweenItems)?.itemId).toBe('first')
+    expect(nextItem(behaviorDay, {}, betweenItems)?.itemId).toBe('second')
+
+    const secondStart = new Date(2026, 7, 27, 12, 0)
+    expect(currentItem(behaviorDay, {}, secondStart)?.itemId).toBe('second')
+
+    const firstEnd = new Date(2026, 7, 27, 11, 0)
+    expect(currentItem(behaviorDay, {}, firstEnd)?.itemId).toBe('first')
+
+    const afterFinal = new Date(2026, 7, 27, 20, 1)
+    expect(currentItem(behaviorDay, {}, afterFinal)?.itemId).toBe('final')
+    expect(nextItem(behaviorDay, {}, afterFinal)).toBeNull()
+  })
+
+  it('excludes manual statuses from CURRENT and UP NEXT and restores them on UNDO', () => {
+    const now = new Date(2026, 7, 27, 13, 0)
+    expect(currentItem(behaviorDay, { second: 'done' }, now)?.itemId).toBe(
+      'first',
+    )
+    expect(currentItem(behaviorDay, { second: 'skipped' }, now)?.itemId).toBe(
+      'first',
+    )
+    expect(
+      nextItem(behaviorDay, { first: 'done', second: 'done' }, now)?.itemId,
+    ).toBe('final')
+    expect(
+      nextItem(behaviorDay, { first: 'skipped', second: 'skipped' }, now)
+        ?.itemId,
+    ).toBe('final')
+    expect(currentItem(behaviorDay, {}, now)?.itemId).toBe('second')
+  })
+
   it('classifies day progress without fabricating past item statuses', () => {
     expect(dayProgress({ ...day, date: '2026-08-26' }, {}, '2026-08-27')).toBe(
       'complete',
@@ -158,10 +232,20 @@ describe('itinerary domain rules', () => {
     expect(
       dayProgress(day, { first: 'done', second: 'done' }, '2026-08-27'),
     ).toBe('complete')
+    expect(dayProgress(behaviorDay, {}, '2026-08-28')).toBe('complete')
+    expect(dayProgress(behaviorDay, {}, '2026-08-26')).toBe('none')
+    expect(
+      dayProgress(
+        { ...behaviorDay, items: [behaviorDay.items[0]] },
+        {},
+        '2026-08-27',
+      ),
+    ).toBe('none')
   })
 
   it('uses the device local date', () => {
     expect(localDate(new Date(2026, 0, 2, 23, 59))).toBe('2026-01-02')
+    expect(localDate(new Date(2026, 0, 3, 0, 0))).toBe('2026-01-03')
   })
 
   it('rejects unknown location references and legacy fields', () => {

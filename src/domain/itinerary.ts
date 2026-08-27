@@ -12,7 +12,7 @@ export function currentItem(
   now = new Date(),
 ) {
   if (localDate(now) !== day.date) return null
-  const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+  const time = localTime(now)
   const eligible = sortItems(day.items).filter(
     (item) =>
       'progress' in item &&
@@ -21,6 +21,27 @@ export function currentItem(
       item.startTime <= time,
   )
   return eligible[eligible.length - 1] ?? null
+}
+
+export function nextItem(
+  day: Day,
+  statuses: Record<string, Status>,
+  now = new Date(),
+) {
+  const time = localTime(now)
+  return (
+    sortItems(day.items).find(
+      (item) =>
+        'progress' in item &&
+        item.progress &&
+        !statuses[item.itemId] &&
+        item.startTime > time,
+    ) ?? null
+  )
+}
+
+function localTime(now: Date) {
+  return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
 }
 
 export function dayProgress(

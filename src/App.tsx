@@ -10,7 +10,12 @@ import {
 import Fuse from 'fuse.js'
 import { activeItinerary, locationCities, locations } from './data'
 import { localDate } from './domain/date'
-import { currentItem, dayProgress, sortItems } from './domain/itinerary'
+import {
+  currentItem,
+  dayProgress,
+  nextItem,
+  sortItems,
+} from './domain/itinerary'
 import { isCompactStatus } from './domain/presentation'
 import type { Day, Item } from './data/schema'
 import {
@@ -197,10 +202,12 @@ type DayProps = SharedProps & {
 }
 
 function Today(props: DayProps) {
+  const now = new Date()
+  const today = localDate(now)
   const day =
-    activeItinerary.days.find((item) => item.date === localDate()) ??
+    activeItinerary.days.find((item) => item.date === today) ??
     activeItinerary.days[0]
-  return <DayView {...props} day={day} today={day.date === localDate()} />
+  return <DayView {...props} day={day} today={day.date === today} now={now} />
 }
 
 function DayRoute(props: DayProps) {
@@ -225,12 +232,14 @@ function DayView({
   progress,
   updateStatus,
   today,
-}: DayProps & { day: Day; today?: boolean }) {
+  now,
+}: DayProps & { day: Day; today?: boolean; now?: Date }) {
   const statuses = progress[activeItinerary.id]?.[day.date] || {}
   const ordered = sortItems(day.items)
   const [, refresh] = useState(0)
   const currentRef = useRef<HTMLDivElement>(null)
-  const current = today ? currentItem(day, statuses) : null
+  const evaluationTime = now ?? new Date()
+  const current = today ? currentItem(day, statuses, evaluationTime) : null
   useEffect(() => {
     if (!today) return
     const timer = window.setInterval(() => refresh((value) => value + 1), 30000)
@@ -252,16 +261,7 @@ function DayView({
   const allDone =
     trackable.length > 0 && trackable.every((item) => statuses[item.itemId])
   const next =
-    today && !current
-      ? ordered.find(
-          (item) =>
-            'progress' in item &&
-            item.progress &&
-            !statuses[item.itemId] &&
-            item.startTime >
-              `${new Date().getHours().toString().padStart(2, '0')}:${new Date().getMinutes().toString().padStart(2, '0')}`,
-        )
-      : null
+    today && !current ? nextItem(day, statuses, evaluationTime) : null
   return (
     <section className="page day-page">
       <div className="page-heading">
