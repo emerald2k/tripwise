@@ -141,18 +141,44 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 
 ### Manual validation
 
-- [ ] Desktop prompt placement and wording validated
-- [ ] Mobile prompt layout, touch targets, and bottom navigation validated
-- [ ] Keyboard focus and accessible semantics validated
-- [ ] Existing Settings installation flow validated in an install-capable browser
-- [ ] Offline behavior remains unchanged
-- [ ] Bottom navigation desktop and mobile visual acceptance validated
-- [ ] New application icon visually validated in supported desktop/mobile/PWA
+- [x] Desktop prompt placement and wording validated
+- [x] Mobile prompt layout, touch targets, and bottom navigation validated
+- [x] Keyboard focus and accessible semantics validated
+- [x] Existing Settings installation flow validated in an install-capable browser
+- [x] Offline behavior remains unchanged
+- [x] Bottom navigation desktop and mobile visual acceptance validated
+- [x] New application icon visually validated in supported desktop/mobile/PWA
+
+### Acceptance matrix
+
+| Criterion                          | Status |
+| ---------------------------------- | ------ |
+| Search                             | PASS   |
+| Active itinerary search            | PASS   |
+| Day-level results                  | PASS   |
+| Settings                           | PASS   |
+| RO / EN                            | PASS   |
+| Language persistence               | PASS   |
+| Translation-key validation         | PASS   |
+| PWA install-awareness prompt       | PASS   |
+| Existing Settings PWA installation | PASS   |
+| Standalone suppression             | PASS   |
+| `brand.name` usage                 | PASS   |
+| Bottom navigation                  | PASS   |
+| Active `#334155` state             | PASS   |
+| Responsive/mobile behavior         | PASS   |
+| Accessibility                      | PASS   |
+| Desktop manual validation          | PASS   |
+| Mobile manual validation           | PASS   |
+| Real PWA installation validation   | PASS   |
+| Installed icon validation          | PASS   |
 
 ### Acceptance status
 
-- [ ] Phase 5 acceptance complete
-- [ ] Gate 5: Utility UX PASS
+- [x] Phase 5 formally accepted
+- [x] Gate 5: Utility UX PASS
+- [x] Phase 5 completed and ready for the next phase
+- [x] Phase 6 has not started
 
 ## Automated
 

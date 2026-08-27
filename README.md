@@ -113,9 +113,10 @@ A phase can be closed only after:
 - acceptance criteria pass;
 - no known blocking defects remain.
 
-Current phase: **Phase 5 — SEARCH, SETTINGS, AND LOCALIZATION**.
+Current phase: **Phase 5 — SEARCH, SETTINGS, AND LOCALIZATION — COMPLETED;
+READY FOR THE NEXT PHASE**.
 
-Phase 5 implementation is complete on
+Phase 5 is formally accepted on
 `phase/5-search-settings-localization` at version `0.5.0`. It includes
 active-itinerary search, Settings, RO/EN language persistence, and a compact
 install-awareness prompt that explains the offline benefit and links to
@@ -124,6 +125,8 @@ Install control remains the canonical mechanism that performs installation.
 The prompt resolves its visible application name from `brand.name`; the
 primary bottom navigation uses comfortable mobile touch targets and the
 canonical `public/icon.svg` asset is referenced by the favicon and manifest.
+Gate 5: Utility UX PASS. Desktop, mobile, and real PWA installation manual
+validation passed; Phase 6 has not started.
 
 No later phase should be used to bypass an unresolved quality gate.
 
