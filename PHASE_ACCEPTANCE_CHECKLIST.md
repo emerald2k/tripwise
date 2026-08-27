@@ -39,7 +39,7 @@ or schema design was changed.
 - [x] Regression coverage completed for domain boundaries and transitions
 - [x] Deterministic timestamp issue fixed
 - [x] Phase 2 acceptance completed at version `0.2.0`
-- [x] Phase 3 has not started
+- [x] Phase 3 acceptance was pending at the time of Phase 2 closure
 
 ### Validation
 
@@ -80,16 +80,16 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 
 ### Manual validation
 
-- [ ] Desktop shell and navigation manually validated
-- [ ] Direct URL and refresh flows manually validated
-- [ ] Mobile selection screen and responsive layout manually validated
-- [ ] Manual validation status: NOT PERFORMED in this environment
+- [x] Desktop shell and navigation manually validated
+- [x] Direct URL and refresh flows manually validated
+- [x] Mobile selection screen and responsive layout manually validated
+- [x] Manual desktop and mobile validation: PASS
 
 ### Acceptance status
 
-- [ ] Phase 3 acceptance complete
-- [ ] Gate 3: Navigation PASS
-- [ ] Ready for PR
+- [x] Phase 3 acceptance complete
+- [x] Gate 3: Navigation PASS
+- [x] Ready for PR
 
 ## Automated
 

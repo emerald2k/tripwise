@@ -39,8 +39,7 @@ Phase 2:
   line-ending formatting warnings; no unrelated files were normalized;
 - Gate 2: PASS after acceptance documentation;
 - branch version: `0.2.0`;
-- next Phase version bump: `0.3.0` after Phase 2 is accepted and merged into
-  `master`.
+- Phase 3 development version: `0.3.0`.
 
 Phase 3:
 
@@ -54,8 +53,10 @@ Phase 3:
   repository formatting baseline;
 - production dependency audit command completed with two known moderate React
   Router advisories;
-- manual desktop and mobile validation: NOT PERFORMED;
-- Gate 3: PENDING manual validation.
+- manual desktop and mobile validation: PASS;
+- no known blocking defects remain;
+- Gate 3: PASS after acceptance documentation;
+- Phase 3 is ready for PR and merge into `master`.
 
 ## Standard Phase Lifecycle
 
@@ -389,7 +390,7 @@ Manual validation:
 - refresh;
 - mobile viewport.
 
-Gate 3: Navigation pending manual validation.
+Gate 3: Navigation PASS.
 
 ## Phase 4. Today and Day Experience
 

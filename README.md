@@ -119,8 +119,9 @@ Phase 3 implementation is complete on
 `phase/3-application-shell-navigation` at version `0.3.0`. It adds reactive
 multiple-itinerary selection, persisted itinerary restoration, stale-ID
 handling, and regression coverage for routes, navigation, refresh, invalid
-days, and mobile overflow. Automated validation passes, while manual desktop
-and mobile acceptance has not been performed in the current environment.
+days, and mobile overflow. Automated validation and manual desktop/mobile
+acceptance both pass. No known blocking defects remain, and Phase 3 is ready
+for PR and merge into `master`.
 
 No later phase should be used to bypass an unresolved quality gate.
 
