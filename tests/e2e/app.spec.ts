@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 test('loads Today and navigates through core pages', async ({ page }) => {
   await page.goto('/')
-  await expect(page.getByText('Voya')).toBeVisible()
+  await expect(page.getByText('Volala')).toBeVisible()
   await page.getByRole('link', { name: 'Days' }).click()
   await expect(page.getByRole('heading', { name: 'Days' })).toBeVisible()
   await page.getByRole('link', { name: /05/ }).click()
