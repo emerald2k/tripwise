@@ -22,6 +22,7 @@ import {
   type Status,
 } from './domain/progress'
 import { brand } from './brand'
+import { appVersion } from './version'
 import ro from '../i18n/ro.json'
 import en from '../i18n/en.json'
 import './styles.css'
@@ -550,6 +551,9 @@ function Settings({
           {t.install}
         </button>
       )}
+      <p className="app-version">
+        {t.version} {appVersion}
+      </p>
       <button
         className="danger wide-button"
         onClick={() => window.confirm(t.confirmReset) && reset()}

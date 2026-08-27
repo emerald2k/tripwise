@@ -175,9 +175,12 @@ while preserving the detailed development history in the Pull Request and
 short-lived branch.
 
 Releases use Semantic Versioning (`MAJOR.MINOR.PATCH`) and must be created
-from green `master`. Before 1.0, PATCH versions represent fixes, MINOR
-versions represent new functionality, and MAJOR versions represent breaking
-changes. Releases should be frequent and should not use release branches.
+from green `master`. The version is sourced from `package.json` and changes
+only when an accepted Phase Branch is merged into `master`: a normal Phase
+acceptance increments MINOR, non-Phase bug fixes or maintenance increment
+PATCH, and intentionally breaking changes increment MAJOR. Commits made on a
+Phase Branch and creating a Phase Branch do not change the version. Releases
+should be frequent and should not use release branches.
 
 Phases, Phase Branches, Task Branches, and releases are different concepts:
 
