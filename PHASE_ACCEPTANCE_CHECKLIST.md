@@ -91,6 +91,35 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 - [x] Gate 3: Navigation PASS
 - [x] Ready for PR
 
+## Phase 4 - Today and Day Experience
+
+### Implementation and automated validation
+
+- [x] Timeline renders authored Location and Transport Items chronologically
+- [x] CURRENT and UP NEXT behavior remains deterministic and Today-only
+- [x] Visit duration and metric transport details render when authored
+- [x] Transport Items have no progress controls
+- [x] DONE, SKIP, UNDO, and day progress remain correct
+- [x] Google Maps links and manual day navigation remain correct
+- [x] CURRENT auto-scroll is guarded and respects reduced motion
+- [x] Focused unit and E2E acceptance coverage passes
+- [x] Typecheck, lint, formatting, DATA validation, unit tests, coverage, E2E
+      tests, production build, and repository verification pass
+- [x] No DATA or schema changes were required
+- [x] Version is `0.4.0` on the Phase 4 branch
+
+### Manual validation
+
+- [x] Desktop Today and Day experience browser-validated
+- [x] Mobile Today and Day experience browser-validated
+- [x] Keyboard focus, accessible names, and reduced-motion behavior validated
+- [x] No Phase 4 console errors, overflow, clipping, or visible regressions
+
+### Acceptance status
+
+- [x] Phase 4 acceptance complete
+- [x] Gate 4: Core UX PASS
+
 ## Automated
 
 - [ ] Relevant unit tests pass

@@ -304,10 +304,9 @@ function DayView({
   }, [today])
   useEffect(() => {
     if (!currentRef.current) return
-    const reduced = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches
-    currentRef.current.scrollIntoView({
+    const reduced =
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+    currentRef.current.scrollIntoView?.({
       behavior: reduced ? 'auto' : 'smooth',
       block: 'center',
     })
@@ -337,7 +336,7 @@ function DayView({
       )}
       {allDone && <p className="all-done">{t.allDone}</p>}
       <div className="timeline">
-        {ordered.map((item, index) => {
+        {ordered.map((item) => {
           const location =
             'locationId' in item ? locations.get(item.locationId) : undefined
           const status = 'progress' in item ? statuses[item.itemId] : undefined
@@ -348,7 +347,7 @@ function DayView({
               className={`timeline-item ${current?.itemId === item.itemId ? 'is-current' : ''} ${compact ? 'is-compact' : ''}`}
               key={item.itemId}
             >
-              {index > 0 && 'transport' in item && (
+              {'transport' in item && (
                 <TransportInfo transport={item.transport} />
               )}
               <article className="item-card">
@@ -460,6 +459,7 @@ function TransportInfo({
   transport: Extract<Item, { transport: unknown }>['transport']
 }) {
   const parts = [
+    transport.mode,
     transport.durationMinutes ? `${transport.durationMinutes} min` : '',
     transport.distanceMeters !== undefined
       ? formatDistance(transport.distanceMeters)

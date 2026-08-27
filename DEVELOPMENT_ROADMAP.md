@@ -6,7 +6,7 @@ A phase is not complete when implementation is finished. A phase can be closed o
 
 ## Current Status
 
-Current phase: **Phase 3 — APPLICATION SHELL AND NAVIGATION**
+Current phase: **Phase 4 — TODAY AND DAY EXPERIENCE**
 
 Phase 0:
 
@@ -56,7 +56,24 @@ Phase 3:
 - manual desktop and mobile validation: PASS;
 - no known blocking defects remain;
 - Gate 3: PASS after acceptance documentation;
-- Phase 3 is ready for PR and merge into `master`.
+- Phase 3 was merged into `master` at `5d3a7b1`.
+
+Phase 4:
+
+- implementation: PASS;
+- timeline, CURRENT, UP NEXT, location, and transport rendering: PASS;
+- duration, Google Maps, DONE/SKIP, UNDO, and day progress: PASS;
+- Today auto-scroll and manual day navigation: PASS;
+- focused unit and E2E acceptance coverage: PASS;
+- typecheck, lint, formatting, DATA validation, unit tests, coverage, E2E
+  tests, production build, and `verify`: PASS;
+- production dependency audit completed with two known moderate React Router
+  advisories;
+- manual desktop acceptance: PASS;
+- manual mobile acceptance: PASS;
+- browser keyboard and accessibility acceptance: PASS;
+- no known blocking defects remain;
+- Gate 4: Core UX PASS after acceptance documentation.
 
 ## Standard Phase Lifecycle
 

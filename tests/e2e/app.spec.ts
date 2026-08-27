@@ -48,6 +48,25 @@ test('timeline supports DONE, UNDO, and Google Maps actions', async ({
   await expect(item.getByRole('button', { name: 'DONE' })).toBeVisible()
 })
 
+test('timeline renders transport details and visit duration', async ({
+  page,
+}) => {
+  await page.goto('/day/2026-09-04')
+  const transport = page
+    .locator('.timeline-item')
+    .filter({ hasText: 'Hotel Le Roberval → Notre-Dame Basilica' })
+  await expect(transport.locator('.transport')).toContainText('walk')
+  await expect(transport.locator('.transport')).toContainText('20 min')
+  await expect(transport.locator('.transport')).toContainText('1.6 km')
+  await expect(
+    page
+      .locator('article')
+      .filter({ hasText: 'Notre-Dame Basilica' })
+      .getByText('50 min'),
+  ).toBeVisible()
+  await expect(transport.getByRole('button')).toHaveCount(0)
+})
+
 test('invalid day routes show the not-found state', async ({ page }) => {
   await page.goto('/day/2099-01-01')
   await expect(page.getByText('No itinerary for this day.')).toBeVisible()

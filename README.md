@@ -113,15 +113,14 @@ A phase can be closed only after:
 - acceptance criteria pass;
 - no known blocking defects remain.
 
-Current phase: **Phase 3 — APPLICATION SHELL AND NAVIGATION**.
+Current phase: **Phase 4 — TODAY AND DAY EXPERIENCE**.
 
-Phase 3 implementation is complete on
-`phase/3-application-shell-navigation` at version `0.3.0`. It adds reactive
-multiple-itinerary selection, persisted itinerary restoration, stale-ID
-handling, and regression coverage for routes, navigation, refresh, invalid
-days, and mobile overflow. Automated validation and manual desktop/mobile
-acceptance both pass. No known blocking defects remain, and Phase 3 is ready
-for PR and merge into `master`.
+Phase 4 implementation is complete on
+`phase/4-today-day-experience` at version `0.4.0`. It validates timeline,
+CURRENT, UP NEXT, Location and Transport Items, duration, progress actions,
+day progress, Google Maps links, and Today auto-scroll. Automated validation
+and desktop/mobile browser acceptance pass. No known blocking defects remain;
+Phase 4 is accepted at Gate 4.
 
 No later phase should be used to bypass an unresolved quality gate.
 
