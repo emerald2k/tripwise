@@ -1,0 +1,13 @@
+{
+  "product": "tripwise",
+  "currentBrand": "Voya",
+  "repository": "tripwise",
+  "purpose": "Development roadmap, quality gates, and updated project guidance",
+  "files": [
+    "SRS.md",
+    "README.md",
+    "DEVELOPMENT_ROADMAP.md",
+    "PHASE_ACCEPTANCE_CHECKLIST.md",
+    ".github/copilot-instructions.md"
+  ]
+}
