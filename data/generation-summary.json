@@ -1,0 +1,9 @@
+{
+  "itineraryId": "canada-2026",
+  "days": 10,
+  "items": 188,
+  "locations": 77,
+  "cityFiles": 2,
+  "source": "Ghid_Operational_Montreal_Quebec_3-12_Septembrie_2026(1).docx",
+  "validation": "structural-pass"
+}
