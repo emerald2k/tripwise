@@ -468,7 +468,9 @@ Scope:
 - Settings page;
 - RO / EN;
 - persisted language;
-- DATA remains untranslated.
+- DATA remains untranslated;
+- compact PWA installation awareness prompt at application startup;
+- existing Settings installation control remains the only installation mechanism.
 
 Automated validation:
 
@@ -476,6 +478,8 @@ Automated validation:
 - language persistence;
 - reload;
 - translation key validation.
+- first visit, dismissal, Settings navigation, and installed display-mode handling;
+- existing Settings installation control.
 
 Manual validation:
 
@@ -484,8 +488,17 @@ Manual validation:
 - refresh;
 - search;
 - result navigation.
+- desktop and mobile prompt placement;
+- prompt accessibility and offline wording;
+- Settings installation flow remains available when the browser exposes it.
 
-Gate 5: Utility UX PASS.
+Phase 5 implementation is complete on
+`phase/5-search-settings-localization` at version `0.5.0`. The informational
+prompt explains the offline benefit and directs users to Settings; it never
+invokes the browser installation API. Settings remains the canonical
+installation flow.
+
+Gate 5: Utility UX PASS when the Phase 5 acceptance checklist is complete.
 
 ## Phase 6. Local Persistence
 

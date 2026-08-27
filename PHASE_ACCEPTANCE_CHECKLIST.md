@@ -120,6 +120,35 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 - [x] Phase 4 acceptance complete
 - [x] Gate 4: Core UX PASS
 
+## Phase 5 - Search, Settings, Localization, and Install Awareness
+
+### Implementation and automated validation
+
+- [x] Search remains active-itinerary and day-oriented
+- [x] Settings and persisted RO/EN language remain available
+- [x] Informational install prompt is shown once for eligible new users
+- [x] Prompt dismissal and Settings navigation persist `tripwise.installPromptSeen`
+- [x] Installed standalone PWAs do not show the awareness prompt
+- [x] Prompt uses RO/EN translations without translating DATA
+- [x] Prompt directs users to `/settings` and never invokes installation directly
+- [x] Existing Settings PWA installation control remains unchanged
+- [x] Focused unit, E2E, and accessibility coverage passes
+- [x] No DATA, schema, or dependency changes were required
+- [x] Version is `0.5.0` on the Phase 5 branch
+
+### Manual validation
+
+- [ ] Desktop prompt placement and wording validated
+- [ ] Mobile prompt layout, touch targets, and bottom navigation validated
+- [ ] Keyboard focus and accessible semantics validated
+- [ ] Existing Settings installation flow validated in an install-capable browser
+- [ ] Offline behavior remains unchanged
+
+### Acceptance status
+
+- [ ] Phase 5 acceptance complete
+- [ ] Gate 5: Utility UX PASS
+
 ## Automated
 
 - [ ] Relevant unit tests pass

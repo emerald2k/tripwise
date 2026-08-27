@@ -113,14 +113,14 @@ A phase can be closed only after:
 - acceptance criteria pass;
 - no known blocking defects remain.
 
-Current phase: **Phase 4 — TODAY AND DAY EXPERIENCE**.
+Current phase: **Phase 5 — SEARCH, SETTINGS, AND LOCALIZATION**.
 
-Phase 4 implementation is complete on
-`phase/4-today-day-experience` at version `0.4.0`. It validates timeline,
-CURRENT, UP NEXT, Location and Transport Items, duration, progress actions,
-day progress, Google Maps links, and Today auto-scroll. Automated validation
-and desktop/mobile browser acceptance pass. No known blocking defects remain;
-Phase 4 is accepted at Gate 4.
+Phase 5 implementation is complete on
+`phase/5-search-settings-localization` at version `0.5.0`. It includes
+active-itinerary search, Settings, RO/EN language persistence, and a compact
+install-awareness prompt that explains the offline benefit and links to
+Settings. The prompt is informational only; the existing Settings → PWA
+Install control remains the canonical mechanism that performs installation.
 
 No later phase should be used to bypass an unresolved quality gate.
 
