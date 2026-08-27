@@ -72,6 +72,66 @@ describe('day item presentation', () => {
     expect(within(item).getByText('SKIP')).toBeVisible()
   })
 
+  it('persists DONE through a remount and persists UNDO', () => {
+    const view = renderDay()
+    const item = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+
+    fireEvent.click(within(item).getByRole('button', { name: 'DONE' }))
+    view.unmount()
+
+    const restored = renderDay()
+    const restoredItem = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+    expect(
+      within(restoredItem).getByRole('button', { name: 'UNDO' }),
+    ).toBeVisible()
+
+    fireEvent.click(within(restoredItem).getByRole('button', { name: 'UNDO' }))
+    restored.unmount()
+
+    renderDay()
+    const undoneItem = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+    expect(
+      within(undoneItem).getByRole('button', { name: 'DONE' }),
+    ).toBeVisible()
+  })
+
+  it('persists SKIP through a remount', () => {
+    const view = renderDay()
+    const item = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+
+    fireEvent.click(within(item).getByRole('button', { name: 'SKIP' }))
+    view.unmount()
+
+    renderDay()
+    const restoredItem = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+    expect(
+      within(restoredItem).getByRole('button', { name: 'UNDO' }),
+    ).toBeVisible()
+    expect(within(restoredItem).getByText('SKIP')).toBeVisible()
+  })
+
+  it('uses the browser language fallback when no language is persisted', () => {
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(document.documentElement.lang).toBe(
+      navigator.language.toLowerCase().startsWith('en') ? 'en' : 'ro',
+    )
+  })
+
   it('changes the persisted language from Settings', () => {
     render(
       <MemoryRouter initialEntries={['/settings']}>

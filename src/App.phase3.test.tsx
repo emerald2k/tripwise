@@ -16,6 +16,7 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             startTime: '09:00',
             title: 'Alpha place',
             locationId: 'alpha-place',
+            progress: true,
           },
         ],
       },
@@ -34,6 +35,7 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             startTime: '09:00',
             title: 'Beta place',
             locationId: 'beta-place',
+            progress: true,
           },
         ],
       },
@@ -148,6 +150,37 @@ describe('Phase 3 itinerary selection', () => {
 
     expect(screen.getByText('No days found.')).toBeVisible()
     expect(screen.queryByText('Alpha day')).not.toBeInTheDocument()
+  })
+
+  it('isolates persisted progress between itineraries and restores it', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Alpha itinerary' }))
+    fireEvent.click(screen.getByRole('button', { name: 'DONE' }))
+    cleanup()
+
+    localStorage.setItem('tripwise.activeItineraryId', 'beta')
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'DONE' })).toBeVisible()
+    cleanup()
+
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('heading', { name: 'Alpha day' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'UNDO' })).toBeVisible()
   })
 
   it('restores a valid persisted itinerary', () => {
