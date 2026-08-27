@@ -11,9 +11,53 @@ test('shows the bootstrap loader until the application initializes', async ({
 
   const navigation = page.goto('/')
   await expect(page.getByRole('status')).toHaveText('Loading application')
+  await expect(page.locator('.app-loader__icon')).toHaveAttribute(
+    'src',
+    '/icon.svg',
+  )
+  await expect(page.locator('.app-loader__spinner')).toHaveCount(0)
+  await expect(page.locator('.app-loader__ring')).toHaveCSS(
+    'animation-name',
+    'app-loader-rotate',
+  )
   await navigation
   await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
-  await expect(page.getByRole('status')).not.toBeVisible()
+  await expect(page.locator('#app-loader')).toHaveCount(0)
+})
+
+test('disables bootstrap ring animation for reduced motion', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.route('**/src/main.tsx', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await route.continue()
+  })
+
+  const navigation = page.goto('/')
+  await expect(page.locator('.app-loader__ring')).toHaveCSS(
+    'animation-name',
+    'none',
+  )
+  await navigation
+  await expect(page.locator('#app-loader')).toHaveCount(0)
+})
+
+test('localizes the bootstrap loader from persisted language', async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    localStorage.setItem('tripwise.language', 'ro'),
+  )
+  await page.route('**/src/main.tsx', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await route.continue()
+  })
+
+  const navigation = page.goto('/')
+  await expect(page.getByRole('status')).toHaveText('Se încarcă aplicația')
+  await navigation
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
 })
 
 test('loads Today and navigates through core pages', async ({ page }) => {
