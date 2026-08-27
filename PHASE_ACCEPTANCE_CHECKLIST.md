@@ -132,6 +132,9 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 - [x] Prompt uses RO/EN translations without translating DATA
 - [x] Prompt directs users to `/settings` and never invokes installation directly
 - [x] Existing Settings PWA installation control remains unchanged
+- [x] Bottom navigation has readable labels, equal-width touch areas, clear
+      active/hover/pressed states, focus indication, and safe-area spacing
+- [x] Application icon asset replaced and referenced by favicon and manifest
 - [x] Focused unit, E2E, and accessibility coverage passes
 - [x] No DATA, schema, or dependency changes were required
 - [x] Version is `0.5.0` on the Phase 5 branch
@@ -143,6 +146,8 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 - [ ] Keyboard focus and accessible semantics validated
 - [ ] Existing Settings installation flow validated in an install-capable browser
 - [ ] Offline behavior remains unchanged
+- [ ] Bottom navigation desktop and mobile visual acceptance validated
+- [ ] New application icon visually validated in supported desktop/mobile/PWA
 
 ### Acceptance status
 

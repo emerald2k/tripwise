@@ -121,6 +121,9 @@ active-itinerary search, Settings, RO/EN language persistence, and a compact
 install-awareness prompt that explains the offline benefit and links to
 Settings. The prompt is informational only; the existing Settings → PWA
 Install control remains the canonical mechanism that performs installation.
+The prompt resolves its visible application name from `brand.name`; the
+primary bottom navigation uses comfortable mobile touch targets and the
+canonical `public/icon.svg` asset is referenced by the favicon and manifest.
 
 No later phase should be used to bypass an unresolved quality gate.
 

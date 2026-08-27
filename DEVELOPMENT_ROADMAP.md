@@ -470,7 +470,9 @@ Scope:
 - persisted language;
 - DATA remains untranslated;
 - compact PWA installation awareness prompt at application startup;
-- existing Settings installation control remains the only installation mechanism.
+- existing Settings installation control remains the only installation mechanism;
+- brand-aware PWA installation awareness prompt;
+- primary bottom navigation UX and application icon asset.
 
 Automated validation:
 
@@ -480,6 +482,8 @@ Automated validation:
 - translation key validation.
 - first visit, dismissal, Settings navigation, and installed display-mode handling;
 - existing Settings installation control.
+- bottom navigation touch targets, active state, focus, and responsive layout;
+- favicon and manifest icon references.
 
 Manual validation:
 
@@ -491,12 +495,15 @@ Manual validation:
 - desktop and mobile prompt placement;
 - prompt accessibility and offline wording;
 - Settings installation flow remains available when the browser exposes it.
+- bottom navigation and application icon desktop/mobile presentation.
 
 Phase 5 implementation is complete on
 `phase/5-search-settings-localization` at version `0.5.0`. The informational
-prompt explains the offline benefit and directs users to Settings; it never
-invokes the browser installation API. Settings remains the canonical
-installation flow.
+prompt is brand-aware, explains the offline benefit, and directs users to
+Settings; it never invokes the browser installation API. Settings remains the
+canonical installation flow. The primary bottom navigation has comfortable
+touch targets and clear active states, and the supplied application icon is
+used by the favicon and manifest.
 
 Gate 5: Utility UX PASS when the Phase 5 acceptance checklist is complete.
 
