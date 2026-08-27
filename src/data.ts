@@ -29,10 +29,12 @@ export const locationCities = new Map(
   ),
 )
 
-const savedItineraryId =
-  typeof localStorage === 'undefined'
+export function readActiveItineraryId() {
+  return typeof localStorage === 'undefined'
     ? null
     : localStorage.getItem('tripwise.activeItineraryId')
-export const activeItinerary =
-  (savedItineraryId && itineraries.get(savedItineraryId)) ||
-  datasets.itineraries[0]
+}
+
+export function persistActiveItineraryId(id: string) {
+  localStorage.setItem('tripwise.activeItineraryId', id)
+}

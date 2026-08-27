@@ -48,6 +48,48 @@ test('timeline supports DONE, UNDO, and Google Maps actions', async ({
   await expect(item.getByRole('button', { name: 'DONE' })).toBeVisible()
 })
 
+test('invalid day routes show the not-found state', async ({ page }) => {
+  await page.goto('/day/2099-01-01')
+  await expect(page.getByText('No itinerary for this day.')).toBeVisible()
+})
+
+test('application routes survive direct refresh', async ({ page }) => {
+  for (const [route, heading] of [
+    ['/days', 'Days'],
+    ['/search', 'Search'],
+    ['/settings', 'Settings'],
+    ['/day/2026-09-04', /Olympic Park|Old Port/],
+  ] as const) {
+    await page.goto(route)
+    await page.reload()
+    await expect(
+      page.getByRole('heading', { name: heading }).first(),
+    ).toBeVisible()
+  }
+})
+
+test('browser back and forward preserve route navigation', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('link', { name: 'Days' }).click()
+  await page.getByRole('link', { name: /05/ }).click()
+  await expect(page).toHaveURL(/\/day\//)
+  await page.goBack()
+  await expect(page).toHaveURL(/\/days$/)
+  await page.goForward()
+  await expect(page).toHaveURL(/\/day\//)
+})
+
+test('mobile shell has usable navigation without horizontal overflow', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  await page.goto('/')
+  await expect(page.getByRole('link', { name: 'Days' })).toBeVisible()
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(375)
+})
+
 test('Today has no detectable accessibility violations', async ({ page }) => {
   await page.goto('/')
   const results = await new AxeBuilder({ page }).analyze()

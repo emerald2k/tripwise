@@ -8,7 +8,14 @@ import {
   useParams,
 } from 'react-router-dom'
 import Fuse from 'fuse.js'
-import { activeItinerary, locationCities, locations } from './data'
+import {
+  datasets,
+  itineraries,
+  locationCities,
+  locations,
+  persistActiveItineraryId,
+  readActiveItineraryId,
+} from './data'
 import { localDate } from './domain/date'
 import {
   currentItem,
@@ -17,7 +24,7 @@ import {
   sortItems,
 } from './domain/itinerary'
 import { isCompactStatus } from './domain/presentation'
-import type { Day, Item } from './data/schema'
+import type { Day, Itinerary, Item } from './data/schema'
 import {
   readProgress,
   resetItineraryProgress,
@@ -59,14 +66,23 @@ function useLanguage() {
 
 export default function App() {
   const language = useLanguage()
+  const [activeItinerary, setActiveItinerary] = useState<Itinerary | undefined>(
+    () => {
+      if (datasets.itineraries.length === 1) return datasets.itineraries[0]
+      const savedId = readActiveItineraryId()
+      const savedItinerary = savedId ? itineraries.get(savedId) : undefined
+      if (savedId && !savedItinerary)
+        localStorage.removeItem('tripwise.activeItineraryId')
+      return savedItinerary
+    },
+  )
   const [progress, setProgress] = useState<ProgressStore>(() => readProgress())
   const [offline, setOffline] = useState(!navigator.onLine)
   const [deferredInstall, setDeferredInstall] =
     useState<BeforeInstallPromptEvent | null>(null)
   useEffect(() => {
-    if (activeItinerary)
-      localStorage.setItem('tripwise.activeItineraryId', activeItinerary.id)
-  }, [])
+    if (activeItinerary) persistActiveItineraryId(activeItinerary.id)
+  }, [activeItinerary])
 
   useEffect(() => {
     const on = () => setOffline(false)
@@ -108,6 +124,34 @@ export default function App() {
     await deferredInstall.prompt()
     setDeferredInstall(null)
   }
+
+  if (!activeItinerary && datasets.itineraries.length > 1)
+    return (
+      <div className="app">
+        <header className="header">
+          <Link className="brand" to="/">
+            {brand.name}
+          </Link>
+        </header>
+        <main>
+          <section className="page itinerary-selection">
+            <h1>{language.t.selectItinerary}</h1>
+            <p>{language.t.chooseItinerary}</p>
+            <div className="itinerary-list">
+              {datasets.itineraries.map((itinerary) => (
+                <button
+                  className="wide-button"
+                  key={itinerary.id}
+                  onClick={() => setActiveItinerary(itinerary)}
+                >
+                  {itinerary.name}
+                </button>
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    )
 
   if (!activeItinerary)
     return (
@@ -153,6 +197,7 @@ export default function App() {
             element={
               <Today
                 {...language}
+                itinerary={activeItinerary}
                 progress={progress}
                 updateStatus={updateStatus}
               />
@@ -160,9 +205,18 @@ export default function App() {
           />
           <Route
             path="/days"
-            element={<Days {...language} progress={progress} />}
+            element={
+              <Days
+                {...language}
+                itinerary={activeItinerary}
+                progress={progress}
+              />
+            }
           />
-          <Route path="/search" element={<Search {...language} />} />
+          <Route
+            path="/search"
+            element={<Search {...language} itinerary={activeItinerary} />}
+          />
           <Route
             path="/settings"
             element={
@@ -179,6 +233,7 @@ export default function App() {
             element={
               <DayRoute
                 {...language}
+                itinerary={activeItinerary}
                 progress={progress}
                 updateStatus={updateStatus}
               />
@@ -197,6 +252,7 @@ export default function App() {
 
 type SharedProps = { t: Copy; language: Language }
 type DayProps = SharedProps & {
+  itinerary: Itinerary
   progress: ProgressStore
   updateStatus: (date: string, itemId: string, status?: Status) => void
 }
@@ -205,14 +261,14 @@ function Today(props: DayProps) {
   const now = new Date()
   const today = localDate(now)
   const day =
-    activeItinerary.days.find((item) => item.date === today) ??
-    activeItinerary.days[0]
+    props.itinerary.days.find((item) => item.date === today) ??
+    props.itinerary.days[0]
   return <DayView {...props} day={day} today={day.date === today} now={now} />
 }
 
 function DayRoute(props: DayProps) {
   const { date } = useParams()
-  const day = activeItinerary.days.find((item) => item.date === date)
+  const day = props.itinerary.days.find((item) => item.date === date)
   if (!day)
     return (
       <section className="empty">
@@ -227,6 +283,7 @@ function DayRoute(props: DayProps) {
 
 function DayView({
   day,
+  itinerary,
   t,
   language,
   progress,
@@ -234,7 +291,7 @@ function DayView({
   today,
   now,
 }: DayProps & { day: Day; today?: boolean; now?: Date }) {
-  const statuses = progress[activeItinerary.id]?.[day.date] || {}
+  const statuses = progress[itinerary.id]?.[day.date] || {}
   const ordered = sortItems(day.items)
   const [, refresh] = useState(0)
   const currentRef = useRef<HTMLDivElement>(null)
@@ -416,17 +473,18 @@ function TransportInfo({
 function Days({
   t,
   language,
+  itinerary,
   progress,
-}: SharedProps & { progress: ProgressStore }) {
+}: SharedProps & { itinerary: Itinerary; progress: ProgressStore }) {
   const today = localDate()
   return (
     <section className="page">
       <h1>{t.days}</h1>
       <div className="day-list">
-        {activeItinerary.days.map((day) => {
+        {itinerary.days.map((day) => {
           const state = dayProgress(
             day,
-            progress[activeItinerary.id]?.[day.date] || {},
+            progress[itinerary.id]?.[day.date] || {},
             today,
           )
           return (
@@ -444,11 +502,15 @@ function Days({
   )
 }
 
-function Search({ t, language }: SharedProps) {
+function Search({
+  t,
+  language,
+  itinerary,
+}: SharedProps & { itinerary: Itinerary }) {
   const [query, setQuery] = useState('')
   const entries = useMemo(
     () =>
-      activeItinerary.days.map((day) => ({
+      itinerary.days.map((day) => ({
         day,
         text: [
           day.date,
@@ -470,7 +532,7 @@ function Search({ t, language }: SharedProps) {
           .filter(Boolean)
           .join(' '),
       })),
-    [],
+    [itinerary],
   )
   const fuse = useMemo(
     () => new Fuse(entries, { keys: ['text'], threshold: 0.35 }),

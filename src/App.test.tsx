@@ -97,4 +97,35 @@ describe('day item presentation', () => {
       `Version ${packageJson.version}`,
     )
   })
+
+  it('renders the existing not-found state for an invalid day route', () => {
+    render(
+      <MemoryRouter initialEntries={['/day/2099-01-01']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('No itinerary for this day.')).toBeVisible()
+    expect(screen.getAllByRole('link', { name: 'Days' })[0]).toBeVisible()
+  })
+
+  it('supports browser-style back navigation through the application routes', () => {
+    render(
+      <MemoryRouter initialEntries={['/', '/days']} initialIndex={1}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('link', { name: /05/ }))
+    expect(
+      screen.getAllByRole('heading', { name: /Olympic Park|Old Port/ })[0],
+    ).toBeVisible()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Settings' }))
+    fireEvent.click(screen.getByRole('button', { name: /Back/ }))
+
+    expect(
+      screen.getAllByRole('heading', { name: /Olympic Park|Old Port/ })[0],
+    ).toBeVisible()
+  })
 })

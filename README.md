@@ -113,17 +113,15 @@ A phase can be closed only after:
 - acceptance criteria pass;
 - no known blocking defects remain.
 
-Current phase: **Phase 2 — CORE DOMAIN LOGIC** (accepted on the Phase Branch;
-pending publication to `master`).
+Current phase: **Phase 3 — APPLICATION SHELL AND NAVIGATION**.
 
-Phase 2 completed local date/day behavior, chronological resolution,
-deterministic CURRENT and UP NEXT behavior, manual progress transitions, and
-day-level progress. The timestamp consistency issue between Today
-classification, CURRENT, and UP NEXT was fixed and covered by focused
-regression tests. Automated validation and Netlify SPA route checks passed;
-the deployed site remains an earlier build until the Phase 2 branch is
-published and merged. The Phase 2 branch remains version `0.2.0`; the next
-Phase version is `0.3.0` after acceptance and merge into `master`.
+Phase 3 implementation is complete on
+`phase/3-application-shell-navigation` at version `0.3.0`. It adds reactive
+multiple-itinerary selection, persisted itinerary restoration, stale-ID
+handling, and regression coverage for routes, navigation, refresh, invalid
+days, and mobile overflow. Automated validation and manual desktop/mobile
+acceptance both pass. No known blocking defects remain, and Phase 3 is ready
+for PR and merge into `master`.
 
 No later phase should be used to bypass an unresolved quality gate.
 

@@ -6,7 +6,7 @@ A phase is not complete when implementation is finished. A phase can be closed o
 
 ## Current Status
 
-Current phase: **Phase 2 — CORE DOMAIN LOGIC**
+Current phase: **Phase 3 — APPLICATION SHELL AND NAVIGATION**
 
 Phase 0:
 
@@ -39,8 +39,24 @@ Phase 2:
   line-ending formatting warnings; no unrelated files were normalized;
 - Gate 2: PASS after acceptance documentation;
 - branch version: `0.2.0`;
-- next Phase version bump: `0.3.0` after Phase 2 is accepted and merged into
-  `master`.
+- Phase 3 development version: `0.3.0`.
+
+Phase 3:
+
+- implementation: PASS;
+- multiple-itinerary selection and stale-ID handling: PASS;
+- route, navigation, refresh, invalid-route, and responsive regression tests:
+  PASS;
+- typecheck, lint, DATA validation, unit tests, coverage, E2E tests, and
+  production build: PASS;
+- `format:check` and `verify`: blocked only by the known pre-existing
+  repository formatting baseline;
+- production dependency audit command completed with two known moderate React
+  Router advisories;
+- manual desktop and mobile validation: PASS;
+- no known blocking defects remain;
+- Gate 3: PASS after acceptance documentation;
+- Phase 3 is ready for PR and merge into `master`.
 
 ## Standard Phase Lifecycle
 
@@ -357,7 +373,7 @@ Scope:
 Branding:
 
 - product/engine: `tripwise`;
-- current application brand: `Voya`;
+- current application brand: `Volala`;
 - branding is configuration-driven.
 
 Automated validation:

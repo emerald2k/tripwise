@@ -39,7 +39,7 @@ or schema design was changed.
 - [x] Regression coverage completed for domain boundaries and transitions
 - [x] Deterministic timestamp issue fixed
 - [x] Phase 2 acceptance completed at version `0.2.0`
-- [x] Phase 3 has not started
+- [x] Phase 3 acceptance was pending at the time of Phase 2 closure
 
 ### Validation
 
@@ -54,6 +54,42 @@ or schema design was changed.
 Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 `0.3.0`, is created only after this Phase Branch is accepted and merged into
 `master`.
+
+## Phase 3 - Application Shell and Navigation
+
+### Implementation and automated validation
+
+- [x] Existing shell, header, bottom navigation, Today, Days, Search, Settings,
+      and day routes preserved
+- [x] Multiple-itinerary selection implemented
+- [x] Valid active itinerary restoration implemented
+- [x] Stale active itinerary IDs return to selection
+- [x] Selected itinerary drives all itinerary-dependent views
+- [x] Invalid day route regression covered
+- [x] Browser back/forward regression covered
+- [x] Direct route refresh regression covered
+- [x] Mobile viewport and horizontal-overflow regression covered
+- [x] English/Romanian selection copy added
+- [x] Version remains `0.3.0`
+- [x] No authored DATA, schema, dependency, or environment changes
+- [x] Typecheck, lint, DATA validation, unit tests, coverage, E2E tests, and
+      production build pass
+- [x] `git diff --check` passes
+- [x] Known repository-wide formatting baseline remains documented; no Phase 3
+      source formatting defect was identified
+
+### Manual validation
+
+- [x] Desktop shell and navigation manually validated
+- [x] Direct URL and refresh flows manually validated
+- [x] Mobile selection screen and responsive layout manually validated
+- [x] Manual desktop and mobile validation: PASS
+
+### Acceptance status
+
+- [x] Phase 3 acceptance complete
+- [x] Gate 3: Navigation PASS
+- [x] Ready for PR
 
 ## Automated
 
