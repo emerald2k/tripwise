@@ -47,6 +47,16 @@ interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
 }
 
+const installPromptSeenKey = 'tripwise.installPromptSeen'
+
+function isInstalledPwa() {
+  const standaloneNavigator = navigator as Navigator & { standalone?: boolean }
+  return (
+    window.matchMedia?.('(display-mode: standalone)').matches === true ||
+    standaloneNavigator.standalone === true
+  )
+}
+
 function useLanguage() {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('tripwise.language')
@@ -80,6 +90,9 @@ export default function App() {
   const [offline, setOffline] = useState(!navigator.onLine)
   const [deferredInstall, setDeferredInstall] =
     useState<BeforeInstallPromptEvent | null>(null)
+  const [showInstallAwareness, setShowInstallAwareness] = useState(
+    () => !localStorage.getItem(installPromptSeenKey) && !isInstalledPwa(),
+  )
   useEffect(() => {
     if (activeItinerary) persistActiveItineraryId(activeItinerary.id)
   }, [activeItinerary])
@@ -123,6 +136,10 @@ export default function App() {
     if (!deferredInstall) return
     await deferredInstall.prompt()
     setDeferredInstall(null)
+  }
+  const dismissInstallAwareness = () => {
+    localStorage.setItem(installPromptSeenKey, 'true')
+    setShowInstallAwareness(false)
   }
 
   if (!activeItinerary && datasets.itineraries.length > 1)
@@ -191,6 +208,9 @@ export default function App() {
         </div>
       </header>
       <main>
+        {showInstallAwareness && (
+          <InstallAwareness t={language.t} dismiss={dismissInstallAwareness} />
+        )}
         <Routes>
           <Route
             path="/"
@@ -251,6 +271,29 @@ export default function App() {
 }
 
 type SharedProps = { t: Copy; language: Language }
+
+function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
+  return (
+    <aside
+      className="install-awareness"
+      aria-labelledby="install-awareness-title"
+    >
+      <div>
+        <h2 id="install-awareness-title">{t.installPromptTitle}</h2>
+        <div>{t.installPromptBody}</div>
+      </div>
+      <div className="install-awareness-actions">
+        <Link className="button" to="/settings" onClick={dismiss}>
+          {t.installPromptSettings}
+        </Link>
+        <button type="button" onClick={dismiss}>
+          {t.installPromptDismiss}
+        </button>
+      </div>
+    </aside>
+  )
+}
+
 type DayProps = SharedProps & {
   itinerary: Itinerary
   progress: ProgressStore

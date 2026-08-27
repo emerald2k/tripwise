@@ -73,6 +73,41 @@ main {
   margin: 0 auto;
   padding: 1.5rem 1rem;
 }
+.install-awareness {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #3b5277;
+  border-radius: 12px;
+  background: #1b2a42;
+}
+.install-awareness h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+.install-awareness > div:first-child {
+  margin: 0.35rem 0 0;
+  color: #c0ccde;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.install-awareness-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+.install-awareness-actions .button {
+  background: #4569ad;
+  color: #fff;
+}
+.install-awareness-actions button {
+  background: transparent;
+  color: #c0ccde;
+}
 .page h1 {
   margin: 0 0 1.5rem;
   font-size: clamp(1.75rem, 5vw, 2.5rem);
@@ -328,6 +363,20 @@ main {
   .header {
     padding-left: max(1.5rem, calc((100vw - 760px) / 2));
     padding-right: max(1.5rem, calc((100vw - 760px) / 2));
+  }
+  @media (max-width: 560px) {
+    .install-awareness {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .install-awareness-actions {
+      flex-direction: column;
+    }
+    .install-awareness-actions .button,
+    .install-awareness-actions button {
+      width: 100%;
+      text-align: center;
+    }
   }
 }
 @media (prefers-reduced-motion: no-preference) {
