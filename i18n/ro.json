@@ -1,0 +1,22 @@
+{
+  "today": "Astăzi",
+  "days": "Zile",
+  "search": "Caută",
+  "settings": "Setări",
+  "language": "Limbă",
+  "install": "Instalează aplicația",
+  "reset": "Resetează progresul",
+  "back": "Înapoi",
+  "done": "GATA",
+  "skip": "SARI",
+  "undo": "ANULEAZĂ",
+  "upNext": "URMEAZĂ",
+  "current": "ACUM",
+  "allDone": "✓ Totul este gata",
+  "noDays": "Nu există zile.",
+  "noItinerary": "Nu există itinerar pentru această zi.",
+  "copyLink": "Copiază linkul",
+  "navigate": "Navigare GMaps",
+  "noResults": "Nu s-au găsit zile.",
+  "confirmReset": "Resetezi progresul pentru acest itinerar?"
+}

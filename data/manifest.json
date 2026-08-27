@@ -1,0 +1,13 @@
+{
+  "itineraries": [
+    {
+      "id": "canada-2026",
+      "file": "./itineraries/canada-2026.json",
+      "name": "Canada 2026"
+    }
+  ],
+  "cities": [
+    "./cities/montreal.json",
+    "./cities/quebec-city.json"
+  ]
+}

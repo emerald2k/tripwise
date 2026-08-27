@@ -1,0 +1,22 @@
+{
+  "today": "Today",
+  "days": "Days",
+  "search": "Search",
+  "settings": "Settings",
+  "language": "Language",
+  "install": "Install App",
+  "reset": "Reset Progress",
+  "back": "Back",
+  "done": "DONE",
+  "skip": "SKIP",
+  "undo": "UNDO",
+  "upNext": "UP NEXT",
+  "current": "CURRENT",
+  "allDone": "✓ All done",
+  "noDays": "No days.",
+  "noItinerary": "No itinerary for this day.",
+  "copyLink": "Copy Link",
+  "navigate": "Navigate GMaps",
+  "noResults": "No days found.",
+  "confirmReset": "Reset progress for this itinerary?"
+}

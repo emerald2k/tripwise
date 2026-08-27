@@ -1,0 +1,296 @@
+{
+  "cityId": "montreal",
+  "name": "Montréal",
+  "locations": [
+    {
+      "locationId": "montreal-hotel-le-roberval",
+      "name": "Hotel Le Roberval",
+      "category": "hotel",
+      "address": "505 René-Lévesque East, Montréal",
+      "description": "Berri-UQAM foarte aproape; bun pentru mers pe jos",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20Le%20Roberval%2C%20505%20Boulevard%20Rene-Levesque%20East%2C%20Montreal%2C%20QC%20H2L%205B6"
+    },
+    {
+      "locationId": "montreal-berri-uqam",
+      "name": "Berri-UQAM",
+      "category": "station",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Berri-UQAM%20Station%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-quartier-latin",
+      "name": "Quartier Latin",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Quartier%20Latin%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-rue-saint-denis",
+      "name": "Rue Saint-Denis",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Denis%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-place-milie-gamelin",
+      "name": "Place Émilie-Gamelin",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Emilie-Gamelin%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-old-montr-al",
+      "name": "Old Montréal",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Montreal%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-place-d-armes",
+      "name": "Place d'Armes",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20d%27Armes%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-notre-dame-basilica",
+      "name": "Notre-Dame Basilica",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Notre-Dame%20Basilica%20of%20Montreal%2C%20110%20Notre-Dame%20Street%20West%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-rue-saint-paul",
+      "name": "Rue Saint-Paul",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Paul%2C%20Old%20Montreal%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-place-jacques-cartier",
+      "name": "Place Jacques-Cartier",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Jacques-Cartier%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-jardins-gamelin",
+      "name": "Jardins Gamelin",
+      "category": "activity",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jardins%20Gamelin%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-abreuvoir-132",
+      "name": "Abreuvoir 132",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Abreuvoir%20132%2C%20132%20Rue%20Sainte-Catherine%20East%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-pointe-calli-re",
+      "name": "Pointe-à-Callière",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pointe-a-Calliere%2C%20350%20Place%20Royale%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-place-royale",
+      "name": "Place Royale",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Royale%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-march-bonsecours",
+      "name": "Marché Bonsecours",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bonsecours%20Market%2C%20350%20Rue%20Saint-Paul%20East%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-notre-dame-de-bon-secours",
+      "name": "Notre-Dame-de-Bon-Secours",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Notre-Dame-de-Bon-Secours%20Chapel%2C%20400%20Rue%20Saint-Paul%20East%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-old-port-montr-al",
+      "name": "Old Port Montréal",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Port%20of%20Montreal%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-grand-quay",
+      "name": "Grand Quay",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Grand%20Quay%20of%20the%20Port%20of%20Montreal%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-clock-tower",
+      "name": "Clock Tower",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal%20Clock%20Tower%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-saint-lawrence-waterfront",
+      "name": "Saint Lawrence waterfront",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint%20Lawrence%20River%20waterfront%2C%20Old%20Port%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-wolf-workman",
+      "name": "Wolf & Workman",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Wolf%20%26%20Workman%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-pub-saint-pierre",
+      "name": "Pub Saint Pierre",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20Saint%20Pierre%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-place-des-arts",
+      "name": "Place des Arts",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20des%20Arts%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-sainte-catherine-street",
+      "name": "Sainte-Catherine Street",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint%20Catherine%20Street%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-downtown-montr-al",
+      "name": "Downtown Montréal",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Downtown%20Montreal%2C%20Quebec%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-christ-church-cathedral",
+      "name": "Christ Church Cathedral",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Christ%20Church%20Cathedral%2C%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-place-ville-marie",
+      "name": "Place Ville Marie",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Ville%20Marie%2C%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-eaton-centre",
+      "name": "Eaton Centre",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Eaton%20Centre%2C%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-olympic-park",
+      "name": "Olympic Park",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Olympic%20Park%2C%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-olympic-stadium",
+      "name": "Olympic Stadium",
+      "category": "attraction",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal%20Olympic%20Stadium%2C%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-esplanade-olympic-park",
+      "name": "Esplanade Olympic Park",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Esplanade%2C%20Olympic%20Park%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-place-nadia-comaneci",
+      "name": "Place Nadia-Comaneci",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Nadia%20Comaneci%2C%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-nadia-comaneci-mural",
+      "name": "Nadia Comaneci mural",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Nadia%20Comaneci%20mural%2C%20Olympic%20Park%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-mile-end",
+      "name": "Mile End",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Mile%20End%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-little-italy",
+      "name": "Little Italy",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Little%20Italy%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-avenue-du-mont-royal",
+      "name": "Avenue du Mont-Royal",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Avenue%20du%20Mont-Royal%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-square-saint-louis",
+      "name": "Square Saint-Louis",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Square%20Saint-Louis%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-rue-prince-arthur",
+      "name": "Rue Prince-Arthur",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Prince-Arthur%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-parc-du-portugal",
+      "name": "Parc du Portugal",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Parc%20du%20Portugal%2C%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-jean-talon-market",
+      "name": "Jean-Talon Market",
+      "category": "other",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jean-Talon%20Market%2C%207070%20Avenue%20Henri-Julien%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-hurley-s-irish-pub",
+      "name": "Hurley's Irish Pub",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hurley%27s%20Irish%20Pub%2C%201225%20Crescent%20Street%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-bar-k-karaoke",
+      "name": "Bar K Karaoke",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bar%20K%20Karaoke%2C%202110%20Crescent%20Street%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-pub-le-sainte-lisabeth",
+      "name": "Pub Le Sainte-Élisabeth",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20Le%20Sainte-Elisabeth%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-ceo-karaoke",
+      "name": "CEO Karaoke",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=CEO%20Karaoke%2C%20Montreal%2C%20QC"
+    },
+    {
+      "locationId": "montreal-gare-centrale-montr-al",
+      "name": "Gare Centrale Montréal",
+      "category": "station",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal%20Central%20Station%2C%20895%20Rue%20de%20la%20Gauchetiere%20O%2C%20Montreal%2C%20Quebec%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-montreal-trudeau-airport",
+      "name": "Montréal-Trudeau Airport",
+      "category": "airport",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal-Pierre%20Elliott%20Trudeau%20International%20Airport%2C%20Dorval%2C%20Quebec%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-club-unity",
+      "name": "Club Unity",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Unity%20Montreal%2C%20Quebec"
+    },
+    {
+      "locationId": "montreal-le-date-karaoke",
+      "name": "Le Date Karaoke",
+      "category": "nightlife",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Le%20Date%20Karaoke%2C%20Montreal%2C%20Quebec"
+    }
+  ]
+}
