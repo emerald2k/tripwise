@@ -55,6 +55,6 @@ Do not silently change product requirements to make tests pass.
 
 When a requirement is ambiguous, prefer the smallest implementation consistent with SRS.md and stop for confirmation when the ambiguity changes product behavior or the DATA contract.
 
-Technical errors such as stack traces, raw JSON errors, Zod details, and debug diagnostics are development-only when `VITE_DEBUG` is enabled. Do not expose them to production users.
+Technical errors such as stack traces, raw JSON errors, Zod details, and debug diagnostics are development-only if a future `VITE_DEBUG` mode is implemented. `VITE_DEBUG` is currently inactive and not required. Do not expose technical details to production users.
 
 Never add an undocumented DATA field just to simplify rendering.

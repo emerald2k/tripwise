@@ -684,7 +684,11 @@ release, and GitHub protection policy is maintained in the
 
 # Environment and Debug Mode
 
-Development has an optional debug flag.
+Environment variables are not currently required for local development,
+testing, GitHub Actions, or Netlify production.
+
+`VITE_DEBUG` is a conceptual, inactive future option. The current application
+does not consume it, and no `.env` file is required.
 
 Conceptually:
 
@@ -704,7 +708,7 @@ Debug information may include:
 
 Production must not expose technical debug information.
 
-The application should guard debug output using both:
+If a future debug mode is implemented, its output should be guarded using both:
 
 ```text
 import.meta.env.DEV
