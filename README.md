@@ -119,7 +119,8 @@ Phase 4 implementation is complete on
 `phase/4-today-day-experience` at version `0.4.0`. It validates timeline,
 CURRENT, UP NEXT, Location and Transport Items, duration, progress actions,
 day progress, Google Maps links, and Today auto-scroll. Automated validation
-passes; interactive desktop/mobile acceptance remains pending.
+and desktop/mobile browser acceptance pass. No known blocking defects remain;
+Phase 4 is accepted at Gate 4.
 
 No later phase should be used to bypass an unresolved quality gate.
 

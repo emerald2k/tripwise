@@ -110,14 +110,15 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 
 ### Manual validation
 
-- [ ] Desktop Today and Day experience manually validated
-- [ ] Mobile Today and Day experience manually validated
-- [ ] Interactive accessibility and reduced-motion behavior manually validated
+- [x] Desktop Today and Day experience browser-validated
+- [x] Mobile Today and Day experience browser-validated
+- [x] Keyboard focus, accessible names, and reduced-motion behavior validated
+- [x] No Phase 4 console errors, overflow, clipping, or visible regressions
 
 ### Acceptance status
 
-- [ ] Phase 4 acceptance complete
-- [ ] Gate 4: Core UX PASS
+- [x] Phase 4 acceptance complete
+- [x] Gate 4: Core UX PASS
 
 ## Automated
 

@@ -69,8 +69,11 @@ Phase 4:
   tests, production build, and `verify`: PASS;
 - production dependency audit completed with two known moderate React Router
   advisories;
-- manual desktop/mobile acceptance: pending interactive browser validation;
-- Gate 4: pending manual acceptance.
+- manual desktop acceptance: PASS;
+- manual mobile acceptance: PASS;
+- browser keyboard and accessibility acceptance: PASS;
+- no known blocking defects remain;
+- Gate 4: Core UX PASS after acceptance documentation.
 
 ## Standard Phase Lifecycle
 
@@ -451,7 +454,7 @@ Manual validation:
 - links;
 - timeline behavior.
 
-Gate 4: Core UX pending manual acceptance.
+Gate 4: Core UX PASS.
 
 ## Phase 5. Search, Settings, and Localization
 
