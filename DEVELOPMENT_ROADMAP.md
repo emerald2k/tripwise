@@ -6,7 +6,7 @@ A phase is not complete when implementation is finished. A phase can be closed o
 
 ## Current Status
 
-Current phase: **Phase 1 — DATA MODEL & RUNTIME CONTRACT**
+Current phase: **Phase 2 — CORE DOMAIN LOGIC**
 
 Phase 0:
 
@@ -26,6 +26,21 @@ Phase 1:
 - branding alignment: PASS (`Voya` → `Volala`);
 - environment configuration audit: PASS (no variables required);
 - Gate 1: PASS after acceptance documentation.
+
+Phase 2:
+
+- local device date and day behavior: PASS;
+- chronological ordering: PASS;
+- deterministic CURRENT and UP NEXT resolution: PASS;
+- DONE, SKIP, and UNDO transitions: PASS;
+- day-level progress and manual overrides: PASS;
+- regression coverage: PASS;
+- full validation: PASS, with only the known pre-existing Windows
+  line-ending formatting warnings; no unrelated files were normalized;
+- Gate 2: PASS after acceptance documentation;
+- branch version: `0.2.0`;
+- next Phase version bump: `0.3.0` after Phase 2 is accepted and merged into
+  `master`.
 
 ## Standard Phase Lifecycle
 
@@ -319,7 +334,9 @@ Manual validation:
 - UNDO;
 - reload persistence where applicable.
 
-Gate 2: Domain Behavior PASS.
+Gate 2: Domain Behavior PASS. The deterministic timestamp issue affecting
+Today classification, CURRENT, and UP NEXT was fixed and covered by focused
+regression tests.
 
 ## Phase 3. Application Shell and Navigation
 
