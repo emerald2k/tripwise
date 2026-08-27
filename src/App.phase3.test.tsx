@@ -133,6 +133,23 @@ describe('Phase 3 itinerary selection', () => {
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
   })
 
+  it('does not expose another itinerary in active-itinerary search', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Beta itinerary' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Search' }))
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'Alpha place' },
+    })
+
+    expect(screen.getByText('No days found.')).toBeVisible()
+    expect(screen.queryByText('Alpha day')).not.toBeInTheDocument()
+  })
+
   it('restores a valid persisted itinerary', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'beta')
 

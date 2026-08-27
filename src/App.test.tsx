@@ -85,6 +85,44 @@ describe('day item presentation', () => {
     expect(localStorage.getItem('tripwise.language')).toBe('ro')
   })
 
+  it('persists RO to EN to RO language changes across a remount', () => {
+    const view = render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'RO' }))
+    expect(screen.getByRole('heading', { name: 'Setări' })).toBeVisible()
+    fireEvent.click(screen.getByRole('button', { name: 'EN' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
+    fireEvent.click(screen.getByRole('button', { name: 'RO' }))
+    expect(screen.getByRole('heading', { name: 'Setări' })).toBeVisible()
+    expect(localStorage.getItem('tripwise.language')).toBe('ro')
+
+    view.unmount()
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('heading', { name: 'Setări' })).toBeVisible()
+    expect(document.documentElement.lang).toBe('ro')
+  })
+
+  it('shows the localized empty state for a search with no matches', () => {
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'no matching itinerary content' },
+    })
+    expect(screen.getByText('No days found.')).toBeVisible()
+  })
+
   it('renders the package version in Settings', () => {
     render(
       <MemoryRouter initialEntries={['/settings']}>
