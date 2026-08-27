@@ -120,6 +120,66 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 - [x] Phase 4 acceptance complete
 - [x] Gate 4: Core UX PASS
 
+## Phase 5 - Search, Settings, Localization, and Install Awareness
+
+### Implementation and automated validation
+
+- [x] Search remains active-itinerary and day-oriented
+- [x] Settings and persisted RO/EN language remain available
+- [x] Informational install prompt is shown once for eligible new users
+- [x] Prompt dismissal and Settings navigation persist `tripwise.installPromptSeen`
+- [x] Installed standalone PWAs do not show the awareness prompt
+- [x] Prompt uses RO/EN translations without translating DATA
+- [x] Prompt directs users to `/settings` and never invokes installation directly
+- [x] Existing Settings PWA installation control remains unchanged
+- [x] Bottom navigation has readable labels, equal-width touch areas, clear
+      active/hover/pressed states, focus indication, and safe-area spacing
+- [x] Application icon asset replaced and referenced by favicon and manifest
+- [x] Focused unit, E2E, and accessibility coverage passes
+- [x] No DATA, schema, or dependency changes were required
+- [x] Version is `0.5.0` on the Phase 5 branch
+
+### Manual validation
+
+- [x] Desktop prompt placement and wording validated
+- [x] Mobile prompt layout, touch targets, and bottom navigation validated
+- [x] Keyboard focus and accessible semantics validated
+- [x] Existing Settings installation flow validated in an install-capable browser
+- [x] Offline behavior remains unchanged
+- [x] Bottom navigation desktop and mobile visual acceptance validated
+- [x] New application icon visually validated in supported desktop/mobile/PWA
+
+### Acceptance matrix
+
+| Criterion                          | Status |
+| ---------------------------------- | ------ |
+| Search                             | PASS   |
+| Active itinerary search            | PASS   |
+| Day-level results                  | PASS   |
+| Settings                           | PASS   |
+| RO / EN                            | PASS   |
+| Language persistence               | PASS   |
+| Translation-key validation         | PASS   |
+| PWA install-awareness prompt       | PASS   |
+| Existing Settings PWA installation | PASS   |
+| Standalone suppression             | PASS   |
+| `brand.name` usage                 | PASS   |
+| Bottom navigation                  | PASS   |
+| Active `#334155` state             | PASS   |
+| Responsive/mobile behavior         | PASS   |
+| Accessibility                      | PASS   |
+| Desktop manual validation          | PASS   |
+| Mobile manual validation           | PASS   |
+| Real PWA installation validation   | PASS   |
+| Installed icon validation          | PASS   |
+
+### Acceptance status
+
+- [x] Phase 5 formally accepted
+- [x] Gate 5: Utility UX PASS
+- [x] Phase 5 completed and ready for the next phase
+- [x] Phase 6 has not started
+
 ## Automated
 
 - [ ] Relevant unit tests pass

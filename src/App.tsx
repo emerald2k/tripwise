@@ -47,6 +47,16 @@ interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
 }
 
+const installPromptSeenKey = 'tripwise.installPromptSeen'
+
+function isInstalledPwa() {
+  const standaloneNavigator = navigator as Navigator & { standalone?: boolean }
+  return (
+    window.matchMedia?.('(display-mode: standalone)').matches === true ||
+    standaloneNavigator.standalone === true
+  )
+}
+
 function useLanguage() {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('tripwise.language')
@@ -80,6 +90,9 @@ export default function App() {
   const [offline, setOffline] = useState(!navigator.onLine)
   const [deferredInstall, setDeferredInstall] =
     useState<BeforeInstallPromptEvent | null>(null)
+  const [showInstallAwareness, setShowInstallAwareness] = useState(
+    () => !localStorage.getItem(installPromptSeenKey) && !isInstalledPwa(),
+  )
   useEffect(() => {
     if (activeItinerary) persistActiveItineraryId(activeItinerary.id)
   }, [activeItinerary])
@@ -123,6 +136,10 @@ export default function App() {
     if (!deferredInstall) return
     await deferredInstall.prompt()
     setDeferredInstall(null)
+  }
+  const dismissInstallAwareness = () => {
+    localStorage.setItem(installPromptSeenKey, 'true')
+    setShowInstallAwareness(false)
   }
 
   if (!activeItinerary && datasets.itineraries.length > 1)
@@ -191,6 +208,9 @@ export default function App() {
         </div>
       </header>
       <main>
+        {showInstallAwareness && (
+          <InstallAwareness t={language.t} dismiss={dismissInstallAwareness} />
+        )}
         <Routes>
           <Route
             path="/"
@@ -242,15 +262,102 @@ export default function App() {
         </Routes>
       </main>
       <nav className="bottom-nav">
-        <NavLink to="/">{language.t.today}</NavLink>
-        <NavLink to="/days">{language.t.days}</NavLink>
-        <NavLink to="/search">{language.t.search}</NavLink>
+        <NavLink to="/">
+          <NavIcon type="today" />
+          <span>{language.t.today}</span>
+        </NavLink>
+        <NavLink to="/days">
+          <NavIcon type="days" />
+          <span>{language.t.days}</span>
+        </NavLink>
+        <NavLink to="/search">
+          <NavIcon type="search" />
+          <span>{language.t.search}</span>
+        </NavLink>
       </nav>
     </div>
   )
 }
 
 type SharedProps = { t: Copy; language: Language }
+
+function withBrandName(copy: string) {
+  return copy.replace('{brandName}', brand.name)
+}
+
+function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
+  return (
+    <aside
+      className="install-awareness"
+      aria-labelledby="install-awareness-title"
+    >
+      <InstallIcon />
+      <div>
+        <h2 id="install-awareness-title">
+          {withBrandName(t.installPromptTitle)}
+        </h2>
+        <div>{withBrandName(t.installPromptBody)}</div>
+      </div>
+      <div className="install-awareness-actions">
+        <Link className="button" to="/settings" onClick={dismiss}>
+          {t.installPromptSettings}
+        </Link>
+        <button type="button" onClick={dismiss}>
+          {t.installPromptDismiss}
+        </button>
+      </div>
+    </aside>
+  )
+}
+
+function InstallIcon() {
+  return (
+    <svg
+      className="install-icon"
+      viewBox="0 0 48 48"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect width="48" height="48" rx="14" fill="#3f72d8" />
+      <path
+        d="M24 10v19m0 0-7-7m7 7 7-7M14 36h20"
+        fill="none"
+        stroke="#fff"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="3"
+      />
+    </svg>
+  )
+}
+
+function NavIcon({ type }: { type: 'today' | 'days' | 'search' }) {
+  if (type === 'search')
+    return (
+      <svg
+        className="nav-icon"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <circle cx="10.5" cy="10.5" r="6.5" />
+        <path d="m16 16 5 5" />
+      </svg>
+    )
+  return (
+    <svg
+      className="nav-icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M8 3v4m8-4v4M4 9h16" />
+      {type === 'today' && <path d="M8 13h3m2 0h3m-8 4h3m2 0h3" />}
+    </svg>
+  )
+}
+
 type DayProps = SharedProps & {
   itinerary: Itinerary
   progress: ProgressStore

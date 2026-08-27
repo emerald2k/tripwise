@@ -85,6 +85,44 @@ describe('day item presentation', () => {
     expect(localStorage.getItem('tripwise.language')).toBe('ro')
   })
 
+  it('persists RO to EN to RO language changes across a remount', () => {
+    const view = render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'RO' }))
+    expect(screen.getByRole('heading', { name: 'Setări' })).toBeVisible()
+    fireEvent.click(screen.getByRole('button', { name: 'EN' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
+    fireEvent.click(screen.getByRole('button', { name: 'RO' }))
+    expect(screen.getByRole('heading', { name: 'Setări' })).toBeVisible()
+    expect(localStorage.getItem('tripwise.language')).toBe('ro')
+
+    view.unmount()
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('heading', { name: 'Setări' })).toBeVisible()
+    expect(document.documentElement.lang).toBe('ro')
+  })
+
+  it('shows the localized empty state for a search with no matches', () => {
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'no matching itinerary content' },
+    })
+    expect(screen.getByText('No days found.')).toBeVisible()
+  })
+
   it('renders the package version in Settings', () => {
     render(
       <MemoryRouter initialEntries={['/settings']}>
@@ -180,5 +218,114 @@ describe('day item presentation', () => {
 
     scrollIntoView.mockRestore()
     vi.useRealTimers()
+  })
+
+  it('shows a first-visit install awareness prompt', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Install Volala' }),
+    ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Not now' })).toBeVisible()
+  })
+
+  it('dismisses and persists the install awareness prompt', () => {
+    const view = render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Not now' }))
+    expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
+    expect(
+      screen.queryByRole('heading', { name: 'Install Volala' }),
+    ).not.toBeInTheDocument()
+
+    view.unmount()
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(
+      screen.queryByRole('heading', { name: 'Install Volala' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('navigates to Settings and persists when the prompt CTA is used', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('link', { name: 'Go to Settings' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
+    expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
+  })
+
+  it('renders the install awareness prompt in Romanian', () => {
+    localStorage.setItem('tripwise.language', 'ro')
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Instalează Volala' }),
+    ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Nu acum' })).toBeVisible()
+  })
+
+  it('uses the configured brand name in the English prompt', () => {
+    localStorage.setItem('tripwise.language', 'en')
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Install Volala' }),
+    ).toBeVisible()
+    expect(screen.getByText(/Install Volala on your device/)).toBeVisible()
+    expect(screen.queryByText(/Tripwise/)).not.toBeInTheDocument()
+  })
+
+  it('does not show the prompt in standalone display mode', () => {
+    const originalMatchMedia = window.matchMedia
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      value: (query: string) => ({
+        matches: query === '(display-mode: standalone)',
+        media: query,
+        onchange: null,
+        addListener: () => undefined,
+        removeListener: () => undefined,
+        addEventListener: () => undefined,
+        removeEventListener: () => undefined,
+        dispatchEvent: () => false,
+      }),
+    })
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.queryByRole('heading', { name: 'Install Volala' }),
+    ).not.toBeInTheDocument()
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      value: originalMatchMedia,
+    })
   })
 })

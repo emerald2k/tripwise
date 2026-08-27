@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 test('loads Today and navigates through core pages', async ({ page }) => {
   await page.goto('/')
-  await expect(page.getByText('Volala')).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
   await page.getByRole('link', { name: 'Days' }).click()
   await expect(page.getByRole('heading', { name: 'Days' })).toBeVisible()
   await page.getByRole('link', { name: /05/ }).click()
@@ -30,6 +30,37 @@ test('settings persists the selected language', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
   await page.reload()
   await expect(page.getByRole('heading', { name: 'Setări' })).toBeVisible()
+})
+
+test('first visit prompt directs users to the existing Settings install flow', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).toBeVisible()
+  await expect(page.getByText(/better offline experience/i)).toBeVisible()
+  await page.getByRole('link', { name: 'Go to Settings' }).click()
+  await expect(page).toHaveURL(/\/settings$/)
+  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).not.toBeVisible()
+})
+
+test('Settings keeps the browser installation control when available', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperty(event, 'prompt', {
+      value: () => Promise.resolve(),
+    })
+    window.dispatchEvent(event)
+  })
+  await page.getByRole('link', { name: 'Settings', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Install App' })).toBeVisible()
 })
 
 test('timeline supports DONE, UNDO, and Google Maps actions', async ({
@@ -107,6 +138,30 @@ test('mobile shell has usable navigation without horizontal overflow', async ({
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(375)
+})
+
+test('bottom navigation has usable controls and updates its active state', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  await page.goto('/')
+  const navigation = page.getByRole('navigation').last()
+  const links = navigation.getByRole('link')
+  await expect(links).toHaveCount(3)
+  for (const label of ['Today', 'Days', 'Search']) {
+    const link = navigation.getByRole('link', { name: label })
+    await expect(link).toBeVisible()
+    expect((await link.boundingBox())?.height).toBeGreaterThanOrEqual(44)
+  }
+  await expect(navigation.getByRole('link', { name: 'Today' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  )
+  await navigation.getByRole('link', { name: 'Search' }).click()
+  await expect(page).toHaveURL(/\/search$/)
+  await expect(
+    navigation.getByRole('link', { name: 'Search' }),
+  ).toHaveAttribute('aria-current', 'page')
 })
 
 test('Today has no detectable accessibility violations', async ({ page }) => {

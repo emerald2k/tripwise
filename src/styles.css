@@ -73,6 +73,50 @@ main {
   margin: 0 auto;
   padding: 1.5rem 1rem;
 }
+.install-awareness {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  max-width: 340px;
+  margin: 0 auto 1.5rem;
+  padding: 1.5rem 1.25rem;
+  border: 1px solid #3b5277;
+  border-radius: 12px;
+  background: #1b2a42;
+  text-align: center;
+}
+.install-icon {
+  width: 52px;
+  height: 52px;
+}
+.install-awareness > div:first-child {
+  margin: 0;
+}
+.install-awareness > div:first-child > div {
+  margin-top: 0.5rem;
+  color: #c0ccde;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.install-awareness h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.install-awareness-actions {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.install-awareness-actions .button {
+  width: 100%;
+  background: #4569ad;
+  color: #fff;
+}
+.install-awareness-actions button {
+  background: transparent;
+  color: #c0ccde;
+}
 .page h1 {
   margin: 0 0 1.5rem;
   font-size: clamp(1.75rem, 5vw, 2.5rem);
@@ -223,20 +267,50 @@ main {
   left: 0;
   right: 0;
   display: flex;
-  justify-content: center;
-  gap: clamp(1rem, 8vw, 4rem);
-  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  gap: 0.5rem;
+  min-height: 72px;
+  padding: 0.6rem 0.75rem calc(0.6rem + env(safe-area-inset-bottom));
   background: rgba(16, 19, 24, 0.95);
   border-top: 1px solid #29303b;
   z-index: 3;
 }
 .bottom-nav a {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 48px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 10px;
   color: #8f99a8;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+.nav-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 .bottom-nav a.active {
+  background: #334155;
   color: #fff;
-  font-weight: 700;
+  font-weight: 750;
+  box-shadow: inset 0 -3px 0 #8db6ff;
+}
+.bottom-nav a:hover {
+  background: #202d43;
+  color: #eef4ff;
+}
+.bottom-nav a:active {
+  background: #30466d;
 }
 .day-list,
 .search-results {
@@ -328,6 +402,13 @@ main {
   .header {
     padding-left: max(1.5rem, calc((100vw - 760px) / 2));
     padding-right: max(1.5rem, calc((100vw - 760px) / 2));
+  }
+  @media (max-width: 560px) {
+    .install-awareness-actions .button,
+    .install-awareness-actions button {
+      width: 100%;
+      text-align: center;
+    }
   }
 }
 @media (prefers-reduced-motion: no-preference) {

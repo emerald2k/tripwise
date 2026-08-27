@@ -6,7 +6,8 @@ A phase is not complete when implementation is finished. A phase can be closed o
 
 ## Current Status
 
-Current phase: **Phase 4 — TODAY AND DAY EXPERIENCE**
+Current phase: **Phase 5 — SEARCH, SETTINGS, AND LOCALIZATION — COMPLETED;
+READY FOR THE NEXT PHASE**
 
 Phase 0:
 
@@ -74,6 +75,26 @@ Phase 4:
 - browser keyboard and accessibility acceptance: PASS;
 - no known blocking defects remain;
 - Gate 4: Core UX PASS after acceptance documentation.
+
+Phase 5:
+
+- implementation: PASS;
+- Fuse.js active-itinerary search and day navigation: PASS;
+- Settings, RO/EN localization, language persistence, and translation-key
+  validation: PASS;
+- install-awareness prompt, dismissal persistence, Settings navigation,
+  standalone suppression, and `brand.name` usage: PASS;
+- existing Settings PWA installation flow, bottom navigation, active
+  `#334155` state, responsive behavior, application icon, and accessibility:
+  PASS;
+- typecheck, lint, formatting, DATA validation, unit tests, coverage, E2E
+  tests, production build, `verify`, and `git diff --check`: PASS;
+- manual desktop, mobile, and real PWA installation validation: PASS;
+- production dependency audit completed with two existing moderate React
+  Router advisories; no dependency changes required;
+- no DATA or schema changes and no known blocking defects;
+- Gate 5: Utility UX PASS;
+- Phase 5 is complete and ready for the next phase; Phase 6 has not started.
 
 ## Standard Phase Lifecycle
 
@@ -468,7 +489,11 @@ Scope:
 - Settings page;
 - RO / EN;
 - persisted language;
-- DATA remains untranslated.
+- DATA remains untranslated;
+- compact PWA installation awareness prompt at application startup;
+- existing Settings installation control remains the only installation mechanism;
+- brand-aware PWA installation awareness prompt;
+- primary bottom navigation UX and application icon asset.
 
 Automated validation:
 
@@ -476,6 +501,10 @@ Automated validation:
 - language persistence;
 - reload;
 - translation key validation.
+- first visit, dismissal, Settings navigation, and installed display-mode handling;
+- existing Settings installation control.
+- bottom navigation touch targets, active state, focus, and responsive layout;
+- favicon and manifest icon references.
 
 Manual validation:
 
@@ -484,6 +513,18 @@ Manual validation:
 - refresh;
 - search;
 - result navigation.
+- desktop and mobile prompt placement;
+- prompt accessibility and offline wording;
+- Settings installation flow remains available when the browser exposes it.
+- bottom navigation and application icon desktop/mobile presentation.
+
+Phase 5 was formally accepted on
+`phase/5-search-settings-localization` at version `0.5.0`. The informational
+prompt is brand-aware, explains the offline benefit, and directs users to
+Settings; it never invokes the browser installation API. Settings remains the
+canonical installation flow. The primary bottom navigation has comfortable
+touch targets and clear active states, and the supplied application icon is
+used by the favicon and manifest.
 
 Gate 5: Utility UX PASS.
 
