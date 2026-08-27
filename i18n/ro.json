@@ -19,5 +19,7 @@
   "copyLink": "Copiază linkul",
   "navigate": "Navigare GMaps",
   "noResults": "Nu s-au găsit zile.",
+  "selectItinerary": "Selectează un itinerar",
+  "chooseItinerary": "Alege un itinerar pentru a continua.",
   "confirmReset": "Resetezi progresul pentru acest itinerar?"
 }

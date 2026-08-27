@@ -19,5 +19,7 @@
   "copyLink": "Copy Link",
   "navigate": "Navigate GMaps",
   "noResults": "No days found.",
+  "selectItinerary": "Select an itinerary",
+  "chooseItinerary": "Choose an itinerary to continue.",
   "confirmReset": "Reset progress for this itinerary?"
 }
