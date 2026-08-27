@@ -23,6 +23,38 @@ or schema design was changed.
 - [x] No DATA content was changed and no schema redesign was required
 - [x] Phase 1 acceptance documentation updated
 
+## Phase 2 — Core Domain Logic
+
+### Acceptance
+
+- [x] Local device date and midnight behavior verified
+- [x] PAST / TODAY / FUTURE behavior verified
+- [x] Chronological item ordering verified
+- [x] Deterministic CURRENT resolution verified
+- [x] Deterministic UP NEXT resolution verified
+- [x] DONE, SKIP, and UNDO transitions verified
+- [x] Day-level progress and manual overrides verified
+- [x] Existing localStorage progress persistence verified
+- [x] Today and manually opened day UI behavior verified
+- [x] Regression coverage completed for domain boundaries and transitions
+- [x] Deterministic timestamp issue fixed
+- [x] Phase 2 acceptance completed at version `0.2.0`
+- [x] Phase 3 has not started
+
+### Validation
+
+- [x] Typecheck, lint, DATA validation, unit tests, coverage, E2E tests, and
+      production build pass
+- [x] Netlify SPA routes return HTTP 200
+- [x] `format:check` and `verify` retain only the known pre-existing Windows
+      line-ending warnings; no unrelated files were normalized
+- [x] No DATA, schema, dependency, persistence, environment, or deployment
+      changes were required
+
+Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
+`0.3.0`, is created only after this Phase Branch is accepted and merged into
+`master`.
+
 ## Automated
 
 - [ ] Relevant unit tests pass

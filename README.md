@@ -113,14 +113,17 @@ A phase can be closed only after:
 - acceptance criteria pass;
 - no known blocking defects remain.
 
-Current phase: **Phase 1 — DATA MODEL & RUNTIME CONTRACT** (accepted on the
-Phase Branch; pending publication to `master`).
+Current phase: **Phase 2 — CORE DOMAIN LOGIC** (accepted on the Phase Branch;
+pending publication to `master`).
 
-The DATA contract was already substantially implemented and validated on the
-accepted Phase 0 baseline. Phase 1 completed acceptance validation and aligned
-the application branding from Voya to Volala. Automated validation, manual
-application/production validation, and Gate 1 acceptance checks passed. No
-DATA content was changed and no schema redesign was required.
+Phase 2 completed local date/day behavior, chronological resolution,
+deterministic CURRENT and UP NEXT behavior, manual progress transitions, and
+day-level progress. The timestamp consistency issue between Today
+classification, CURRENT, and UP NEXT was fixed and covered by focused
+regression tests. Automated validation and Netlify SPA route checks passed;
+the deployed site remains an earlier build until the Phase 2 branch is
+published and merged. The Phase 2 branch remains version `0.2.0`; the next
+Phase version is `0.3.0` after acceptance and merge into `master`.
 
 No later phase should be used to bypass an unresolved quality gate.
 
