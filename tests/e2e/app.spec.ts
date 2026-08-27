@@ -1,6 +1,21 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
+test('shows the bootstrap loader until the application initializes', async ({
+  page,
+}) => {
+  await page.route('**/src/main.tsx', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await route.continue()
+  })
+
+  const navigation = page.goto('/')
+  await expect(page.getByRole('status')).toHaveText('Loading application')
+  await navigation
+  await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
+  await expect(page.getByRole('status')).not.toBeVisible()
+})
+
 test('loads Today and navigates through core pages', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
