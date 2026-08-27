@@ -190,7 +190,7 @@ describe('day item presentation', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: 'Install Tripwise' }),
+      screen.getByRole('heading', { name: 'Install Volala' }),
     ).toBeVisible()
     expect(screen.getByRole('button', { name: 'Not now' })).toBeVisible()
   })
@@ -205,7 +205,7 @@ describe('day item presentation', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Not now' }))
     expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
     expect(
-      screen.queryByRole('heading', { name: 'Install Tripwise' }),
+      screen.queryByRole('heading', { name: 'Install Volala' }),
     ).not.toBeInTheDocument()
 
     view.unmount()
@@ -215,7 +215,7 @@ describe('day item presentation', () => {
       </MemoryRouter>,
     )
     expect(
-      screen.queryByRole('heading', { name: 'Install Tripwise' }),
+      screen.queryByRole('heading', { name: 'Install Volala' }),
     ).not.toBeInTheDocument()
   })
 
@@ -240,9 +240,24 @@ describe('day item presentation', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: 'Instalează Tripwise' }),
+      screen.getByRole('heading', { name: 'Instalează Volala' }),
     ).toBeVisible()
     expect(screen.getByRole('button', { name: 'Nu acum' })).toBeVisible()
+  })
+
+  it('uses the configured brand name in the English prompt', () => {
+    localStorage.setItem('tripwise.language', 'en')
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Install Volala' }),
+    ).toBeVisible()
+    expect(screen.getByText(/Install Volala on your device/)).toBeVisible()
+    expect(screen.queryByText(/Tripwise/)).not.toBeInTheDocument()
   })
 
   it('does not show the prompt in standalone display mode', () => {
@@ -268,7 +283,7 @@ describe('day item presentation', () => {
     )
 
     expect(
-      screen.queryByRole('heading', { name: 'Install Tripwise' }),
+      screen.queryByRole('heading', { name: 'Install Volala' }),
     ).not.toBeInTheDocument()
     Object.defineProperty(window, 'matchMedia', {
       configurable: true,

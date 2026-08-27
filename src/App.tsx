@@ -272,6 +272,10 @@ export default function App() {
 
 type SharedProps = { t: Copy; language: Language }
 
+function withBrandName(copy: string) {
+  return copy.replace('{brandName}', brand.name)
+}
+
 function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
   return (
     <aside
@@ -279,8 +283,10 @@ function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
       aria-labelledby="install-awareness-title"
     >
       <div>
-        <h2 id="install-awareness-title">{t.installPromptTitle}</h2>
-        <div>{t.installPromptBody}</div>
+        <h2 id="install-awareness-title">
+          {withBrandName(t.installPromptTitle)}
+        </h2>
+        <div>{withBrandName(t.installPromptBody)}</div>
       </div>
       <div className="install-awareness-actions">
         <Link className="button" to="/settings" onClick={dismiss}>
