@@ -6,7 +6,7 @@ import {
   within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import packageJson from '../package.json'
 import App from './App'
 import { appVersion } from './version'
@@ -127,5 +127,58 @@ describe('day item presentation', () => {
     expect(
       screen.getAllByRole('heading', { name: /Olympic Park|Old Port/ })[0],
     ).toBeVisible()
+  })
+
+  it('renders transport details inline without progress controls', () => {
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-04']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const timelineItem = screen
+      .getByRole('heading', { name: 'Hotel Le Roberval → Notre-Dame Basilica' })
+      .closest('.timeline-item') as HTMLElement
+    expect(within(timelineItem).getByText(/walk/)).toBeVisible()
+    expect(within(timelineItem).getByText(/20 min/)).toBeVisible()
+    expect(within(timelineItem).getByText(/1.6 km/)).toBeVisible()
+    expect(timelineItem.querySelector('.item-actions')).toBeNull()
+  })
+
+  it('renders visit duration without changing the timeline item', () => {
+    renderDay()
+
+    const item = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+    expect(within(item).getByText('50 min')).toBeVisible()
+    expect(item.closest('.timeline-item')).toBeInTheDocument()
+  })
+
+  it('scrolls Today to CURRENT and does not scroll a manual Day route', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 8, 3, 20, 0))
+    Object.defineProperty(window.HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: () => undefined,
+    })
+    const scrollIntoView = vi
+      .spyOn(window.HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => undefined)
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(scrollIntoView).toHaveBeenCalledTimes(1)
+
+    cleanup()
+    scrollIntoView.mockClear()
+    renderDay()
+    expect(scrollIntoView).not.toHaveBeenCalled()
+
+    scrollIntoView.mockRestore()
+    vi.useRealTimers()
   })
 })
