@@ -6,8 +6,7 @@ A phase is not complete when implementation is finished. A phase can be closed o
 
 ## Current Status
 
-Current phase: **Phase 5 — SEARCH, SETTINGS, AND LOCALIZATION — COMPLETED;
-READY FOR THE NEXT PHASE**
+Current phase: **Phase 6 — LOCAL PERSISTENCE — COMPLETED; READY FOR PR**
 
 Phase 0:
 
@@ -95,6 +94,23 @@ Phase 5:
 - no DATA or schema changes and no known blocking defects;
 - Gate 5: Utility UX PASS;
 - Phase 5 is complete and ready for the next phase; Phase 6 has not started.
+
+Phase 6:
+
+- active itinerary, RO/EN language, and progress persistence: PASS;
+- missing and malformed localStorage recovery, itinerary isolation, and
+  active-itinerary reset: PASS;
+- bootstrap preloader, PWA direct-install UX, and `brand.name`-derived PWA
+  manifest identity: PASS;
+- planned-itinerary Search grouping, item targeting, and real-DATA E2E
+  coverage: PASS;
+- typecheck, lint, formatting, DATA validation, unit tests, coverage, E2E
+  tests, production build, `verify`, and `git diff --check`: PASS;
+- manual desktop/mobile persistence, preloader, PWA installation and branding,
+  Search, accessibility, and reduced-motion validation: PASS;
+- no DATA, schema, dependency, or Phase 7 changes;
+- no known blocking defects remain;
+- Gate 6: Persistence PASS; ready for PR.
 
 ## Standard Phase Lifecycle
 

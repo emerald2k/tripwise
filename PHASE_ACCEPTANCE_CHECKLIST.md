@@ -180,6 +180,43 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 - [x] Phase 5 completed and ready for the next phase
 - [x] Phase 6 has not started
 
+## Phase 6 — Local Persistence
+
+### Implementation and automated validation
+
+- [x] Active itinerary selection persists and restores safely
+- [x] RO/EN language persists, restores, and keeps the document language correct
+- [x] DONE, SKIP, and UNDO progress persists by itinerary
+- [x] Missing and malformed localStorage values recover safely
+- [x] Active-itinerary reset is confirmation-gated and does not affect other
+      itineraries
+- [x] Bootstrap preloader, direct PWA installation, and `brand.name`-derived
+      manifest identity are covered
+- [x] Planned-itinerary Search groups results by day and targets the selected
+      item; its E2E scenario uses the authored Hotel Le Roberval item
+- [x] Typecheck, lint, formatting, DATA validation, unit tests, coverage, E2E
+      tests, production build, `verify`, and `git diff --check` pass
+- [x] No DATA, schema, dependency, or Phase 7 changes were required
+
+### Manual validation
+
+- [x] Desktop persistence acceptance: itinerary, language, DONE, SKIP, UNDO,
+      reset, missing storage, and malformed storage: PASS
+- [x] Mobile persistence acceptance: restoration, isolation, reset, usable
+      navigation, and no horizontal overflow: PASS
+- [x] Bootstrap preloader: black full-screen loader, canonical icon, centered
+      layout, visible bootstrap state, rotating ring, and reduced motion: PASS
+- [x] Direct PWA installation and installed name from `brand.name`: PASS
+- [x] Planned-itinerary Search and targeted Hotel Le Roberval result flow: PASS
+- [x] Keyboard, labels, translated controls, and persistence accessibility:
+      PASS
+
+### Acceptance status
+
+- [x] Phase 6 acceptance complete
+- [x] Gate 6: Persistence PASS
+- [x] Ready for PR
+
 ## Automated
 
 - [ ] Relevant unit tests pass
