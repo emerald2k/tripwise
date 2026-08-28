@@ -38,7 +38,7 @@ const mobileProgressItem = (() => {
     const itinerary = readDataFile(entry.file) as {
       days: {
         date: string
-        items: { locationId?: string; progress?: true }[]
+        items: { locationId?: string; progress?: true; startTime: string }[]
       }[]
     }
     for (const day of itinerary.days)
@@ -46,7 +46,12 @@ const mobileProgressItem = (() => {
         if (!item.locationId || item.progress !== true) continue
         const location = locations.get(item.locationId)
         if (location?.googleMapsUrl)
-          return { itineraryId: entry.id, date: day.date, name: location.name }
+          return {
+            itineraryId: entry.id,
+            date: day.date,
+            name: location.name,
+            startTime: item.startTime,
+          }
       }
   }
   throw new Error('Expected a progress-enabled mapped Location Item')
@@ -473,7 +478,7 @@ test('timeline supports DONE, UNDO, and Google Maps actions', async ({
   await expect(item.getByRole('button', { name: 'DONE' })).toBeVisible()
 })
 
-test('progress actions remain tappable without overflow on mobile widths', async ({
+test('location actions remain inline and tappable without overflow on mobile widths', async ({
   page,
 }) => {
   await page.addInitScript((itineraryId) => {
@@ -483,19 +488,48 @@ test('progress actions remain tappable without overflow on mobile widths', async
   for (const width of [320, 375, 390, 430]) {
     await page.setViewportSize({ width, height: 700 })
     await page.goto(`/day/${mobileProgressItem.date}`)
-    const item = page.locator('article').filter({
-      has: page.getByRole('heading', { name: mobileProgressItem.name }),
-    })
+    const item = page
+      .locator('.timeline-item')
+      .filter({
+        has: page.getByText(mobileProgressItem.startTime, { exact: true }),
+      })
+      .filter({
+        has: page.getByRole('heading', { name: mobileProgressItem.name }),
+      })
+      .locator('article')
     const done = item.getByRole('button', { name: 'DONE' })
     const skip = item.getByRole('button', { name: 'SKIP' })
     const maps = item.getByRole('link', { name: /Navigate GMaps/ })
+    const share = item.getByRole('button', {
+      name: 'Share Google Maps location',
+    })
+    const actionRow = item.locator('.item-actions')
 
     await expect(done).toBeVisible()
     await expect(skip).toBeVisible()
     await expect(maps).toBeVisible()
-    expect((await done.boundingBox())?.height).toBeGreaterThanOrEqual(44)
-    expect((await skip.boundingBox())?.height).toBeGreaterThanOrEqual(44)
-    expect((await maps.boundingBox())?.height).toBeGreaterThanOrEqual(44)
+    await expect(share).toBeVisible()
+    const actionRowBox = await actionRow.boundingBox()
+    const itemBox = await item.boundingBox()
+    const controls = [done, skip, maps, share]
+    const controlBoxes = await Promise.all(
+      controls.map((control) => control.boundingBox()),
+    )
+    expect(actionRowBox).not.toBeNull()
+    expect(itemBox).not.toBeNull()
+    expect(controlBoxes.every((box) => box !== null)).toBe(true)
+    for (const box of controlBoxes) {
+      expect(box!.height).toBeGreaterThanOrEqual(44)
+      expect(Math.abs(box!.y - controlBoxes[0]!.y)).toBeLessThanOrEqual(1)
+      expect(box!.x).toBeGreaterThanOrEqual(actionRowBox!.x)
+      expect(box!.x + box!.width).toBeLessThanOrEqual(
+        actionRowBox!.x + actionRowBox!.width,
+      )
+      expect(box!.y).toBeGreaterThanOrEqual(itemBox!.y)
+      expect(box!.y + box!.height).toBeLessThanOrEqual(
+        itemBox!.y + itemBox!.height,
+      )
+    }
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width)

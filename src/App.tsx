@@ -541,6 +541,8 @@ function DayView({
               : undefined
           const supportsProgress =
             'locationId' in item && item.progress === true
+          const hasLocationActions =
+            supportsProgress || Boolean(location?.googleMapsUrl)
           const status = 'progress' in item ? statuses[item.itemId] : undefined
           const compact = isCompactStatus(status)
           const highlighted = highlightedItemId === item.itemId
@@ -604,74 +606,56 @@ function DayView({
                           {formatDurationMinutes(item.durationMinutes)}
                         </span>
                       )}
-                    {supportsProgress && (
-                      <div className="item-actions">
-                        {status ? (
-                          <button
-                            onClick={() => updateStatus(day.date, item.itemId)}
-                          >
-                            {t.undo}
-                          </button>
-                        ) : (
-                          <>
-                            <button
-                              onClick={() =>
-                                updateStatus(day.date, item.itemId, 'done')
-                              }
-                            >
-                              {t.done}
-                            </button>
-                            <button
-                              onClick={() =>
-                                updateStatus(day.date, item.itemId, 'skipped')
-                              }
-                            >
-                              {t.skip}
-                            </button>
-                          </>
-                        )}
-                        {location?.googleMapsUrl && (
-                          <a
-                            className="map-link"
-                            href={location.googleMapsUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <GoogleMapsIcon />
-                            {t.navigate}
-                          </a>
-                        )}
-                        {location?.googleMapsUrl && (
-                          <ShareButton
-                            t={t}
-                            url={location.googleMapsUrl}
-                            label={t.shareGoogleMapsLocation}
-                            className="location-share"
-                          />
-                        )}
-                      </div>
-                    )}
-                    {!supportsProgress && location?.googleMapsUrl && (
-                      <div className="item-actions">
-                        <a
-                          className="map-link"
-                          href={location.googleMapsUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <GoogleMapsIcon />
-                          {t.navigate}
-                        </a>
-                        <ShareButton
-                          t={t}
-                          url={location.googleMapsUrl}
-                          label={t.shareGoogleMapsLocation}
-                          className="location-share"
-                        />
-                      </div>
-                    )}
                   </div>
                 </div>
+                {hasLocationActions && (
+                  <div className="item-actions">
+                    {supportsProgress &&
+                      (status ? (
+                        <button
+                          onClick={() => updateStatus(day.date, item.itemId)}
+                        >
+                          {t.undo}
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() =>
+                              updateStatus(day.date, item.itemId, 'done')
+                            }
+                          >
+                            {t.done}
+                          </button>
+                          <button
+                            onClick={() =>
+                              updateStatus(day.date, item.itemId, 'skipped')
+                            }
+                          >
+                            {t.skip}
+                          </button>
+                        </>
+                      ))}
+                    {location?.googleMapsUrl && (
+                      <a
+                        className="map-link"
+                        href={location.googleMapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <GoogleMapsIcon />
+                        {t.navigate}
+                      </a>
+                    )}
+                    {location?.googleMapsUrl && (
+                      <ShareButton
+                        t={t}
+                        url={location.googleMapsUrl}
+                        label={t.shareGoogleMapsLocation}
+                        className="location-share"
+                      />
+                    )}
+                  </div>
+                )}
               </article>
             </div>
           )

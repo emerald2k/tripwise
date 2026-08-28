@@ -165,8 +165,10 @@ main {
   position: relative;
 }
 .item-card {
-  display: flex;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  column-gap: 1rem;
+  row-gap: 0.45rem;
   padding: 0.7rem 0;
   border-bottom: 1px solid #29303b;
 }
@@ -243,24 +245,35 @@ main {
   letter-spacing: 0.06em;
 }
 .item-actions {
+  grid-column: 1 / -1;
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
 }
 .item-actions button {
+  min-width: 44px;
+  padding-right: 0.55rem;
+  padding-left: 0.55rem;
   background: #29384f;
   color: #e9f0ff;
+  white-space: nowrap;
 }
 .item-actions button:first-child {
   background: #35674f;
 }
 .map-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   background: transparent;
   color: #8db6ff;
   padding: 0.35rem 0;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 .maps-icon {
   width: 1.15rem;

@@ -1491,6 +1491,9 @@ smaller than the primary description. Duration uses the compact duration
 format, while progress, Maps navigation, and sharing actions retain their
 existing eligibility rules.
 
+All applicable Location Item actions remain in one horizontal row across
+supported viewport widths.
+
 ---
 
 # Header behavior
