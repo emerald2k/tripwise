@@ -58,16 +58,22 @@ export function createRuntimeData(
 export async function fetchRuntimeData(
   fetcher: JsonFetcher = fetch,
 ): Promise<RuntimeData> {
-  const manifest = await readJson(fetcher, '/data/manifest.json')
+  const manifestResponse = await fetcher('/data/manifest.json')
+  if (!manifestResponse.ok)
+    throw new Error('Unable to load DATA resource: /data/manifest.json')
+  const manifest = await manifestResponse.json()
   const packageManifest = manifestSchema.parse(manifest)
+  const cacheName = manifestResponse.headers.get('X-Tripwise-Data-Cache')
   const paths = [
     ...packageManifest.itineraries.map((entry) => entry.file),
     ...packageManifest.cities,
   ]
   const values = await Promise.all(
-    paths.map(
-      async (path) => [path, await readJson(fetcher, dataUrl(path))] as const,
-    ),
+    paths.map(async (path) => {
+      const url = new URL(dataUrl(path), globalThis.location.origin)
+      if (cacheName) url.searchParams.set('tripwise-data-cache', cacheName)
+      return [path, await readJson(fetcher, url.pathname + url.search)] as const
+    }),
   )
   return createRuntimeData(manifest, Object.fromEntries(values))
 }
@@ -86,6 +92,16 @@ export function getRuntimeData(): RuntimeData {
     throw new Error('Runtime DATA has not been initialized')
   }
   return runtimeData
+}
+
+export function resolveActiveItinerary(
+  itineraries: Itinerary[],
+  storedId: string | null,
+) {
+  if (itineraries.length === 1) return itineraries[0]
+  return storedId
+    ? itineraries.find((itinerary) => itinerary.id === storedId)
+    : undefined
 }
 
 export function readActiveItineraryId() {

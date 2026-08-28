@@ -26,5 +26,8 @@
   "searchMatch": "Match",
   "selectItinerary": "Select an itinerary",
   "chooseItinerary": "Choose an itinerary to continue.",
+  "itinerary": "Itinerary",
+  "activeItinerary": "Current itinerary",
+  "noItineraries": "No itinerary is currently available.",
   "confirmReset": "Reset progress for this itinerary?"
 }

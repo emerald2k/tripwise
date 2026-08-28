@@ -8,6 +8,7 @@ import {
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import manifest from '../data/manifest.json'
 import packageJson from '../package.json'
 import App from './App'
 import { appVersion } from './version'
@@ -24,7 +25,13 @@ function dispatchInstallPrompt(outcome: 'accepted' | 'dismissed' = 'accepted') {
 }
 
 describe('day item presentation', () => {
-  beforeEach(() => localStorage.clear())
+  beforeEach(() => {
+    localStorage.clear()
+    localStorage.setItem(
+      'tripwise.activeItineraryId',
+      manifest.itineraries[0].id,
+    )
+  })
   afterEach(() => cleanup())
 
   function renderDay() {
@@ -43,6 +50,25 @@ describe('day item presentation', () => {
       .closest('article') as HTMLElement
     expect(within(item).getByRole('button', { name: 'DONE' })).toBeVisible()
     expect(within(item).getByRole('button', { name: 'SKIP' })).toBeVisible()
+    expect(
+      within(item).getByRole('link', { name: /Navigate GMaps/ }),
+    ).toBeVisible()
+    expect(
+      within(item).getByRole('link', { name: /Navigate GMaps/ }),
+    ).toHaveClass('map-link')
+    expect(
+      within(item).getByRole('link', { name: /Navigate GMaps/ }).parentElement,
+    ).toHaveClass('item-actions')
+  })
+
+  it('does not give non-progress location items progress controls', () => {
+    renderDay()
+
+    const item = screen
+      .getByRole('heading', { name: 'Hotel Le Roberval' })
+      .closest('article') as HTMLElement
+    expect(within(item).queryByRole('button', { name: 'DONE' })).toBeNull()
+    expect(within(item).queryByRole('button', { name: 'SKIP' })).toBeNull()
     expect(
       within(item).getByRole('link', { name: /Navigate GMaps/ }),
     ).toBeVisible()
