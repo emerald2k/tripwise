@@ -435,6 +435,39 @@ main {
   margin-top: 1rem;
   background: #5379bd;
 }
+.recovery {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 1rem;
+}
+.recovery-card {
+  width: min(100%, 440px);
+  padding: 1.5rem;
+  border: 1px solid #3b5277;
+  border-radius: 12px;
+  background: #1b2a42;
+  text-align: center;
+}
+.recovery-card h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 7vw, 2rem);
+}
+.recovery-card p {
+  color: #c0ccde;
+  line-height: 1.5;
+}
+.debug-diagnostic {
+  overflow: auto;
+  margin: 1rem 0 0;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #101318;
+  color: #f6bd60;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
 @media (min-width: 700px) {
   .header {
     padding-left: max(1.5rem, calc((100vw - 760px) / 2));

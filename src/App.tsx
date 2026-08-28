@@ -873,12 +873,20 @@ function Settings({
 function ShareButton({ t }: { t: Copy }) {
   const [copied, setCopied] = useState(false)
   const share = async () => {
-    if (navigator.share)
-      await navigator.share({ title: brand.name, url: window.location.href })
-    else {
-      await navigator.clipboard?.writeText(window.location.href)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1800)
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: brand.name, url: window.location.href })
+      } catch {
+        return
+      }
+    } else if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(window.location.href)
+        setCopied(true)
+        window.setTimeout(() => setCopied(false), 1800)
+      } catch {
+        return
+      }
     }
   }
   return (

@@ -29,5 +29,8 @@
   "itinerary": "Itinerary",
   "activeItinerary": "Current itinerary",
   "noItineraries": "No itinerary is currently available.",
-  "confirmReset": "Reset progress for this itinerary?"
+  "confirmReset": "Reset progress for this itinerary?",
+  "recoveryTitle": "Unable to open the app",
+  "recoveryBody": "Please check your connection and try again.",
+  "recoveryRetry": "Try again"
 }

@@ -7,9 +7,11 @@ import {
   subscribeToInstallPrompt,
   type BeforeInstallPromptEvent,
 } from './install-prompt'
+import { RecoveryScreen } from './recovery'
 
 export function Bootstrap() {
   const [ready, setReady] = useState(false)
+  const [error, setError] = useState<unknown>(null)
   const [installPrompt, setInstallPrompt] =
     useState<BeforeInstallPromptEvent | null>(readInstallPrompt)
 
@@ -17,14 +19,20 @@ export function Bootstrap() {
     let cancelled = false
     let frame = 0
     const unsubscribe = subscribeToInstallPrompt(setInstallPrompt)
-    void loadRuntimeData().then((data) => {
-      if (cancelled) return
-      initializeRuntimeData(data)
-      frame = window.requestAnimationFrame(() => {
-        document.getElementById('app-loader')?.remove()
-        setReady(true)
+    void loadRuntimeData()
+      .then((data) => {
+        if (cancelled) return
+        initializeRuntimeData(data)
+        frame = window.requestAnimationFrame(() => {
+          document.getElementById('app-loader')?.remove()
+          setReady(true)
+        })
       })
-    })
+      .catch((loadError: unknown) => {
+        if (cancelled) return
+        document.getElementById('app-loader')?.remove()
+        setError(loadError)
+      })
     return () => {
       cancelled = true
       window.cancelAnimationFrame(frame)
@@ -32,6 +40,7 @@ export function Bootstrap() {
     }
   }, [])
 
+  if (error) return <RecoveryScreen error={error} />
   if (!ready) return null
 
   return (

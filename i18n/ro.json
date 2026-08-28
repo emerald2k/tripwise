@@ -29,5 +29,8 @@
   "itinerary": "Itinerar",
   "activeItinerary": "Itinerarul curent",
   "noItineraries": "Nu este disponibil niciun itinerar.",
-  "confirmReset": "Resetezi progresul pentru acest itinerar?"
+  "confirmReset": "Resetezi progresul pentru acest itinerar?",
+  "recoveryTitle": "Aplicația nu poate fi deschisă",
+  "recoveryBody": "Verifică conexiunea și încearcă din nou.",
+  "recoveryRetry": "Încearcă din nou"
 }
