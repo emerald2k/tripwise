@@ -1476,6 +1476,14 @@ Other days do not auto-scroll.
 
 ---
 
+# Header behavior
+
+The Header is visible at the top of the page. Scrolling down hides it, while
+scrolling up reveals it. The transition slides vertically when motion is
+allowed and is disabled when reduced motion is requested.
+
+---
+
 # Days
 
 The Days page lists all itinerary days.

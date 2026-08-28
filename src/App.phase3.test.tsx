@@ -173,8 +173,19 @@ vi.mock('./data', () => ({
 import App from './App'
 
 describe('Phase 3 itinerary selection', () => {
-  beforeEach(() => localStorage.clear())
+  beforeEach(() => {
+    localStorage.clear()
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 })
+  })
   afterEach(() => cleanup())
+
+  function scrollWindowTo(position: number) {
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: position,
+    })
+    fireEvent.scroll(window)
+  }
 
   it('keeps progress controls for visitable locations without Google Maps', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'alpha')
@@ -294,6 +305,38 @@ describe('Phase 3 itinerary selection', () => {
 
     expect(localStorage.getItem('tripwise.activeItineraryId')).toBe('beta')
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
+  })
+
+  it('hides the header on downward scroll and reveals it upward or at the top', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const header = screen.getByRole('banner')
+    expect(header).not.toHaveClass('is-hidden')
+    expect(screen.getByRole('link', { name: 'Volala' })).toBeVisible()
+    expect(screen.getByRole('link', { name: 'Settings' })).toBeVisible()
+
+    scrollWindowTo(20)
+    expect(header).toHaveClass('is-hidden')
+
+    scrollWindowTo(16)
+    expect(header).toHaveClass('is-hidden')
+
+    scrollWindowTo(10)
+    expect(header).not.toHaveClass('is-hidden')
+
+    scrollWindowTo(20)
+    expect(header).toHaveClass('is-hidden')
+
+    scrollWindowTo(0)
+    expect(header).not.toHaveClass('is-hidden')
+
+    fireEvent.click(screen.getByRole('link', { name: 'Settings' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
   })
 
   it('changes the active itinerary from Settings and persists it', () => {

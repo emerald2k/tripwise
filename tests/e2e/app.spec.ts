@@ -152,6 +152,50 @@ test('loads Today and navigates through core pages', async ({ page }) => {
   ).toBeVisible()
 })
 
+test('auto-hides the Header on page scroll and restores it at the top', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 480 })
+  await page.goto('/days')
+  await waitForApplication(page)
+  await page.locator('main').evaluate((element) => {
+    element.style.minHeight = '200vh'
+  })
+
+  const header = page.getByRole('banner')
+  await expect(header).not.toHaveClass(/is-hidden/)
+  await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible()
+
+  await page.evaluate(() => window.scrollTo(0, 120))
+  await expect(header).toHaveClass(/is-hidden/)
+
+  await page.evaluate(() => window.scrollTo(0, 80))
+  await expect(header).not.toHaveClass(/is-hidden/)
+
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await expect(header).not.toHaveClass(/is-hidden/)
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(320)
+})
+
+test('disables Header slide animation when reduced motion is requested', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/days')
+  await waitForApplication(page)
+  await page.locator('main').evaluate((element) => {
+    element.style.minHeight = '200vh'
+  })
+
+  const header = page.getByRole('banner')
+  await expect(header).toHaveCSS('transition-duration', '0s')
+  await page.evaluate(() => window.scrollTo(0, 120))
+  await expect(header).toHaveClass(/is-hidden/)
+})
+
 test('keeps day metadata and indicators inline with uniform row heights', async ({
   page,
 }) => {

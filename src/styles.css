@@ -51,6 +51,9 @@ input:focus-visible {
   background: rgba(16, 19, 24, 0.86);
   backdrop-filter: blur(14px);
 }
+.header.is-hidden {
+  transform: translateY(-100%);
+}
 .brand {
   font-size: 1.2rem;
   font-weight: 750;
@@ -504,6 +507,9 @@ main {
   }
 }
 @media (prefers-reduced-motion: no-preference) {
+  .header {
+    transition: transform 0.18s ease;
+  }
   a,
   button {
     transition:

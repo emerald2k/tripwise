@@ -84,9 +84,38 @@ function useLanguage() {
   return { language, change, t: translations[language] }
 }
 
+function useHeaderVisibility() {
+  const [visible, setVisible] = useState(true)
+  const previousScrollY = useRef(0)
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      const currentScrollY = window.scrollY
+      if (currentScrollY <= 8) {
+        previousScrollY.current = currentScrollY
+        setVisible(true)
+        return
+      }
+
+      const difference = currentScrollY - previousScrollY.current
+      if (Math.abs(difference) < 8) return
+
+      previousScrollY.current = currentScrollY
+      setVisible(difference < 0)
+    }
+
+    previousScrollY.current = window.scrollY
+    window.addEventListener('scroll', updateVisibility, { passive: true })
+    return () => window.removeEventListener('scroll', updateVisibility)
+  }, [])
+
+  return visible
+}
+
 export default function App({ initialInstallPrompt = null }: AppProps) {
   const { datasets } = getRuntimeData()
   const language = useLanguage()
+  const headerVisible = useHeaderVisibility()
   const [activeItinerary, setActiveItinerary] = useState<Itinerary | undefined>(
     () => {
       const savedId = readActiveItineraryId()
@@ -207,7 +236,7 @@ export default function App({ initialInstallPrompt = null }: AppProps) {
 
   return (
     <div className="app">
-      <header className="header">
+      <header className={`header ${headerVisible ? '' : 'is-hidden'}`}>
         <Link className="brand" to="/">
           {brand.name}
         </Link>
