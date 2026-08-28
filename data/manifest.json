@@ -4,10 +4,17 @@
       "id": "canada-2026",
       "file": "./itineraries/canada-2026.json",
       "name": "Canada 2026"
+    },
+    {
+      "id": "halkidiki-2026",
+      "file": "./itineraries/halkidiki-2026.json",
+      "name": "Halkidiki 2026"
     }
   ],
   "cities": [
     "./cities/montreal.json",
-    "./cities/quebec-city.json"
+    "./cities/quebec-city.json",
+    "./cities/halkidiki.json",
+    "./cities/thessaloniki.json"
   ]
 }
