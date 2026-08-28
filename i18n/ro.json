@@ -22,7 +22,8 @@
   "noItinerary": "Nu există itinerar pentru această zi.",
   "copyLink": "Copiază linkul",
   "navigate": "Navigare GMaps",
-  "noResults": "Nu s-au găsit zile.",
+  "noResults": "Nu există potriviri în itinerarul tău.",
+  "searchMatch": "Potrivire",
   "selectItinerary": "Selectează un itinerar",
   "chooseItinerary": "Alege un itinerar pentru a continua.",
   "confirmReset": "Resetezi progresul pentru acest itinerar?"

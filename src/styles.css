@@ -353,7 +353,38 @@ main {
   margin-bottom: 1rem;
 }
 .result-row {
-  grid-template-columns: 6.5rem 1fr;
+  grid-template-columns: 4rem 1fr;
+}
+.search-day {
+  display: grid;
+  gap: 0.45rem;
+}
+.search-day h2 {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  color: #a7c4ff;
+}
+.search-day h2 span {
+  margin-left: 0.5rem;
+  color: #9ba5b5;
+  font-weight: 500;
+}
+.search-result-detail {
+  grid-column: 2;
+  line-height: 1.4;
+}
+.is-search-match .item-card {
+  border: 2px solid #8db6ff;
+  border-radius: 8px;
+  padding: 0.7rem;
+}
+.search-match-label {
+  border: 1px solid #8db6ff;
+  border-radius: 999px;
+  padding: 0.15rem 0.4rem;
+  color: #d9e8ff;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 .settings h2 {
   font-size: 1rem;

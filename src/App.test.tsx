@@ -3,6 +3,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -191,7 +192,7 @@ describe('day item presentation', () => {
     fireEvent.change(screen.getByRole('textbox'), {
       target: { value: 'no matching itinerary content' },
     })
-    expect(screen.getByText('No days found.')).toBeVisible()
+    expect(screen.getByText('No matches in your itinerary.')).toBeVisible()
   })
 
   it('renders the package version in Settings', () => {

@@ -71,15 +71,31 @@ test('loads Today and navigates through core pages', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('search returns days only', async ({ page }) => {
+test('search groups planned item matches and opens the selected activity', async ({
+  page,
+}) => {
   await page.goto('/search')
-  await page.getByRole('textbox').fill('Olympic')
-  const result = page.getByRole('link', { name: /Montréal/ })
+  await page.getByRole('textbox').fill('Hotel Le Roberval')
+  const day = page.locator('.search-day').filter({ hasText: 'SEP 04' })
+  await expect(day).toContainText('Old Montréal + Old Port')
+  await expect(day).toContainText('23:15')
+  await expect(day).toContainText('Hotel Le Roberval')
+  await expect(day).toContainText('Revenire la Hotel Le Roberval')
+  const result = day.locator(
+    'a[href="/day/2026-09-04?item=0904-20-revenire-la-hotel-le-roberval"]',
+  )
   await expect(result).toBeVisible()
   await result.click()
   await expect(
-    page.getByRole('heading', { name: /Olympic Park|Old Port/ }).first(),
+    page.getByRole('heading', { name: 'Old Montréal + Old Port' }),
   ).toBeVisible()
+  const match = page.locator(
+    '.timeline-item.is-search-match:has(h2:text("Hotel Le Roberval"))',
+  )
+  await expect(match).toContainText('23:15')
+  await expect(match).toContainText('Revenire la Hotel Le Roberval')
+  await expect(match).toBeFocused()
+  await expect(page.getByText('Match')).toBeVisible()
 })
 
 test('settings persists the selected language', async ({ page }) => {

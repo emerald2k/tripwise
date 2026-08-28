@@ -18,6 +18,24 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             locationId: 'alpha-place',
             progress: true,
           },
+          {
+            itemId: 'alpha-museum',
+            startTime: '14:00',
+            title: 'Alpha museum',
+            locationId: 'alpha-museum',
+          },
+        ],
+      },
+      {
+        date: '2026-09-12',
+        title: 'Alpha follow up',
+        items: [
+          {
+            itemId: 'alpha-return',
+            startTime: '10:00',
+            title: 'Alpha place revisit',
+            locationId: 'alpha-place',
+          },
         ],
       },
     ],
@@ -59,6 +77,15 @@ vi.mock('./data', () => ({
       {
         locationId: 'alpha-place',
         name: 'Alpha place',
+        category: 'attraction',
+        description: 'Waterfront landmark',
+      },
+    ],
+    [
+      'alpha-museum',
+      {
+        locationId: 'alpha-museum',
+        name: 'Alpha museum',
         category: 'attraction',
       },
     ],
@@ -131,7 +158,7 @@ describe('Phase 3 itinerary selection', () => {
     fireEvent.change(screen.getByRole('textbox'), {
       target: { value: 'Beta place' },
     })
-    fireEvent.click(screen.getByRole('link', { name: /11/ }))
+    fireEvent.click(screen.getByRole('link', { name: /09:00 Beta place/ }))
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
   })
 
@@ -148,8 +175,48 @@ describe('Phase 3 itinerary selection', () => {
       target: { value: 'Alpha place' },
     })
 
-    expect(screen.getByText('No days found.')).toBeVisible()
+    expect(screen.getByText('No matches in your itinerary.')).toBeVisible()
     expect(screen.queryByText('Alpha day')).not.toBeInTheDocument()
+  })
+
+  it('groups item matches by day and opens the matching planned item', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Alpha itinerary' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Search' }))
+    const search = screen.getByRole('textbox')
+    fireEvent.change(search, { target: { value: 'ALPHA' } })
+
+    expect(document.querySelectorAll('.search-day')).toHaveLength(2)
+    expect(
+      screen.getByRole('link', { name: /09:00 Alpha place/ }),
+    ).toBeVisible()
+    expect(
+      screen.getByRole('link', { name: /14:00 Alpha museum/ }),
+    ).toBeVisible()
+    expect(
+      screen.getByRole('link', { name: /10:00 Alpha place/ }),
+    ).toBeVisible()
+
+    fireEvent.change(search, { target: { value: 'waterfront' } })
+    expect(
+      screen.getByRole('link', { name: /09:00 Alpha place/ }),
+    ).toBeVisible()
+
+    fireEvent.click(screen.getByRole('link', { name: /09:00 Alpha place/ }))
+    expect(screen.getByText('Match')).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Alpha place' })).toBeVisible()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Search' }))
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'alpha' },
+    })
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: '' } })
+    expect(document.querySelectorAll('.search-day')).toHaveLength(0)
   })
 
   it('isolates persisted progress between itineraries and restores it', () => {
