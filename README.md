@@ -1678,6 +1678,11 @@ Do not create:
 
 Google Maps navigation is optional.
 
+Location Items with a verified Google Maps URL also provide a direct Share
+action. It uses the same native-share and Clipboard fallback behavior as Day
+Share, independently of DONE/SKIP eligibility. Locations without a Google
+Maps URL and Transport Items do not receive this action.
+
 If:
 
 ```text

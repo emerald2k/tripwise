@@ -632,18 +632,34 @@ function DayView({
                             {t.navigate}
                           </a>
                         )}
+                        {location?.googleMapsUrl && (
+                          <ShareButton
+                            t={t}
+                            url={location.googleMapsUrl}
+                            label={t.shareGoogleMapsLocation}
+                            className="location-share"
+                          />
+                        )}
                       </div>
                     )}
                     {!supportsProgress && location?.googleMapsUrl && (
-                      <a
-                        className="map-link"
-                        href={location.googleMapsUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <GoogleMapsIcon />
-                        {t.navigate}
-                      </a>
+                      <div className="item-actions">
+                        <a
+                          className="map-link"
+                          href={location.googleMapsUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <GoogleMapsIcon />
+                          {t.navigate}
+                        </a>
+                        <ShareButton
+                          t={t}
+                          url={location.googleMapsUrl}
+                          label={t.shareGoogleMapsLocation}
+                          className="location-share"
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
@@ -652,7 +668,12 @@ function DayView({
           )
         })}
       </div>
-      <ShareButton t={t} />
+      <ShareButton
+        t={t}
+        url={window.location.href}
+        label={t.copyLink}
+        className="share"
+      />
     </section>
   )
 }
@@ -938,18 +959,28 @@ function Settings({
   )
 }
 
-function ShareButton({ t }: { t: Copy }) {
+function ShareButton({
+  t,
+  url,
+  label,
+  className,
+}: {
+  t: Copy
+  url: string
+  label: string
+  className: string
+}) {
   const [copied, setCopied] = useState(false)
   const share = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: brand.name, url: window.location.href })
+        await navigator.share({ title: brand.name, url })
       } catch {
         return
       }
     } else if (navigator.clipboard?.writeText) {
       try {
-        await navigator.clipboard.writeText(window.location.href)
+        await navigator.clipboard.writeText(url)
         setCopied(true)
         window.setTimeout(() => setCopied(false), 1800)
       } catch {
@@ -958,7 +989,7 @@ function ShareButton({ t }: { t: Copy }) {
     }
   }
   return (
-    <button className="share" onClick={share} aria-label={t.copyLink}>
+    <button className={className} onClick={share} aria-label={label}>
       {copied ? t.copyLink : '↗'}
     </button>
   )

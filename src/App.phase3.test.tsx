@@ -3,6 +3,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -171,6 +172,7 @@ vi.mock('./data', () => ({
 }))
 
 import App from './App'
+import { brand } from './brand'
 
 describe('Phase 3 itinerary selection', () => {
   beforeEach(() => {
@@ -203,6 +205,11 @@ describe('Phase 3 itinerary selection', () => {
     expect(
       within(item).queryByRole('link', { name: /Navigate GMaps/ }),
     ).toBeNull()
+    expect(
+      within(item).queryByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeNull()
   })
 
   it('renders actions from item progress and Maps availability independently', () => {
@@ -225,6 +232,11 @@ describe('Phase 3 itinerary selection', () => {
     expect(
       within(progressWithMaps).getByRole('link', { name: /Navigate GMaps/ }),
     ).toBeVisible()
+    expect(
+      within(progressWithMaps).getByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeVisible()
 
     fireEvent.click(
       within(progressWithMaps).getByRole('button', { name: 'DONE' }),
@@ -234,6 +246,11 @@ describe('Phase 3 itinerary selection', () => {
     ).toBeVisible()
     expect(
       within(progressWithMaps).getByRole('link', { name: /Navigate GMaps/ }),
+    ).toBeVisible()
+    expect(
+      within(progressWithMaps).getByRole('button', {
+        name: 'Share Google Maps location',
+      }),
     ).toBeVisible()
     fireEvent.click(
       within(progressWithMaps).getByRole('button', { name: 'UNDO' }),
@@ -259,6 +276,11 @@ describe('Phase 3 itinerary selection', () => {
         name: /Navigate GMaps/,
       }),
     ).toBeVisible()
+    expect(
+      within(informationWithMaps).getByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeVisible()
 
     const informationWithoutMaps = screen
       .getByRole('heading', { name: 'Alpha museum' })
@@ -271,11 +293,133 @@ describe('Phase 3 itinerary selection', () => {
         name: /Navigate GMaps/,
       }),
     ).toBeNull()
+    expect(
+      within(informationWithoutMaps).queryByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeNull()
 
     const transport = screen
       .getByRole('heading', { name: 'Alpha transfer' })
       .closest('.timeline-item') as HTMLElement
     expect(within(transport).queryByRole('button')).toBeNull()
+  })
+
+  it('shares the selected Google Maps URL and keeps Day Share unchanged', async () => {
+    const originalShare = navigator.share
+    const share = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: share,
+    })
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+
+    try {
+      render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+
+      const item = screen
+        .getByRole('heading', { name: 'Alpha mapped place' })
+        .closest('article') as HTMLElement
+      fireEvent.click(
+        within(item).getByRole('button', {
+          name: 'Share Google Maps location',
+        }),
+      )
+      await waitFor(() =>
+        expect(share).toHaveBeenCalledWith({
+          title: brand.name,
+          url: 'https://www.google.com/maps/place/alpha',
+        }),
+      )
+
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Link' }))
+      await waitFor(() =>
+        expect(share).toHaveBeenLastCalledWith({
+          title: brand.name,
+          url: window.location.href,
+        }),
+      )
+    } finally {
+      Object.defineProperty(navigator, 'share', {
+        configurable: true,
+        value: originalShare,
+      })
+    }
+  })
+
+  it('does not report location sharing as copied when Clipboard is unavailable or rejects', async () => {
+    const originalShare = navigator.share
+    const originalClipboard = navigator.clipboard
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: undefined,
+    })
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    })
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+
+    try {
+      const copied = render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+      const locationShare = () =>
+        within(
+          screen
+            .getByRole('heading', { name: 'Alpha mapped place' })
+            .closest('article') as HTMLElement,
+        ).getByRole('button', { name: 'Share Google Maps location' })
+      fireEvent.click(locationShare())
+      await waitFor(() =>
+        expect(writeText).toHaveBeenCalledWith(
+          'https://www.google.com/maps/place/alpha',
+        ),
+      )
+      expect(locationShare()).toHaveTextContent('Copy Link')
+      copied.unmount()
+
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: undefined,
+      })
+      const unavailable = render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+      fireEvent.click(locationShare())
+      expect(locationShare()).toHaveTextContent('↗')
+      unavailable.unmount()
+
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: vi.fn().mockRejectedValue(new Error('denied')) },
+      })
+      render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+      fireEvent.click(locationShare())
+      await waitFor(() => expect(locationShare()).toHaveTextContent('↗'))
+    } finally {
+      Object.defineProperty(navigator, 'share', {
+        configurable: true,
+        value: originalShare,
+      })
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: originalClipboard,
+      })
+    }
   })
 
   it('shows selection when multiple itineraries have no active selection', () => {
