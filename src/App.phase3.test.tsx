@@ -235,8 +235,17 @@ describe('Phase 3 itinerary selection', () => {
     expect(primaryDescription).toHaveClass('location-primary-description')
     expect(secondaryDescription).toHaveClass('location-secondary-description')
     expect(within(item).getByText('1h 30m')).toHaveClass('location-duration')
+    expect(item.querySelector('.location-title-row')).toContainElement(
+      within(item).getByText('1h 30m'),
+    )
+    expect(item.querySelector('.duration-icon')).toBeInTheDocument()
     expect(within(item).getByRole('button', { name: 'DONE' })).toBeVisible()
     expect(within(item).getByRole('button', { name: 'SKIP' })).toBeVisible()
+
+    const itemWithoutDuration = screen
+      .getByRole('heading', { name: 'Alpha museum' })
+      .closest('article') as HTMLElement
+    expect(itemWithoutDuration.querySelector('.duration-icon')).toBeNull()
   })
 
   it('renders actions from item progress and Maps availability independently', () => {

@@ -544,6 +544,10 @@ function DayView({
           const hasLocationActions =
             supportsProgress || Boolean(location?.googleMapsUrl)
           const status = 'progress' in item ? statuses[item.itemId] : undefined
+          const duration =
+            'durationMinutes' in item
+              ? formatDurationMinutes(item.durationMinutes)
+              : undefined
           const compact = isCompactStatus(status)
           const highlighted = highlightedItemId === item.itemId
           return (
@@ -574,7 +578,19 @@ function DayView({
                         {status === 'skipped' ? '−' : '✓'}
                       </span>
                     )}
-                    <h2>{location?.name || item.title}</h2>
+                    {compact ? (
+                      <h2>{location?.name || item.title}</h2>
+                    ) : (
+                      <div className="location-title-row">
+                        <h2>{location?.name || item.title}</h2>
+                        {duration && (
+                          <span className="location-duration muted">
+                            {duration}
+                            <DurationIcon />
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {highlighted && (
                       <span className="search-match-label">
                         {t.searchMatch}
@@ -600,12 +616,6 @@ function DayView({
                         {location.address}
                       </p>
                     )}
-                    {'durationMinutes' in item &&
-                      formatDurationMinutes(item.durationMinutes) && (
-                        <span className="location-duration muted">
-                          {formatDurationMinutes(item.durationMinutes)}
-                        </span>
-                      )}
                   </div>
                 </div>
                 {hasLocationActions && (
@@ -693,6 +703,20 @@ function GoogleMapsIcon() {
         d="M5.3 11h13.4c-.8 3.2-3.8 7.2-6.7 11 0 0-5.8-6.4-6.7-11Z"
       />
       <circle cx="12" cy="9" r="2.4" fill="#fff" />
+    </svg>
+  )
+}
+
+function DurationIcon() {
+  return (
+    <svg
+      className="duration-icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7v5l3 2" />
     </svg>
   )
 }

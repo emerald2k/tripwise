@@ -1491,6 +1491,10 @@ than the primary description. Duration uses the compact duration format, while
 progress, Maps navigation, and sharing actions retain their existing
 eligibility rules.
 
+Suggested visit duration appears as non-interactive title-row metadata with a
+decorative clock icon. It is omitted with the clock when no valid duration is
+available.
+
 All applicable Location Item actions remain in one horizontal row across
 supported viewport widths. Location Share is intentionally a minimal,
 transparent icon action.

@@ -76,6 +76,34 @@ const locationHierarchyDay = (() => {
   throw new Error('Expected a Location Item with a description and address')
 })()
 
+const durationLocationItem = (() => {
+  for (const entry of manifest.itineraries) {
+    const itinerary = readDataFile(entry.file) as {
+      days: {
+        date: string
+        items: {
+          locationId?: string
+          startTime: string
+          durationMinutes?: number
+        }[]
+      }[]
+    }
+    for (const day of itinerary.days)
+      for (const item of day.items) {
+        if (!item.locationId || !item.durationMinutes) continue
+        const location = locations.get(item.locationId)
+        if (location)
+          return {
+            itineraryId: entry.id,
+            date: day.date,
+            name: location.name,
+            startTime: item.startTime,
+          }
+      }
+  }
+  throw new Error('Expected a Location Item with a duration')
+})()
+
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(
     (itineraryId) =>
@@ -248,6 +276,61 @@ test('renders the secondary location description smaller than the primary descri
     Number.parseFloat(getComputedStyle(element).fontSize),
   )
   expect(secondaryFontSize).toBeLessThan(primaryFontSize)
+})
+
+test('keeps Location Item duration metadata on the title row', async ({
+  page,
+}) => {
+  await page.addInitScript(
+    (itineraryId) =>
+      localStorage.setItem('tripwise.activeItineraryId', itineraryId),
+    durationLocationItem.itineraryId,
+  )
+
+  for (const width of [320, 375, 390, 430]) {
+    await page.setViewportSize({ width, height: 700 })
+    await page.goto(`/day/${durationLocationItem.date}`)
+    await waitForApplication(page)
+
+    const item = page
+      .locator('.timeline-item')
+      .filter({
+        has: page.getByText(durationLocationItem.startTime, { exact: true }),
+      })
+      .filter({
+        has: page.getByRole('heading', { name: durationLocationItem.name }),
+      })
+      .locator('article')
+    const titleRow = item.locator('.location-title-row')
+    const title = item.getByRole('heading', {
+      name: durationLocationItem.name,
+    })
+    const duration = item.locator('.location-duration')
+    const clock = item.locator('.duration-icon')
+
+    await expect(title).toBeVisible()
+    await expect(duration).toBeVisible()
+    await expect(clock).toBeVisible()
+    const [titleRowBox, titleBox, durationBox, clockBox] = await Promise.all([
+      titleRow.boundingBox(),
+      title.boundingBox(),
+      duration.boundingBox(),
+      clock.boundingBox(),
+    ])
+    expect(titleRowBox).not.toBeNull()
+    expect(titleBox).not.toBeNull()
+    expect(durationBox).not.toBeNull()
+    expect(clockBox).not.toBeNull()
+    expect(titleBox!.y).toBeLessThan(durationBox!.y + durationBox!.height)
+    expect(titleBox!.y + titleBox!.height).toBeGreaterThan(durationBox!.y)
+    expect(clockBox!.y).toBeGreaterThanOrEqual(titleRowBox!.y)
+    expect(clockBox!.y + clockBox!.height).toBeLessThanOrEqual(
+      titleRowBox!.y + titleRowBox!.height,
+    )
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width)
+  }
 })
 
 test('keeps Days metadata and indicators inline with compact uniform row heights', async ({
