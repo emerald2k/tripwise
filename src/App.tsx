@@ -45,6 +45,7 @@ const translations: Record<Language, Copy> = { ro, en }
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
+  userChoice?: Promise<{ outcome: 'accepted' | 'dismissed' }>
 }
 
 const installPromptSeenKey = 'tripwise.installPromptSeen'
@@ -90,6 +91,7 @@ export default function App() {
   const [offline, setOffline] = useState(!navigator.onLine)
   const [deferredInstall, setDeferredInstall] =
     useState<BeforeInstallPromptEvent | null>(null)
+  const [installed, setInstalled] = useState(isInstalledPwa)
   const [showInstallAwareness, setShowInstallAwareness] = useState(
     () => !localStorage.getItem(installPromptSeenKey) && !isInstalledPwa(),
   )
@@ -106,11 +108,18 @@ export default function App() {
       event.preventDefault()
       setDeferredInstall(event as BeforeInstallPromptEvent)
     }
+    const installed = () => {
+      setInstalled(true)
+      setDeferredInstall(null)
+      setShowInstallAwareness(false)
+    }
     window.addEventListener('beforeinstallprompt', install)
+    window.addEventListener('appinstalled', installed)
     return () => {
       window.removeEventListener('online', on)
       window.removeEventListener('offline', off)
       window.removeEventListener('beforeinstallprompt', install)
+      window.removeEventListener('appinstalled', installed)
     }
   }, [])
 
@@ -135,7 +144,9 @@ export default function App() {
   const install = async () => {
     if (!deferredInstall) return
     await deferredInstall.prompt()
+    await deferredInstall.userChoice
     setDeferredInstall(null)
+    setShowInstallAwareness(false)
   }
   const dismissInstallAwareness = () => {
     localStorage.setItem(installPromptSeenKey, 'true')
@@ -208,8 +219,12 @@ export default function App() {
         </div>
       </header>
       <main>
-        {showInstallAwareness && (
-          <InstallAwareness t={language.t} dismiss={dismissInstallAwareness} />
+        {showInstallAwareness && !installed && deferredInstall && (
+          <InstallAwareness
+            t={language.t}
+            dismiss={dismissInstallAwareness}
+            install={install}
+          />
         )}
         <Routes>
           <Route
@@ -285,7 +300,15 @@ function withBrandName(copy: string) {
   return copy.replace('{brandName}', brand.name)
 }
 
-function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
+function InstallAwareness({
+  t,
+  dismiss,
+  install,
+}: {
+  t: Copy
+  dismiss: () => void
+  install: () => void
+}) {
   return (
     <aside
       className="install-awareness"
@@ -299,9 +322,13 @@ function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
         <div>{withBrandName(t.installPromptBody)}</div>
       </div>
       <div className="install-awareness-actions">
-        <Link className="button" to="/settings" onClick={dismiss}>
-          {t.installPromptSettings}
-        </Link>
+        <button
+          className="button install-prompt-primary"
+          type="button"
+          onClick={install}
+        >
+          {t.installPromptInstall}
+        </button>
         <button type="button" onClick={dismiss}>
           {t.installPromptDismiss}
         </button>

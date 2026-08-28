@@ -91,17 +91,78 @@ test('settings persists the selected language', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Setări' })).toBeVisible()
 })
 
-test('first visit prompt directs users to the existing Settings install flow', async ({
+test('install awareness prompt directly uses the native install flow', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperties(event, {
+      prompt: {
+        value: () => {
+          document.documentElement.dataset.installPrompt = 'called'
+          return Promise.resolve()
+        },
+      },
+      userChoice: { value: Promise.resolve({ outcome: 'accepted' }) },
+    })
+    window.dispatchEvent(event)
+  })
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).toBeVisible()
+  await expect(
+    page.getByText('Install the app for quick access and offline use.'),
+  ).toBeVisible()
+  await page.getByRole('button', { name: 'Install' }).click()
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-install-prompt',
+    'called',
+  )
+  await expect(page).toHaveURL(/\/$/)
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).not.toBeVisible()
+})
+
+test('dismissed native installation consumes the awareness prompt', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperties(event, {
+      prompt: { value: () => Promise.resolve() },
+      userChoice: { value: Promise.resolve({ outcome: 'dismissed' }) },
+    })
+    window.dispatchEvent(event)
+  })
+  await page.getByRole('button', { name: 'Install' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).not.toBeVisible()
+})
+
+test('installed and unsupported browsers do not show the awareness prompt', async ({
   page,
 }) => {
   await page.goto('/')
   await expect(
     page.getByRole('heading', { name: 'Install Volala' }),
+  ).not.toBeVisible()
+
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperties(event, {
+      prompt: { value: () => Promise.resolve() },
+      userChoice: { value: Promise.resolve({ outcome: 'accepted' }) },
+    })
+    window.dispatchEvent(event)
+  })
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
   ).toBeVisible()
-  await expect(page.getByText(/better offline experience/i)).toBeVisible()
-  await page.getByRole('link', { name: 'Go to Settings' }).click()
-  await expect(page).toHaveURL(/\/settings$/)
-  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
+  await page.evaluate(() => window.dispatchEvent(new Event('appinstalled')))
   await expect(
     page.getByRole('heading', { name: 'Install Volala' }),
   ).not.toBeVisible()
@@ -114,12 +175,19 @@ test('Settings keeps the browser installation control when available', async ({
   await page.evaluate(() => {
     const event = new Event('beforeinstallprompt', { cancelable: true })
     Object.defineProperty(event, 'prompt', {
-      value: () => Promise.resolve(),
+      value: () => {
+        document.documentElement.dataset.installPrompt = 'called'
+        return Promise.resolve()
+      },
     })
     window.dispatchEvent(event)
   })
   await page.getByRole('link', { name: 'Settings', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Install App' })).toBeVisible()
+  await page.getByRole('button', { name: 'Install App' }).click()
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-install-prompt',
+    'called',
+  )
 })
 
 test('timeline supports DONE, UNDO, and Google Maps actions', async ({

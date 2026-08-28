@@ -11,6 +11,17 @@ import packageJson from '../package.json'
 import App from './App'
 import { appVersion } from './version'
 
+function dispatchInstallPrompt(outcome: 'accepted' | 'dismissed' = 'accepted') {
+  const prompt = vi.fn(() => Promise.resolve())
+  const event = new Event('beforeinstallprompt', { cancelable: true })
+  Object.defineProperties(event, {
+    prompt: { value: prompt },
+    userChoice: { value: Promise.resolve({ outcome }) },
+  })
+  fireEvent(window, event)
+  return prompt
+}
+
 describe('day item presentation', () => {
   beforeEach(() => localStorage.clear())
   afterEach(() => cleanup())
@@ -286,10 +297,15 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     expect(
       screen.getByRole('heading', { name: 'Install Volala' }),
     ).toBeVisible()
+    expect(
+      screen.getByText('Install the app for quick access and offline use.'),
+    ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Install' })).toBeVisible()
     expect(screen.getByRole('button', { name: 'Not now' })).toBeVisible()
   })
 
@@ -299,6 +315,7 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     fireEvent.click(screen.getByRole('button', { name: 'Not now' }))
     expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
@@ -317,16 +334,23 @@ describe('day item presentation', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('navigates to Settings and persists when the prompt CTA is used', () => {
+  it('uses the shared install flow without navigating to Settings', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     )
+    const prompt = dispatchInstallPrompt()
 
-    fireEvent.click(screen.getByRole('link', { name: 'Go to Settings' }))
-    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
-    expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
+    fireEvent.click(screen.getByRole('button', { name: 'Install' }))
+
+    await waitFor(() => expect(prompt).toHaveBeenCalledTimes(1))
+    expect(screen.queryByRole('heading', { name: 'Settings' })).toBeNull()
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('heading', { name: 'Install Volala' }),
+      ).not.toBeInTheDocument(),
+    )
   })
 
   it('renders the install awareness prompt in Romanian', () => {
@@ -336,10 +360,12 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     expect(
       screen.getByRole('heading', { name: 'Instalează Volala' }),
     ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Instalează' })).toBeVisible()
     expect(screen.getByRole('button', { name: 'Nu acum' })).toBeVisible()
   })
 
@@ -350,11 +376,14 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     expect(
       screen.getByRole('heading', { name: 'Install Volala' }),
     ).toBeVisible()
-    expect(screen.getByText(/Install Volala on your device/)).toBeVisible()
+    expect(
+      screen.getByText('Install the app for quick access and offline use.'),
+    ).toBeVisible()
     expect(screen.queryByText(/Tripwise/)).not.toBeInTheDocument()
   })
 

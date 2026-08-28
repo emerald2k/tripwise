@@ -108,10 +108,16 @@ main {
   flex-direction: column;
   gap: 0.35rem;
 }
-.install-awareness-actions .button {
+.install-awareness-actions .install-prompt-primary {
   width: 100%;
-  background: #4569ad;
+  background: #3f72d8;
   color: #fff;
+}
+.install-awareness-actions .install-prompt-primary:hover {
+  background: #4a82eb;
+}
+.install-awareness-actions .install-prompt-primary:active {
+  background: #315fb8;
 }
 .install-awareness-actions button {
   background: transparent;
