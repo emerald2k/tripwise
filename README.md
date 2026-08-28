@@ -1486,10 +1486,10 @@ Location Items present their content in this order:
 4. Suggested visit duration
 5. Actions
 
-The secondary description is the location address and uses a font size 4px
-smaller than the primary description. Duration uses the compact duration
-format, while progress, Maps navigation, and sharing actions retain their
-existing eligibility rules.
+The secondary description is the location address and uses a smaller font size
+than the primary description. Duration uses the compact duration format, while
+progress, Maps navigation, and sharing actions retain their existing
+eligibility rules.
 
 All applicable Location Item actions remain in one horizontal row across
 supported viewport widths.

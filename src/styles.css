@@ -206,11 +206,11 @@ main {
   font-weight: 600;
 }
 .location-primary-description {
-  font-size: 16px;
+  font-size: 1rem;
 }
 .location-secondary-description {
   color: #9ba5b5;
-  font-size: 12px;
+  font-size: 0.85rem;
 }
 .location-duration {
   font-variant-numeric: tabular-nums;

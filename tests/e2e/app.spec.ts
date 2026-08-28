@@ -226,7 +226,7 @@ test('disables Header slide animation when reduced motion is requested', async (
   await expect(header).toHaveClass(/is-hidden/)
 })
 
-test('renders primary and secondary location descriptions with a 4px size difference', async ({
+test('renders the secondary location description smaller than the primary description', async ({
   page,
 }) => {
   await page.addInitScript(
@@ -241,12 +241,13 @@ test('renders primary and secondary location descriptions with a 4px size differ
   const secondary = page.locator('.location-secondary-description').first()
   await expect(primary).toBeVisible()
   await expect(secondary).toBeVisible()
-  expect(
-    await primary.evaluate((element) => getComputedStyle(element).fontSize),
-  ).toBe('16px')
-  expect(
-    await secondary.evaluate((element) => getComputedStyle(element).fontSize),
-  ).toBe('12px')
+  const primaryFontSize = await primary.evaluate((element) =>
+    Number.parseFloat(getComputedStyle(element).fontSize),
+  )
+  const secondaryFontSize = await secondary.evaluate((element) =>
+    Number.parseFloat(getComputedStyle(element).fontSize),
+  )
+  expect(secondaryFontSize).toBeLessThan(primaryFontSize)
 })
 
 test('keeps day metadata and indicators inline with uniform row heights', async ({
