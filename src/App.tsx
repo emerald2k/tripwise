@@ -10,12 +10,10 @@ import {
 } from 'react-router-dom'
 import Fuse from 'fuse.js'
 import {
-  datasets,
-  itineraries,
-  locationCities,
-  locations,
+  getRuntimeData,
   persistActiveItineraryId,
   readActiveItineraryId,
+  resolveActiveItinerary,
 } from './data'
 import { localDate } from './domain/date'
 import {
@@ -38,15 +36,18 @@ import { brand } from './brand'
 import { appVersion } from './version'
 import ro from '../i18n/ro.json'
 import en from '../i18n/en.json'
+import {
+  subscribeToInstallPrompt,
+  type BeforeInstallPromptEvent,
+} from './install-prompt'
 import './styles.css'
 
 type Language = 'ro' | 'en'
 type Copy = typeof ro
 const translations: Record<Language, Copy> = { ro, en }
 
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>
-  userChoice?: Promise<{ outcome: 'accepted' | 'dismissed' }>
+interface AppProps {
+  initialInstallPrompt?: BeforeInstallPromptEvent | null
 }
 
 const installPromptSeenKey = 'tripwise.installPromptSeen'
@@ -76,13 +77,16 @@ function useLanguage() {
   return { language, change, t: translations[language] }
 }
 
-export default function App() {
+export default function App({ initialInstallPrompt = null }: AppProps) {
+  const { datasets } = getRuntimeData()
   const language = useLanguage()
   const [activeItinerary, setActiveItinerary] = useState<Itinerary | undefined>(
     () => {
-      if (datasets.itineraries.length === 1) return datasets.itineraries[0]
       const savedId = readActiveItineraryId()
-      const savedItinerary = savedId ? itineraries.get(savedId) : undefined
+      const savedItinerary = resolveActiveItinerary(
+        datasets.itineraries,
+        savedId,
+      )
       if (savedId && !savedItinerary)
         localStorage.removeItem('tripwise.activeItineraryId')
       return savedItinerary
@@ -91,7 +95,7 @@ export default function App() {
   const [progress, setProgress] = useState<ProgressStore>(() => readProgress())
   const [offline, setOffline] = useState(!navigator.onLine)
   const [deferredInstall, setDeferredInstall] =
-    useState<BeforeInstallPromptEvent | null>(null)
+    useState<BeforeInstallPromptEvent | null>(initialInstallPrompt)
   const [installed, setInstalled] = useState(isInstalledPwa)
   const [showInstallAwareness, setShowInstallAwareness] = useState(
     () => !localStorage.getItem(installPromptSeenKey) && !isInstalledPwa(),
@@ -105,21 +109,17 @@ export default function App() {
     const off = () => setOffline(true)
     window.addEventListener('online', on)
     window.addEventListener('offline', off)
-    const install = (event: Event) => {
-      event.preventDefault()
-      setDeferredInstall(event as BeforeInstallPromptEvent)
-    }
+    const unsubscribe = subscribeToInstallPrompt(setDeferredInstall)
     const installed = () => {
       setInstalled(true)
       setDeferredInstall(null)
       setShowInstallAwareness(false)
     }
-    window.addEventListener('beforeinstallprompt', install)
     window.addEventListener('appinstalled', installed)
     return () => {
       window.removeEventListener('online', on)
       window.removeEventListener('offline', off)
-      window.removeEventListener('beforeinstallprompt', install)
+      unsubscribe()
       window.removeEventListener('appinstalled', installed)
     }
   }, [])
@@ -192,7 +192,7 @@ export default function App() {
         </header>
         <main>
           <section className="empty">
-            <h1>{language.t.noDays}</h1>
+            <h1>{language.t.noItineraries}</h1>
           </section>
         </main>
       </div>
@@ -259,6 +259,9 @@ export default function App() {
               <Settings
                 {...language}
                 reset={reset}
+                itinerary={activeItinerary}
+                itineraries={datasets.itineraries}
+                selectItinerary={setActiveItinerary}
                 canInstall={!!deferredInstall}
                 install={install}
               />
@@ -497,7 +500,11 @@ function DayView({
       <div className="timeline">
         {ordered.map((item) => {
           const location =
-            'locationId' in item ? locations.get(item.locationId) : undefined
+            'locationId' in item
+              ? getRuntimeData().locations.get(item.locationId)
+              : undefined
+          const supportsProgress =
+            'locationId' in item && item.progress === true
           const status = 'progress' in item ? statuses[item.itemId] : undefined
           const compact = isCompactStatus(status)
           const highlighted = highlightedItemId === item.itemId
@@ -549,7 +556,7 @@ function DayView({
                     {'durationMinutes' in item && item.durationMinutes && (
                       <span className="muted">{item.durationMinutes} min</span>
                     )}
-                    {'progress' in item && item.progress && (
+                    {supportsProgress && (
                       <div className="item-actions">
                         {status ? (
                           <button
@@ -575,9 +582,20 @@ function DayView({
                             </button>
                           </>
                         )}
+                        {location?.googleMapsUrl && (
+                          <a
+                            className="map-link"
+                            href={location.googleMapsUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <GoogleMapsIcon />
+                            {t.navigate}
+                          </a>
+                        )}
                       </div>
                     )}
-                    {location?.googleMapsUrl && (
+                    {!supportsProgress && location?.googleMapsUrl && (
                       <a
                         className="map-link"
                         href={location.googleMapsUrl}
@@ -685,7 +703,9 @@ function Search({
       itinerary.days.flatMap((day) =>
         day.items.map((item) => {
           const location =
-            'locationId' in item ? locations.get(item.locationId) : undefined
+            'locationId' in item
+              ? getRuntimeData().locations.get(item.locationId)
+              : undefined
           return {
             day,
             item,
@@ -697,7 +717,7 @@ function Search({
               location?.address,
               location?.category,
               'locationId' in item
-                ? locationCities.get(item.locationId)
+                ? getRuntimeData().locationCities.get(item.locationId)
                 : item.transport.mode,
             ]
               .filter(Boolean)
@@ -776,11 +796,17 @@ function Settings({
   language,
   change,
   reset,
+  itinerary,
+  itineraries,
+  selectItinerary,
   canInstall,
   install,
 }: SharedProps & {
   change: (language: Language) => void
   reset: () => void
+  itinerary: Itinerary
+  itineraries: Itinerary[]
+  selectItinerary: (itinerary: Itinerary) => void
   canInstall: boolean
   install: () => void
 }) {
@@ -791,6 +817,26 @@ function Settings({
         ← {t.back}
       </button>
       <h1>{t.settings}</h1>
+      <h2>{t.itinerary}</h2>
+      <label>
+        {t.activeItinerary}
+        <select
+          aria-label={t.itinerary}
+          value={itinerary.id}
+          onChange={(event) => {
+            const selected = itineraries.find(
+              (candidate) => candidate.id === event.target.value,
+            )
+            if (selected) selectItinerary(selected)
+          }}
+        >
+          {itineraries.map((candidate) => (
+            <option key={candidate.id} value={candidate.id}>
+              {candidate.name}
+            </option>
+          ))}
+        </select>
+      </label>
       <h2>{t.language}</h2>
       <div className="language-buttons">
         <button
@@ -846,7 +892,9 @@ function cityNames(day: Day) {
   const names = [
     ...new Set(
       day.items.flatMap((item) =>
-        'locationId' in item ? [locationCities.get(item.locationId)] : [],
+        'locationId' in item
+          ? [getRuntimeData().locationCities.get(item.locationId)]
+          : [],
       ),
     ),
   ]

@@ -1,0 +1,414 @@
+{
+  "id": "halkidiki-2026",
+  "name": "Halkidiki 2026",
+  "days": [
+    {
+      "date": "2026-09-05",
+      "title": "Ziua 0 · București → Halkidiki",
+      "items": [
+        {
+          "itemId": "0905-01-bucuresti-halkidiki",
+          "startTime": "22:00",
+          "title": "Plecare București → Halkidiki",
+          "transport": {
+            "mode": "bus"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-06",
+      "title": "Ziua 1 · Sosire și deconectare la malul mării",
+      "items": [
+        {
+          "itemId": "0906-01-thessaloniki-alternativa-la-dus",
+          "startTime": "07:00",
+          "title": "Alternativă Thessaloniki la dus · White Tower",
+          "locationId": "thessaloniki-white-tower",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0906-02-thessaloniki-aristotelous",
+          "startTime": "07:40",
+          "title": "Thessaloniki · Aristotelous Square",
+          "locationId": "thessaloniki-aristotelous-square",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0906-03-thessaloniki-ladadika",
+          "startTime": "08:20",
+          "title": "Thessaloniki · Ladadika",
+          "locationId": "thessaloniki-ladadika",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0906-04-thessaloniki-kapani",
+          "startTime": "09:00",
+          "title": "Thessaloniki · Kapani Market",
+          "locationId": "thessaloniki-kapani-market",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0906-05-thessaloniki-halkidiki",
+          "startTime": "10:00",
+          "title": "Thessaloniki → Halkidiki",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 60
+          }
+        },
+        {
+          "itemId": "0906-06-arrival-hotel",
+          "startTime": "11:00",
+          "title": "Sosire în Halkidiki și check-in",
+          "locationId": "halkidiki-alkioni-by-the-sea",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0906-07-siviri-beach",
+          "startTime": "14:00",
+          "title": "Prima baie și relaxare la Siviri Beach",
+          "locationId": "halkidiki-siviri-beach",
+          "durationMinutes": 180,
+          "progress": true
+        },
+        {
+          "itemId": "0906-08-siviri-terrace",
+          "startTime": "17:30",
+          "title": "Frappe / băutură pe terasa de coastă",
+          "locationId": "halkidiki-siviri-seafront-promenade",
+          "durationMinutes": 60,
+          "progress": true
+        },
+        {
+          "itemId": "0906-09-sto-kima-dinner",
+          "startTime": "20:00",
+          "title": "Cină · Sto Kima",
+          "locationId": "halkidiki-sto-kima",
+          "durationMinutes": 120,
+          "progress": true
+        },
+        {
+          "itemId": "0906-10-return-hotel",
+          "startTime": "22:00",
+          "title": "Sto Kima → Hotel",
+          "transport": {
+            "mode": "walk",
+            "distanceMeters": 400,
+            "durationMinutes": 5
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-09-07",
+      "title": "Ziua 2 · Istorie, Afytos, Possidi și apus",
+      "items": [
+        {
+          "itemId": "0907-01-hotel-kallithea",
+          "startTime": "09:00",
+          "title": "Hotel → Kallithea",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 30
+          }
+        },
+        {
+          "itemId": "0907-02-kallithea",
+          "startTime": "09:30",
+          "title": "Kallithea",
+          "locationId": "halkidiki-kallithea",
+          "durationMinutes": 10,
+          "progress": true
+        },
+        {
+          "itemId": "0907-03-ammon-zeus",
+          "startTime": "09:40",
+          "title": "Sanctuary of Zeus Ammon and Dionysus",
+          "locationId": "halkidiki-ammon-zeus-sanctuary",
+          "durationMinutes": 50,
+          "progress": true
+        },
+        {
+          "itemId": "0907-04-kallithea-afytos",
+          "startTime": "10:30",
+          "title": "Kallithea → Afytos",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 20
+          }
+        },
+        {
+          "itemId": "0907-05-afytos",
+          "startTime": "10:50",
+          "title": "Afytos · plimbare prin satul tradițional",
+          "locationId": "halkidiki-afytos",
+          "durationMinutes": 90,
+          "progress": true
+        },
+        {
+          "itemId": "0907-06-afytos-lunch",
+          "startTime": "12:20",
+          "title": "Prânz în Afytos · Tuna Mediterranean Cuisine",
+          "locationId": "halkidiki-tuna-afytos",
+          "durationMinutes": 40,
+          "progress": true
+        },
+        {
+          "itemId": "0907-07-afytos-posidi",
+          "startTime": "13:00",
+          "title": "Afytos → Possidi",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 35
+          }
+        },
+        {
+          "itemId": "0907-08-poseidon-sanctuary",
+          "startTime": "13:35",
+          "title": "Sanctuary of Poseidon in Posidi",
+          "locationId": "halkidiki-poseidon-sanctuary",
+          "durationMinutes": 55,
+          "progress": true
+        },
+        {
+          "itemId": "0907-09-posidi-beach",
+          "startTime": "14:30",
+          "title": "Cap Possidi · plajă și relaxare",
+          "locationId": "halkidiki-posidi-cape",
+          "durationMinutes": 180,
+          "progress": true
+        },
+        {
+          "itemId": "0907-10-posidi-sunset",
+          "startTime": "17:30",
+          "title": "Cap Possidi · fotografii și pregătire pentru apus",
+          "locationId": "halkidiki-posidi-cape",
+          "durationMinutes": 120,
+          "progress": true
+        },
+        {
+          "itemId": "0907-11-posidi-sunset",
+          "startTime": "19:30",
+          "title": "Apus la Cap Possidi · oră estimativă",
+          "locationId": "halkidiki-posidi-cape",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0907-12-posidi-siviri",
+          "startTime": "20:00",
+          "title": "Possidi → Siviri",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 30
+          }
+        },
+        {
+          "itemId": "0907-13-hotel-return",
+          "startTime": "20:30",
+          "title": "Revenire la Alkioni by the Sea",
+          "locationId": "halkidiki-alkioni-by-the-sea",
+          "durationMinutes": 30,
+          "progress": true
+        }
+      ]
+    },
+    {
+      "date": "2026-09-08",
+      "title": "Ziua 3 · Explorare pe mare",
+      "items": [
+        {
+          "itemId": "0908-01-hotel-pefkochori",
+          "startTime": "08:45",
+          "title": "Hotel → Pefkochori Port",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 45
+          }
+        },
+        {
+          "itemId": "0908-02-pefkochori-port",
+          "startTime": "09:30",
+          "title": "Croazieră standard · plecare din Pefkochori",
+          "locationId": "halkidiki-pefkochori-port",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0908-03-kelifos",
+          "startTime": "12:30",
+          "title": "Kelifos · înot, snorkeling și sărituri din barcă",
+          "locationId": "halkidiki-kelifos-island",
+          "durationMinutes": 120,
+          "progress": true
+        },
+        {
+          "itemId": "0908-04-cruise-return",
+          "startTime": "17:30",
+          "title": "Întoarcere în Pefkochori · croazieră",
+          "locationId": "halkidiki-pefkochori-port",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0908-05-pefkochori-hotel",
+          "startTime": "18:00",
+          "title": "Pefkochori → Hotel",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 45
+          }
+        },
+        {
+          "itemId": "0908-06-hotel-rest",
+          "startTime": "18:45",
+          "title": "Hotel · pauză și relaxare după croazieră",
+          "locationId": "halkidiki-alkioni-by-the-sea",
+          "durationMinutes": 90,
+          "progress": true
+        }
+      ]
+    },
+    {
+      "date": "2026-09-09",
+      "title": "Ziua 4 · Ultimele raze de soare și relaxare",
+      "items": [
+        {
+          "itemId": "0909-01-siviri-beach",
+          "startTime": "10:00",
+          "title": "Siviri Beach · zi de plajă",
+          "locationId": "halkidiki-siviri-beach",
+          "durationMinutes": 180,
+          "progress": true
+        },
+        {
+          "itemId": "0909-02-siviri-terrace",
+          "startTime": "13:00",
+          "title": "Terasă / frappe și prânz ușor",
+          "locationId": "halkidiki-siviri-seafront-promenade",
+          "durationMinutes": 90,
+          "progress": true
+        },
+        {
+          "itemId": "0909-03-siviri-beach-afternoon",
+          "startTime": "14:30",
+          "title": "Siviri Beach · relaxare și baie",
+          "locationId": "halkidiki-siviri-beach",
+          "durationMinutes": 180,
+          "progress": true
+        },
+        {
+          "itemId": "0909-04-siviri-promenade",
+          "startTime": "17:30",
+          "title": "Plimbare pe faleză",
+          "locationId": "halkidiki-siviri-seafront-promenade",
+          "durationMinutes": 60,
+          "progress": true
+        },
+        {
+          "itemId": "0909-05-siviri-shopping",
+          "startTime": "18:30",
+          "title": "Cumpărături și suveniruri locale în Siviri",
+          "locationId": "halkidiki-siviri-seafront-promenade",
+          "durationMinutes": 60,
+          "progress": true
+        },
+        {
+          "itemId": "0909-06-siviri-evening",
+          "startTime": "20:00",
+          "title": "Seară liberă în zona hotelului",
+          "locationId": "halkidiki-alkioni-by-the-sea",
+          "durationMinutes": 60,
+          "progress": true
+        }
+      ]
+    },
+    {
+      "date": "2026-09-10",
+      "title": "Ziua 5 · Ultimele momente pe plajă, check-out și întoarcere",
+      "items": [
+        {
+          "itemId": "0910-01-last-beach",
+          "startTime": "06:30",
+          "title": "Ultimele momente la Siviri Beach",
+          "locationId": "halkidiki-siviri-beach",
+          "durationMinutes": 60,
+          "progress": true
+        },
+        {
+          "itemId": "0910-02-checkout",
+          "startTime": "07:45",
+          "title": "Check-out și pregătirea bagajelor",
+          "locationId": "halkidiki-alkioni-by-the-sea",
+          "durationMinutes": 45,
+          "progress": true
+        },
+        {
+          "itemId": "0910-03-halkidiki-thessaloniki",
+          "startTime": "09:00",
+          "title": "Plecare Halkidiki → București",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 90
+          }
+        },
+        {
+          "itemId": "0910-04-thessaloniki-alternativa-la-intors",
+          "startTime": "10:30",
+          "title": "Alternativă Thessaloniki la întoarcere · White Tower",
+          "locationId": "thessaloniki-white-tower",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0910-05-thessaloniki-aristotelous-return",
+          "startTime": "11:10",
+          "title": "Thessaloniki · Aristotelous Square",
+          "locationId": "thessaloniki-aristotelous-square",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0910-06-thessaloniki-ladadika-return",
+          "startTime": "11:50",
+          "title": "Thessaloniki · Ladadika",
+          "locationId": "thessaloniki-ladadika",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0910-07-thessaloniki-kapani-return",
+          "startTime": "12:30",
+          "title": "Thessaloniki · Kapani Market",
+          "locationId": "thessaloniki-kapani-market",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0910-08-thessaloniki-bucuresti",
+          "startTime": "13:30",
+          "title": "Thessaloniki → București",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 570
+          }
+        },
+        {
+          "itemId": "0910-09-arrival-bucuresti",
+          "startTime": "23:00",
+          "title": "Sosire București",
+          "transport": {
+            "mode": "bus",
+            "durationMinutes": 10
+          }
+        }
+      ]
+    }
+  ]
+}

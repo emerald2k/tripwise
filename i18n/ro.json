@@ -26,5 +26,8 @@
   "searchMatch": "Potrivire",
   "selectItinerary": "Selectează un itinerar",
   "chooseItinerary": "Alege un itinerar pentru a continua.",
+  "itinerary": "Itinerar",
+  "activeItinerary": "Itinerarul curent",
+  "noItineraries": "Nu este disponibil niciun itinerar.",
   "confirmReset": "Resetezi progresul pentru acest itinerar?"
 }

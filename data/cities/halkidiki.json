@@ -1,0 +1,133 @@
+{
+  "cityId": "halkidiki",
+  "name": "Halkidiki",
+  "locations": [
+    {
+      "locationId": "halkidiki-alkioni-by-the-sea",
+      "name": "Alkioni by the Sea",
+      "category": "hotel",
+      "address": "Siviri, 63077, Kassandra, Halkidiki, Greece",
+      "description": "Cazarea principală din Siviri. Hotelul este pe malul mării, chiar lângă plaja organizată și promenada de coastă.",
+      "coordinates": {
+        "latitude": 40.03799,
+        "longitude": 23.35933
+      },
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Alkioni%20by%20the%20Sea%20Siviri%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-siviri-beach",
+      "name": "Siviri Beach",
+      "category": "other",
+      "address": "Siviri, Kassandra, Halkidiki, Greece",
+      "description": "Plaja principală pentru zilele de relaxare. Este chiar în fața hotelului și este potrivită pentru baie, stat la plajă și apus.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Siviri%20Beach%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-siviri-seafront-promenade",
+      "name": "Siviri Seafront Promenade",
+      "category": "other",
+      "address": "Siviri, Kassandra, Halkidiki, Greece",
+      "description": "Promenada de coastă pentru plimbare și acces la restaurante, cafenele și mici magazine.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Siviri%20Seafront%20Promenade%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-sto-kima",
+      "name": "Sto Kima",
+      "category": "restaurant",
+      "address": "Siviri, 63077, Halkidiki, Greece",
+      "description": "Tavernă grecească cu pește și fructe de mare, aleasă pentru cina din prima seară. Este în Siviri și este accesibilă pe jos de la hotel.",
+      "coordinates": {
+        "latitude": 40.035381,
+        "longitude": 23.359938
+      },
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sto%20Kima%20Siviri%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-kallithea",
+      "name": "Kallithea",
+      "category": "other",
+      "address": "Kallithea, Kassandra, Halkidiki, Greece",
+      "description": "Localitate din Kassandra și prima oprire din ziua de 7 septembrie.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kallithea%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-ammon-zeus-sanctuary",
+      "name": "Sanctuary of Zeus Ammon and Dionysus",
+      "category": "attraction",
+      "address": "Kallithea, Kassandra, Halkidiki, Greece",
+      "description": "Sanctuar arheologic aflat lângă plaja din Kallithea. Include ruinele templului lui Zeus Ammon și vestigii asociate cultului lui Dionysus.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sanctuary%20of%20Zeus%20Ammon%20Kallithea%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-afytos",
+      "name": "Afytos (Afitos)",
+      "category": "other",
+      "address": "Afytos, Kassandra, Halkidiki, Greece",
+      "description": "Sat tradițional din piatră, cu străzi pietruite și panoramă asupra Golfului Toroneos. Oprire pentru plimbare și prânz.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Afytos%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-tuna-afytos",
+      "name": "Tuna Mediterranean Cuisine",
+      "category": "restaurant",
+      "address": "Afytos, Kassandra, Halkidiki, Greece",
+      "description": "Opțiune de prânz în Afytos, aleasă pentru combinația de bucătărie mediteraneană, seafood și vedere.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Tuna%20Mediterranean%20Cuisine%20Afytos%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-poseidon-sanctuary",
+      "name": "Sanctuary of Poseidon in Posidi",
+      "category": "attraction",
+      "address": "Posidi, Kassandra, Halkidiki, Greece",
+      "description": "Ruinele sanctuarului antic al lui Poseidon, lângă capul nisipos Poseidi și far.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sanctuary%20of%20Poseidon%20Posidi%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-posidi-cape",
+      "name": "Cape Possidi",
+      "category": "other",
+      "address": "Possidi, Kassandra, Halkidiki, Greece",
+      "description": "Capul nisipos și limba de nisip de la Possidi. Este punctul final al zilei de 7 septembrie și locul ales pentru fotografii și apus, estimat în jur de 19:30.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cape%20Possidi%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-stamatis-fish-tavern",
+      "name": "Stamatis Fish Tavern",
+      "category": "restaurant",
+      "address": "Possidi Beach, Posidi, 63077, Greece",
+      "description": "Opțiune de masă în zona Possidi, cu specific grecesc și seafood.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Stamatis%20Fish%20Tavern%20Possidi%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-pefkochori-port",
+      "name": "Pefkochori Port",
+      "category": "station",
+      "address": "Pefkochori, Kassandra, Halkidiki, Greece",
+      "description": "Punctul de plecare și revenire pentru croaziera standard către Kelifos. Programul folosit în itinerariu este 09:30 → aproximativ 17:30.",
+      "coordinates": {
+        "latitude": 39.98979,
+        "longitude": 23.61273
+      },
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pefkochori%20Port%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-kelifos-island",
+      "name": "Kelifos Island",
+      "category": "activity",
+      "description": "Insula Kelifos din Golful Toroneos, oprire pentru înot, snorkeling și sărituri din barcă în cadrul croazierei.",
+      "coordinates": {
+        "latitude": 40.061256,
+        "longitude": 23.725833
+      },
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kelifos%20Island%20Halkidiki%20Greece"
+    },
+    {
+      "locationId": "halkidiki-elani-beach",
+      "name": "Elani Beach",
+      "category": "other",
+      "address": "Elani, Kassandra, Halkidiki, Greece",
+      "description": "Alternativă de plajă mai liniștită, aproape de Siviri, cu nisip, apă limpede și vegetație. Se păstrează ca alternativă, nu ca alegere obligatorie.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Elani%20Beach%20Halkidiki%20Greece"
+    }
+  ]
+}

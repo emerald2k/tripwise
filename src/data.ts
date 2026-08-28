@@ -1,33 +1,108 @@
-import manifest from '../data/manifest.json'
+import { manifestSchema, type City, type Itinerary } from './data/schema'
 import { validateDataPackage } from './domain/validation'
 
-const dataFiles = Object.fromEntries(
-  Object.entries(
-    import.meta.glob('../data/{itineraries,cities}/*.json', {
-      eager: true,
-      import: 'default',
-    }),
-  ).map(([file, value]) => [
-    `./${file.replace(/^\.\.\/data\//, '').replace(/\\/g, '/')}`,
-    value,
-  ]),
-)
+type DataFiles = Record<string, unknown>
+export type JsonFetcher = (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+) => Promise<Response>
 
-export const datasets = validateDataPackage(manifest, dataFiles)
-export const itineraries = new Map(
-  datasets.itineraries.map((itinerary) => [itinerary.id, itinerary] as const),
-)
-export const cities = datasets.cities
-export const locations = new Map(
-  cities.flatMap((city) =>
-    city.locations.map((location) => [location.locationId, location] as const),
-  ),
-)
-export const locationCities = new Map(
-  cities.flatMap((city) =>
-    city.locations.map((location) => [location.locationId, city.name] as const),
-  ),
-)
+export interface RuntimeData {
+  datasets: ReturnType<typeof validateDataPackage>
+  itineraries: Map<string, Itinerary>
+  cities: City[]
+  locations: Map<string, City['locations'][number]>
+  locationCities: Map<string, string>
+}
+
+let runtimeData: RuntimeData | undefined
+let loadingRuntimeData: Promise<RuntimeData> | undefined
+
+function dataUrl(path: string) {
+  return `/data/${path.replace(/^\.\//, '')}`
+}
+
+async function readJson(fetcher: JsonFetcher, url: string) {
+  const response = await fetcher(url)
+  if (!response.ok) throw new Error(`Unable to load DATA resource: ${url}`)
+  return response.json()
+}
+
+export function createRuntimeData(
+  manifest: unknown,
+  files: DataFiles,
+): RuntimeData {
+  const datasets = validateDataPackage(manifest, files)
+  const itineraries = new Map(
+    datasets.itineraries.map((itinerary) => [itinerary.id, itinerary] as const),
+  )
+  const cities = datasets.cities
+  const locations = new Map(
+    cities.flatMap((city) =>
+      city.locations.map(
+        (location) => [location.locationId, location] as const,
+      ),
+    ),
+  )
+  const locationCities = new Map(
+    cities.flatMap((city) =>
+      city.locations.map(
+        (location) => [location.locationId, city.name] as const,
+      ),
+    ),
+  )
+
+  return { datasets, itineraries, cities, locations, locationCities }
+}
+
+export async function fetchRuntimeData(
+  fetcher: JsonFetcher = fetch,
+): Promise<RuntimeData> {
+  const manifestResponse = await fetcher('/data/manifest.json')
+  if (!manifestResponse.ok)
+    throw new Error('Unable to load DATA resource: /data/manifest.json')
+  const manifest = await manifestResponse.json()
+  const packageManifest = manifestSchema.parse(manifest)
+  const cacheName = manifestResponse.headers.get('X-Tripwise-Data-Cache')
+  const paths = [
+    ...packageManifest.itineraries.map((entry) => entry.file),
+    ...packageManifest.cities,
+  ]
+  const values = await Promise.all(
+    paths.map(async (path) => {
+      const url = new URL(dataUrl(path), globalThis.location.origin)
+      if (cacheName) url.searchParams.set('tripwise-data-cache', cacheName)
+      return [path, await readJson(fetcher, url.pathname + url.search)] as const
+    }),
+  )
+  return createRuntimeData(manifest, Object.fromEntries(values))
+}
+
+export function loadRuntimeData() {
+  loadingRuntimeData ??= fetchRuntimeData()
+  return loadingRuntimeData
+}
+
+export function initializeRuntimeData(data: RuntimeData) {
+  runtimeData = data
+}
+
+export function getRuntimeData(): RuntimeData {
+  if (runtimeData === undefined) {
+    throw new Error('Runtime DATA has not been initialized')
+  }
+  return runtimeData
+}
+
+export function resolveActiveItinerary(
+  itineraries: Itinerary[],
+  storedId: string | null,
+) {
+  if (itineraries.length === 1) return itineraries[0]
+  return storedId
+    ? itineraries.find((itinerary) => itinerary.id === storedId)
+    : undefined
+}
 
 export function readActiveItineraryId() {
   return typeof localStorage === 'undefined'

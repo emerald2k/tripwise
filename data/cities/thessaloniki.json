@@ -1,0 +1,38 @@
+{
+  "cityId": "thessaloniki",
+  "name": "Thessaloniki",
+  "locations": [
+    {
+      "locationId": "thessaloniki-white-tower",
+      "name": "White Tower",
+      "category": "attraction",
+      "address": "Leoforos Nikis 2, Thessaloniki 546 21, Greece",
+      "description": "Punct de pornire pentru o vizită scurtă în centrul Thessaloniki.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=White%20Tower%20Thessaloniki%20Greece"
+    },
+    {
+      "locationId": "thessaloniki-aristotelous-square",
+      "name": "Aristotelous Square",
+      "category": "attraction",
+      "address": "Aristotelous Square, Thessaloniki, Greece",
+      "description": "Piața centrală de pe malul mării, inclusă în traseul scurt al vizitei.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Aristotelous%20Square%20Thessaloniki%20Greece"
+    },
+    {
+      "locationId": "thessaloniki-ladadika",
+      "name": "Ladadika",
+      "category": "other",
+      "address": "Ladadika, Thessaloniki, Greece",
+      "description": "Cartier central istoric, potrivit pentru o plimbare scurtă.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ladadika%20Thessaloniki%20Greece"
+    },
+    {
+      "locationId": "thessaloniki-kapani-market",
+      "name": "Kapani Market",
+      "category": "other",
+      "address": "Kapani Market, Thessaloniki, Greece",
+      "description": "Piață centrală tradițională, inclusă în traseul pietonal de aproximativ 3 ore.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kapani%20Market%20Thessaloniki%20Greece"
+    }
+  ]
+}

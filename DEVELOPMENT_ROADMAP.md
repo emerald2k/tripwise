@@ -6,7 +6,8 @@ A phase is not complete when implementation is finished. A phase can be closed o
 
 ## Current Status
 
-Current phase: **Phase 6 — LOCAL PERSISTENCE — COMPLETED; READY FOR PR**
+Current phase: **Phase 7 — PWA AND OFFLINE — ACCEPTED; AWAITING PR
+PREPARATION**
 
 Phase 0:
 
@@ -111,6 +112,23 @@ Phase 6:
 - no DATA, schema, dependency, or Phase 7 changes;
 - no known blocking defects remain;
 - Gate 6: Persistence PASS; ready for PR.
+
+Phase 7:
+
+- runtime DATA delivery, manifest-driven itinerary selection, and the generic
+  Location Item progress-action rule: PASS;
+- Service Worker, Cache Storage, cache-first application shell and DATA,
+  validated background DATA updates, active package recovery, and stale-cache
+  cleanup: PASS;
+- offline shell, DATA reload, routes, and external Google Maps behavior: PASS;
+- typecheck, lint, formatting, DATA validation, unit tests, coverage, E2E
+  tests, production build, `verify`, and `git diff --check`: PASS;
+- manual desktop, mobile, PWA installation, standalone mode, offline, and
+  Service Worker/cache validation: PASS;
+- production dependency audit completed with two existing moderate React Router
+  advisories; no breaking dependency upgrade was applied;
+- no known blocking defects remain;
+- Gate 7: Offline/PWA PASS; version `0.7.0`.
 
 ## Standard Phase Lifecycle
 
@@ -623,6 +641,13 @@ Manual validation:
 - offline navigation;
 - existing progress offline;
 - reconnect.
+
+Phase 7 was formally accepted on `phase/7-pwa-offline` at version `0.7.0`.
+The application shell and manifest-declared DATA package are cache-first; a
+candidate DATA package is validated before replacing the active package, and
+an invalid candidate preserves the previous valid package. Desktop and mobile
+validation, PWA installation and standalone-mode validation, offline
+shell/DATA reload validation, and Service Worker/cache validation all passed.
 
 Gate 7: Offline/PWA PASS.
 

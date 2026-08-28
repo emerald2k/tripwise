@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -23,6 +29,25 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             startTime: '14:00',
             title: 'Alpha museum',
             locationId: 'alpha-museum',
+          },
+          {
+            itemId: 'alpha-mapped-place',
+            startTime: '15:00',
+            title: 'Alpha mapped place',
+            locationId: 'alpha-mapped-place',
+            progress: true,
+          },
+          {
+            itemId: 'alpha-mapped-information',
+            startTime: '16:00',
+            title: 'Alpha mapped information',
+            locationId: 'alpha-mapped-information',
+          },
+          {
+            itemId: 'alpha-transport',
+            startTime: '17:00',
+            title: 'Alpha transfer',
+            transport: { mode: 'walk' },
           },
         ],
       },
@@ -62,47 +87,74 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
 }))
 
 vi.mock('./data', () => ({
-  datasets: {
-    itineraries: [itineraryAlpha, itineraryBeta],
+  getRuntimeData: () => ({
+    datasets: {
+      itineraries: [itineraryAlpha, itineraryBeta],
+      cities: [],
+    },
+    itineraries: new Map([
+      ['alpha', itineraryAlpha],
+      ['beta', itineraryBeta],
+    ]),
     cities: [],
-  },
-  itineraries: new Map([
-    ['alpha', itineraryAlpha],
-    ['beta', itineraryBeta],
-  ]),
-  cities: [],
-  locations: new Map([
-    [
-      'alpha-place',
-      {
-        locationId: 'alpha-place',
-        name: 'Alpha place',
-        category: 'attraction',
-        description: 'Waterfront landmark',
-      },
-    ],
-    [
-      'alpha-museum',
-      {
-        locationId: 'alpha-museum',
-        name: 'Alpha museum',
-        category: 'attraction',
-      },
-    ],
-    [
-      'beta-place',
-      {
-        locationId: 'beta-place',
-        name: 'Beta place',
-        category: 'attraction',
-      },
-    ],
-  ]),
-  locationCities: new Map(),
+    locations: new Map([
+      [
+        'alpha-place',
+        {
+          locationId: 'alpha-place',
+          name: 'Alpha place',
+          category: 'attraction',
+          description: 'Waterfront landmark',
+        },
+      ],
+      [
+        'alpha-museum',
+        {
+          locationId: 'alpha-museum',
+          name: 'Alpha museum',
+          category: 'attraction',
+        },
+      ],
+      [
+        'alpha-mapped-place',
+        {
+          locationId: 'alpha-mapped-place',
+          name: 'Alpha mapped place',
+          category: 'attraction',
+          googleMapsUrl: 'https://www.google.com/maps/place/alpha',
+        },
+      ],
+      [
+        'alpha-mapped-information',
+        {
+          locationId: 'alpha-mapped-information',
+          name: 'Alpha mapped information',
+          category: 'other',
+          googleMapsUrl: 'https://www.google.com/maps/place/information',
+        },
+      ],
+      [
+        'beta-place',
+        {
+          locationId: 'beta-place',
+          name: 'Beta place',
+          category: 'attraction',
+        },
+      ],
+    ]),
+    locationCities: new Map(),
+  }),
   readActiveItineraryId: () =>
     localStorage.getItem('tripwise.activeItineraryId'),
   persistActiveItineraryId: (id: string) =>
     localStorage.setItem('tripwise.activeItineraryId', id),
+  resolveActiveItinerary: (
+    itineraries: (typeof itineraryAlpha)[],
+    storedId: string | null,
+  ) =>
+    itineraries.length === 1
+      ? itineraries[0]
+      : itineraries.find((itinerary) => itinerary.id === storedId),
 }))
 
 import App from './App'
@@ -110,6 +162,97 @@ import App from './App'
 describe('Phase 3 itinerary selection', () => {
   beforeEach(() => localStorage.clear())
   afterEach(() => cleanup())
+
+  it('keeps progress controls for visitable locations without Google Maps', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const item = screen
+      .getByRole('heading', { name: 'Alpha place' })
+      .closest('article') as HTMLElement
+    expect(within(item).getByRole('button', { name: 'DONE' })).toBeVisible()
+    expect(within(item).getByRole('button', { name: 'SKIP' })).toBeVisible()
+    expect(
+      within(item).queryByRole('link', { name: /Navigate GMaps/ }),
+    ).toBeNull()
+  })
+
+  it('renders actions from item progress and Maps availability independently', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const progressWithMaps = screen
+      .getByRole('heading', { name: 'Alpha mapped place' })
+      .closest('article') as HTMLElement
+    expect(
+      within(progressWithMaps).getByRole('button', { name: 'DONE' }),
+    ).toBeVisible()
+    expect(
+      within(progressWithMaps).getByRole('button', { name: 'SKIP' }),
+    ).toBeVisible()
+    expect(
+      within(progressWithMaps).getByRole('link', { name: /Navigate GMaps/ }),
+    ).toBeVisible()
+
+    fireEvent.click(
+      within(progressWithMaps).getByRole('button', { name: 'DONE' }),
+    )
+    expect(
+      within(progressWithMaps).getByRole('button', { name: 'UNDO' }),
+    ).toBeVisible()
+    expect(
+      within(progressWithMaps).getByRole('link', { name: /Navigate GMaps/ }),
+    ).toBeVisible()
+    fireEvent.click(
+      within(progressWithMaps).getByRole('button', { name: 'UNDO' }),
+    )
+    fireEvent.click(
+      within(progressWithMaps).getByRole('button', { name: 'SKIP' }),
+    )
+    expect(
+      within(progressWithMaps).getByRole('button', { name: 'UNDO' }),
+    ).toBeVisible()
+
+    const informationWithMaps = screen
+      .getByRole('heading', { name: 'Alpha mapped information' })
+      .closest('article') as HTMLElement
+    expect(
+      within(informationWithMaps).queryByRole('button', { name: 'DONE' }),
+    ).toBeNull()
+    expect(
+      within(informationWithMaps).queryByRole('button', { name: 'SKIP' }),
+    ).toBeNull()
+    expect(
+      within(informationWithMaps).getByRole('link', {
+        name: /Navigate GMaps/,
+      }),
+    ).toBeVisible()
+
+    const informationWithoutMaps = screen
+      .getByRole('heading', { name: 'Alpha museum' })
+      .closest('article') as HTMLElement
+    expect(
+      within(informationWithoutMaps).queryByRole('button', { name: 'DONE' }),
+    ).toBeNull()
+    expect(
+      within(informationWithoutMaps).queryByRole('link', {
+        name: /Navigate GMaps/,
+      }),
+    ).toBeNull()
+
+    const transport = screen
+      .getByRole('heading', { name: 'Alpha transfer' })
+      .closest('.timeline-item') as HTMLElement
+    expect(within(transport).queryByRole('button')).toBeNull()
+  })
 
   it('shows selection when multiple itineraries have no active selection', () => {
     render(
@@ -138,6 +281,24 @@ describe('Phase 3 itinerary selection', () => {
 
     expect(localStorage.getItem('tripwise.activeItineraryId')).toBe('beta')
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
+  })
+
+  it('changes the active itinerary from Settings and persists it', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByRole('combobox', { name: 'Itinerary' }), {
+      target: { value: 'beta' },
+    })
+
+    expect(localStorage.getItem('tripwise.activeItineraryId')).toBe('beta')
+    expect(screen.getByRole('combobox', { name: 'Itinerary' })).toHaveValue(
+      'beta',
+    )
   })
 
   it('uses the selected itinerary for Days, Search, and day routes', () => {
@@ -227,7 +388,10 @@ describe('Phase 3 itinerary selection', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Alpha itinerary' }))
-    fireEvent.click(screen.getByRole('button', { name: 'DONE' }))
+    const alphaPlace = screen
+      .getByRole('heading', { name: 'Alpha place' })
+      .closest('article') as HTMLElement
+    fireEvent.click(within(alphaPlace).getByRole('button', { name: 'DONE' }))
     cleanup()
 
     localStorage.setItem('tripwise.activeItineraryId', 'beta')
@@ -280,5 +444,27 @@ describe('Phase 3 itinerary selection', () => {
     expect(
       screen.queryByRole('heading', { name: 'Alpha day' }),
     ).not.toBeInTheDocument()
+    expect(localStorage.getItem('tripwise.activeItineraryId')).toBeNull()
+  })
+
+  it('uses an itinerary selected in Settings after an application restart', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByRole('combobox', { name: 'Itinerary' }), {
+      target: { value: 'beta' },
+    })
+    cleanup()
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
   })
 })
