@@ -10,10 +10,7 @@ import {
 } from 'react-router-dom'
 import Fuse from 'fuse.js'
 import {
-  datasets,
-  itineraries,
-  locationCities,
-  locations,
+  getRuntimeData,
   persistActiveItineraryId,
   readActiveItineraryId,
 } from './data'
@@ -49,6 +46,10 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice?: Promise<{ outcome: 'accepted' | 'dismissed' }>
 }
 
+interface AppProps {
+  initialInstallPrompt?: BeforeInstallPromptEvent | null
+}
+
 const installPromptSeenKey = 'tripwise.installPromptSeen'
 
 function isInstalledPwa() {
@@ -76,7 +77,8 @@ function useLanguage() {
   return { language, change, t: translations[language] }
 }
 
-export default function App() {
+export default function App({ initialInstallPrompt = null }: AppProps) {
+  const { datasets, itineraries } = getRuntimeData()
   const language = useLanguage()
   const [activeItinerary, setActiveItinerary] = useState<Itinerary | undefined>(
     () => {
@@ -91,7 +93,7 @@ export default function App() {
   const [progress, setProgress] = useState<ProgressStore>(() => readProgress())
   const [offline, setOffline] = useState(!navigator.onLine)
   const [deferredInstall, setDeferredInstall] =
-    useState<BeforeInstallPromptEvent | null>(null)
+    useState<BeforeInstallPromptEvent | null>(initialInstallPrompt)
   const [installed, setInstalled] = useState(isInstalledPwa)
   const [showInstallAwareness, setShowInstallAwareness] = useState(
     () => !localStorage.getItem(installPromptSeenKey) && !isInstalledPwa(),
@@ -497,7 +499,9 @@ function DayView({
       <div className="timeline">
         {ordered.map((item) => {
           const location =
-            'locationId' in item ? locations.get(item.locationId) : undefined
+            'locationId' in item
+              ? getRuntimeData().locations.get(item.locationId)
+              : undefined
           const status = 'progress' in item ? statuses[item.itemId] : undefined
           const compact = isCompactStatus(status)
           const highlighted = highlightedItemId === item.itemId
@@ -685,7 +689,9 @@ function Search({
       itinerary.days.flatMap((day) =>
         day.items.map((item) => {
           const location =
-            'locationId' in item ? locations.get(item.locationId) : undefined
+            'locationId' in item
+              ? getRuntimeData().locations.get(item.locationId)
+              : undefined
           return {
             day,
             item,
@@ -697,7 +703,7 @@ function Search({
               location?.address,
               location?.category,
               'locationId' in item
-                ? locationCities.get(item.locationId)
+                ? getRuntimeData().locationCities.get(item.locationId)
                 : item.transport.mode,
             ]
               .filter(Boolean)
@@ -846,7 +852,9 @@ function cityNames(day: Day) {
   const names = [
     ...new Set(
       day.items.flatMap((item) =>
-        'locationId' in item ? [locationCities.get(item.locationId)] : [],
+        'locationId' in item
+          ? [getRuntimeData().locationCities.get(item.locationId)]
+          : [],
       ),
     ),
   ]

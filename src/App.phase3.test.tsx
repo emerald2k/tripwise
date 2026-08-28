@@ -62,43 +62,45 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
 }))
 
 vi.mock('./data', () => ({
-  datasets: {
-    itineraries: [itineraryAlpha, itineraryBeta],
+  getRuntimeData: () => ({
+    datasets: {
+      itineraries: [itineraryAlpha, itineraryBeta],
+      cities: [],
+    },
+    itineraries: new Map([
+      ['alpha', itineraryAlpha],
+      ['beta', itineraryBeta],
+    ]),
     cities: [],
-  },
-  itineraries: new Map([
-    ['alpha', itineraryAlpha],
-    ['beta', itineraryBeta],
-  ]),
-  cities: [],
-  locations: new Map([
-    [
-      'alpha-place',
-      {
-        locationId: 'alpha-place',
-        name: 'Alpha place',
-        category: 'attraction',
-        description: 'Waterfront landmark',
-      },
-    ],
-    [
-      'alpha-museum',
-      {
-        locationId: 'alpha-museum',
-        name: 'Alpha museum',
-        category: 'attraction',
-      },
-    ],
-    [
-      'beta-place',
-      {
-        locationId: 'beta-place',
-        name: 'Beta place',
-        category: 'attraction',
-      },
-    ],
-  ]),
-  locationCities: new Map(),
+    locations: new Map([
+      [
+        'alpha-place',
+        {
+          locationId: 'alpha-place',
+          name: 'Alpha place',
+          category: 'attraction',
+          description: 'Waterfront landmark',
+        },
+      ],
+      [
+        'alpha-museum',
+        {
+          locationId: 'alpha-museum',
+          name: 'Alpha museum',
+          category: 'attraction',
+        },
+      ],
+      [
+        'beta-place',
+        {
+          locationId: 'beta-place',
+          name: 'Beta place',
+          category: 'attraction',
+        },
+      ],
+    ]),
+    locationCities: new Map(),
+  }),
   readActiveItineraryId: () =>
     localStorage.getItem('tripwise.activeItineraryId'),
   persistActiveItineraryId: (id: string) =>
