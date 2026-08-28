@@ -35,7 +35,8 @@
           "startTime": "17:00",
           "title": "Aeroport → Hotel Le Roberval",
           "transport": {
-            "mode": "walk"
+            "mode": "taxi",
+            "durationMinutes": 45
           }
         },
         {
@@ -90,26 +91,34 @@
           "locationId": "montreal-old-montr-al"
         },
         {
-          "itemId": "0903-13-op-ional-jardins-gamelin-jardins-d-illusio",
+          "itemId": "0903-13-op-ional-jardins-gamelin",
           "startTime": "21:00",
           "title": "Opțional: Jardins Gamelin / Jardins d’Illusion",
           "locationId": "montreal-jardins-gamelin"
         },
         {
-          "itemId": "0903-12-place-jacques-cartier-hotel",
+          "itemId": "0903-14-jardins-alt",
           "startTime": "21:45",
-          "title": "Place Jacques-Cartier → Hotel",
-          "transport": {
-            "mode": "walk",
-            "durationMinutes": 25,
-            "distanceMeters": 2000
-          }
+          "title": "Opțional: Jardins Gamelin / Jardins d’Illusion",
+          "locationId": "montreal-jardins-gamelin",
+          "durationMinutes": 90
         },
         {
-          "itemId": "0903-14-alternativ-abreuvoir-132-jam-night",
-          "startTime": "22:30",
+          "itemId": "0903-15-abreuvoir-132",
+          "startTime": "21:45",
           "title": "Alternativ: Abreuvoir 132, Jam Night",
-          "locationId": "montreal-abreuvoir-132"
+          "locationId": "montreal-abreuvoir-132",
+          "durationMinutes": 90
+        },
+        {
+          "itemId": "0903-16-revenire-hotel",
+          "startTime": "23:15",
+          "title": "Revenire la Hotel Le Roberval",
+          "transport": {
+            "mode": "walk",
+            "distanceMeters": 2000,
+            "durationMinutes": 25
+          }
         }
       ]
     },
@@ -185,7 +194,7 @@
           "itemId": "0904-05-place-royale",
           "startTime": "12:05",
           "title": "Place Royale",
-          "locationId": "quebec-city-place-royale",
+          "locationId": "montreal-place-royale",
           "durationMinutes": 20,
           "progress": true
         },
@@ -351,14 +360,30 @@
           "progress": true
         },
         {
-          "itemId": "0904-14-to-next",
+          "itemId": "0904-15-poziționare-apus",
           "startTime": "19:05",
-          "title": "→ Poziționare pentru apus",
+          "title": "Poziționare pentru apus",
           "transport": {
             "mode": "walk",
-            "distanceMeters": 800,
-            "durationMinutes": 10
+            "distanceMeters": 300,
+            "durationMinutes": 4
           }
+        },
+        {
+          "itemId": "0904-16-apus-old-port",
+          "startTime": "19:25",
+          "title": "Apus în Old Port",
+          "locationId": "montreal-old-port-montr-al",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
+          "itemId": "0904-17-old-port-dupa-apus",
+          "startTime": "19:55",
+          "title": "Old Port după apus / skyline",
+          "locationId": "montreal-old-port-montr-al",
+          "durationMinutes": 30,
+          "progress": true
         },
         {
           "itemId": "0904-18-cin-old-montr-al",
@@ -395,158 +420,168 @@
       "title": "Olympic Park 50th Anniversary + Downtown",
       "items": [
         {
-          "itemId": "0905-01-hotel-place-des-arts",
+          "itemId": "0905-01-hotel-olympic-park",
           "startTime": "10:00",
-          "title": "Hotel → Place des Arts",
+          "title": "Hotel → Olympic Park / Pie-IX",
           "transport": {
-            "mode": "walk",
-            "distanceMeters": 2000
+            "mode": "metro",
+            "durationMinutes": 30
           }
         },
         {
-          "itemId": "0905-02-place-des-arts-quartier-des-spectacles",
-          "startTime": "10:25",
+          "itemId": "0905-02-olympic-park",
+          "startTime": "10:30",
+          "title": "Olympic Park: exterior",
+          "locationId": "montreal-olympic-park",
+          "durationMinutes": 90,
+          "progress": true
+        },
+        {
+          "itemId": "0905-03-olympic-stadium",
+          "startTime": "10:30",
+          "title": "Olympic Stadium",
+          "locationId": "montreal-olympic-stadium",
+          "durationMinutes": 25,
+          "progress": true
+        },
+        {
+          "itemId": "0905-04-esplanade-pie-ix",
+          "startTime": "10:55",
+          "title": "Esplanade Pie-IX / Olympic Park",
+          "locationId": "montreal-esplanade-olympic-park",
+          "durationMinutes": 20,
+          "progress": true
+        },
+        {
+          "itemId": "0905-05-place-nadia-comaneci",
+          "startTime": "11:15",
+          "title": "Place Nadia-Comaneci",
+          "locationId": "montreal-place-nadia-comaneci",
+          "durationMinutes": 15,
+          "progress": true
+        },
+        {
+          "itemId": "0905-06-nadia-mural",
+          "startTime": "11:30",
+          "title": "Mural aniversar Nadia Comăneci",
+          "locationId": "montreal-nadia-comaneci-mural",
+          "durationMinutes": 15,
+          "progress": true
+        },
+        {
+          "itemId": "0905-07-olympic-park-downtown",
+          "startTime": "12:00",
+          "title": "Olympic Park → Downtown",
+          "transport": {
+            "mode": "metro",
+            "durationMinutes": 30
+          }
+        },
+        {
+          "itemId": "0905-08-place-des-arts",
+          "startTime": "12:30",
           "title": "Place des Arts + Quartier des Spectacles",
           "locationId": "montreal-place-des-arts",
           "durationMinutes": 45,
           "progress": true
         },
         {
-          "itemId": "0905-02-to-next",
-          "startTime": "11:10",
-          "title": "→ Rue Sainte-Catherine",
-          "transport": {
-            "mode": "walk",
-            "distanceMeters": 500,
-            "durationMinutes": 6
-          }
-        },
-        {
-          "itemId": "0905-03-rue-sainte-catherine",
-          "startTime": "11:10",
+          "itemId": "0905-09-rue-sainte-catherine",
+          "startTime": "13:15",
           "title": "Rue Sainte-Catherine",
           "locationId": "montreal-sainte-catherine-street",
           "durationMinutes": 45,
           "progress": true
         },
         {
-          "itemId": "0905-03-to-next",
-          "startTime": "11:55",
-          "title": "→ Christ Church Cathedral exterior",
-          "transport": {
-            "mode": "walk",
-            "distanceMeters": 1000,
-            "durationMinutes": 12
-          }
-        },
-        {
-          "itemId": "0905-04-christ-church-cathedral-exterior",
-          "startTime": "11:55",
+          "itemId": "0905-10-christ-church",
+          "startTime": "14:00",
           "title": "Christ Church Cathedral exterior",
           "locationId": "montreal-christ-church-cathedral",
           "durationMinutes": 20,
           "progress": true
         },
         {
-          "itemId": "0905-04-to-next",
-          "startTime": "12:15",
-          "title": "→ Place Ville Marie / Downtown",
-          "transport": {
-            "mode": "walk",
-            "distanceMeters": 800,
-            "durationMinutes": 10
-          }
-        },
-        {
-          "itemId": "0905-05-place-ville-marie-downtown",
-          "startTime": "12:15",
+          "itemId": "0905-11-place-ville-marie",
+          "startTime": "14:20",
           "title": "Place Ville Marie / Downtown",
-          "locationId": "montreal-downtown-montr-al",
+          "locationId": "montreal-place-ville-marie",
           "durationMinutes": 30,
           "progress": true
         },
         {
-          "itemId": "0905-05-to-next",
-          "startTime": "12:45",
-          "title": "→ Eaton Centre / Underground City exterior",
-          "transport": {
-            "mode": "walk",
-            "distanceMeters": 500,
-            "durationMinutes": 6
-          }
-        },
-        {
-          "itemId": "0905-06-eaton-centre-underground-city-exterior",
-          "startTime": "12:45",
+          "itemId": "0905-12-eaton-centre",
+          "startTime": "14:50",
           "title": "Eaton Centre / Underground City exterior",
-          "locationId": "montreal-downtown-montr-al",
-          "durationMinutes": 45,
+          "locationId": "montreal-eaton-centre",
+          "durationMinutes": 40,
           "progress": true
         },
         {
-          "itemId": "0905-06-to-next",
-          "startTime": "13:30",
-          "title": "→ Prânz Downtown",
-          "transport": {
-            "mode": "walk",
-            "distanceMeters": 300,
-            "durationMinutes": 4
-          }
-        },
-        {
-          "itemId": "0905-07-pr-nz-downtown",
-          "startTime": "13:30",
+          "itemId": "0905-13-pranz-downtown",
+          "startTime": "15:30",
           "title": "Prânz Downtown",
           "locationId": "montreal-downtown-montr-al",
           "durationMinutes": 60
         },
         {
-          "itemId": "0905-08-downtown-old-montr-al",
-          "startTime": "14:30",
+          "itemId": "0905-14-downtown-old-montreal",
+          "startTime": "16:30",
           "title": "Downtown → Old Montréal",
           "transport": {
             "mode": "walk",
-            "distanceMeters": 1700
+            "distanceMeters": 1700,
+            "durationMinutes": 25
           }
         },
         {
-          "itemId": "0905-09-old-montr-al-ultim-plimbare-cump-r-turi",
-          "startTime": "14:55",
+          "itemId": "0905-15-old-montreal-final",
+          "startTime": "16:55",
           "title": "Old Montréal: ultimă plimbare + cumpărături",
           "locationId": "montreal-old-montr-al",
           "durationMinutes": 60,
           "progress": true
         },
         {
-          "itemId": "0905-10-old-montr-al-hotel-le-roberval",
-          "startTime": "15:55",
-          "title": "Old Montréal → Hotel Le Roberval",
+          "itemId": "0905-16-old-montreal-downtown",
+          "startTime": "17:55",
+          "title": "Old Montréal → Downtown / Sainte-Catherine",
           "transport": {
             "mode": "walk",
-            "distanceMeters": 1800
+            "distanceMeters": 1800,
+            "durationMinutes": 25
           }
         },
         {
-          "itemId": "0905-12-hotel-montr-al-trudeau-airport",
-          "startTime": "16:30",
-          "title": "Hotel → Montréal-Trudeau Airport",
+          "itemId": "0905-17-cina-downtown",
+          "startTime": "18:20",
+          "title": "Cină Downtown / Sainte-Catherine",
+          "locationId": "montreal-downtown-montr-al",
+          "durationMinutes": 75
+        },
+        {
+          "itemId": "0905-18-downtown-hotel",
+          "startTime": "19:35",
+          "title": "Downtown → Hotel Le Roberval",
           "transport": {
-            "mode": "taxi"
+            "mode": "walk",
+            "distanceMeters": 2000,
+            "durationMinutes": 25
           }
         },
         {
-          "itemId": "0905-13-sosire-aeroport",
-          "startTime": "17:10",
-          "title": "Sosire aeroport",
-          "locationId": "montreal-montreal-trudeau-airport"
+          "itemId": "0905-19-pauza-hotel",
+          "startTime": "20:00",
+          "title": "Hotel / pauză înainte de seară",
+          "locationId": "montreal-hotel-le-roberval",
+          "durationMinutes": 60
         },
         {
-          "itemId": "0905-14-yul-amsterdam",
-          "startTime": "18:50",
-          "title": "✈️ YUL → Amsterdam",
-          "transport": {
-            "mode": "flight"
-          }
+          "itemId": "0905-20-hurleys",
+          "startTime": "21:00",
+          "title": "Hurley's Irish Pub",
+          "locationId": "montreal-hurley-s-irish-pub",
+          "durationMinutes": 120
         }
       ]
     },
@@ -559,8 +594,8 @@
           "startTime": "10:00",
           "title": "Hotel → Mont-Royal / Plateau",
           "transport": {
-            "mode": "walk",
-            "distanceMeters": 2000
+            "mode": "metro",
+            "durationMinutes": 20
           }
         },
         {
@@ -728,6 +763,14 @@
           "transport": {
             "mode": "metro"
           }
+        },
+        {
+          "itemId": "0906-13-plateau-evening-walk",
+          "startTime": "19:30",
+          "title": "Plateau evening walk",
+          "locationId": "montreal-avenue-du-mont-royal",
+          "durationMinutes": 75,
+          "progress": true
         },
         {
           "itemId": "0906-14-pub-le-sainte-lisabeth-alternativ-ceo-kara",
@@ -1200,7 +1243,7 @@
           "itemId": "0909-07-pr-nz-le-d-orl-ans",
           "startTime": "14:30",
           "title": "Prânz Île d'Orléans",
-          "locationId": "montreal-downtown-montr-al",
+          "locationId": "quebec-city-le-d-orl-ans",
           "durationMinutes": 60
         },
         {
@@ -1303,6 +1346,13 @@
       "date": "2026-09-10",
       "title": "Québec City local + trenul de 17:41",
       "items": [
+        {
+          "itemId": "0910-01-checkout-bagaje",
+          "startTime": "10:00",
+          "title": "Hotel + check-out, bagaje lăsate la hotel",
+          "locationId": "quebec-city-le-dauphin-qu-bec",
+          "durationMinutes": 20
+        },
         {
           "itemId": "0910-02-hotel-parliament-building",
           "startTime": "10:20",
@@ -1616,15 +1666,16 @@
         {
           "itemId": "0911-14-hotel-montr-al-trudeau",
           "startTime": "16:30",
-          "title": "Hotel → Montréal-Trudeau",
+          "title": "Hotel → Montréal-Trudeau Airport",
           "transport": {
-            "mode": "walk"
+            "mode": "taxi",
+            "durationMinutes": 45
           }
         },
         {
           "itemId": "0911-15-aeroport",
-          "startTime": "16:30",
-          "title": "Aeroport",
+          "startTime": "17:15",
+          "title": "Sosire Montréal-Trudeau Airport",
           "locationId": "montreal-montreal-trudeau-airport",
           "durationMinutes": 80
         },
