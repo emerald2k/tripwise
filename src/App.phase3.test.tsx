@@ -52,6 +52,18 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
         ],
       },
       {
+        date: '2026-09-11',
+        title: 'Middle day',
+        items: [
+          {
+            itemId: 'alpha-middle-transfer',
+            startTime: '10:00',
+            title: 'Middle transfer',
+            transport: { mode: 'train' },
+          },
+        ],
+      },
+      {
         date: '2026-09-12',
         title: 'Alpha follow up',
         items: [
@@ -300,6 +312,39 @@ describe('Phase 3 itinerary selection', () => {
     expect(screen.getByRole('combobox', { name: 'Itinerary' })).toHaveValue(
       'beta',
     )
+  })
+
+  it('marks first and last itinerary days without marking middle semantics', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const days = document.querySelectorAll('.day-row')
+    expect(
+      within(days[0] as HTMLElement).getByRole('img', {
+        name: 'Departure day',
+      }),
+    ).toBeVisible()
+    expect(within(days[1] as HTMLElement).queryByRole('img')).toBeNull()
+    expect(
+      within(days[2] as HTMLElement).getByRole('img', { name: 'Arrival day' }),
+    ).toBeVisible()
+  })
+
+  it('uses one combined indicator for a single-day itinerary', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'beta')
+    render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(
+      screen.getByRole('img', { name: 'Departure and arrival day' }),
+    ).toBeVisible()
+    expect(screen.queryByRole('img', { name: 'Departure day' })).toBeNull()
+    expect(screen.queryByRole('img', { name: 'Arrival day' })).toBeNull()
   })
 
   it('uses the selected itinerary for Days, Search, and day routes', () => {

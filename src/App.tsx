@@ -677,7 +677,7 @@ function Days({
     <section className="page">
       <h1>{t.days}</h1>
       <div className="day-list">
-        {itinerary.days.map((day) => {
+        {itinerary.days.map((day, index) => {
           const state = dayProgress(
             day,
             progress[itinerary.id]?.[day.date] || {},
@@ -687,6 +687,18 @@ function Days({
             <Link to={`/day/${day.date}`} className="day-row" key={day.date}>
               <span>{formatDate(day.date, language)}</span>
               <strong>{cityNames(day)}</strong>
+              <ItineraryDayIcon
+                type={
+                  itinerary.days.length === 1
+                    ? 'journey'
+                    : index === 0
+                      ? 'departure'
+                      : index === itinerary.days.length - 1
+                        ? 'arrival'
+                        : undefined
+                }
+                t={t}
+              />
               <span className="indicator">
                 {state === 'complete' ? '✓' : state === 'partial' ? '◐' : '○'}
               </span>
@@ -695,6 +707,32 @@ function Days({
         })}
       </div>
     </section>
+  )
+}
+
+function ItineraryDayIcon({
+  type,
+  t,
+}: {
+  type: 'departure' | 'arrival' | 'journey' | undefined
+  t: Copy
+}) {
+  if (!type) return null
+  const label =
+    type === 'departure'
+      ? t.departureDay
+      : type === 'arrival'
+        ? t.arrivalDay
+        : t.journeyDay
+  return (
+    <svg
+      className={`itinerary-day-icon is-${type}`}
+      viewBox="0 0 24 24"
+      role="img"
+      aria-label={label}
+    >
+      <path d="M3 13h6l5 7 2-1-3-6h5l2 3 1-1-1-5 1-5-1-1-2 3h-5l3-6-2-1-5 7H3z" />
+    </svg>
   )
 }
 

@@ -30,6 +30,9 @@
   "activeItinerary": "Current itinerary",
   "noItineraries": "No itinerary is currently available.",
   "confirmReset": "Reset progress for this itinerary?",
+  "departureDay": "Departure day",
+  "arrivalDay": "Arrival day",
+  "journeyDay": "Departure and arrival day",
   "recoveryTitle": "Unable to open the app",
   "recoveryBody": "Please check your connection and try again.",
   "recoveryRetry": "Try again"

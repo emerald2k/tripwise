@@ -30,6 +30,9 @@
   "activeItinerary": "Itinerarul curent",
   "noItineraries": "Nu este disponibil niciun itinerar.",
   "confirmReset": "Resetezi progresul pentru acest itinerar?",
+  "departureDay": "Zi de plecare",
+  "arrivalDay": "Zi de sosire",
+  "journeyDay": "Zi de plecare și sosire",
   "recoveryTitle": "Aplicația nu poate fi deschisă",
   "recoveryBody": "Verifică conexiunea și încearcă din nou.",
   "recoveryRetry": "Încearcă din nou"

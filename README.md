@@ -1488,6 +1488,12 @@ city/context
 progress indicator
 ```
 
+The first itinerary day is marked as departure/take-off and the final day as
+arrival/landing. Middle days have no journey-boundary icon. A one-day
+itinerary shows one combined departure-and-arrival indicator. These indicators
+are derived from itinerary order, so they apply to every manifest-loaded
+itinerary without DATA-specific conditions.
+
 Indicators:
 
 ```text

@@ -343,6 +343,14 @@ main {
   color: #9fbfff;
   font-size: 1.2rem;
 }
+.itinerary-day-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: #8db6ff;
+}
+.itinerary-day-icon.is-arrival {
+  transform: scaleX(-1);
+}
 .search-input {
   width: 100%;
   padding: 1rem;
