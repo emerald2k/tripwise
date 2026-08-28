@@ -250,53 +250,79 @@ test('renders the secondary location description smaller than the primary descri
   expect(secondaryFontSize).toBeLessThan(primaryFontSize)
 })
 
-test('keeps day metadata and indicators inline with uniform row heights', async ({
+test('keeps Days metadata and indicators inline with compact uniform row heights', async ({
   page,
 }) => {
-  await page.goto('/days')
-  await waitForApplication(page)
+  for (const width of [320, 375, 390, 430]) {
+    await page.setViewportSize({ width, height: 700 })
+    await page.goto('/days')
+    await waitForApplication(page)
 
-  const rows = page.locator('.day-row')
-  const rowCount = await rows.count()
-  expect(rowCount).toBeGreaterThan(0)
+    const rows = page.locator('.day-row')
+    const rowCount = await rows.count()
+    expect(rowCount).toBeGreaterThan(0)
+    await rows
+      .first()
+      .locator('.day-title')
+      .evaluate((element) => {
+        element.textContent = 'Long day title '.repeat(20)
+      })
 
-  const layout = await rows.evaluateAll((elements) =>
-    elements.map((row) => {
-      const rowBox = row.getBoundingClientRect()
-      const status = row.querySelector('.day-row-status')
-      const statusBox = status?.getBoundingClientRect()
-      const indicatorBox = status
-        ?.querySelector('.indicator')
-        ?.getBoundingClientRect()
-      const journeyBox = status
-        ?.querySelector('.itinerary-day-icon')
-        ?.getBoundingClientRect()
-      return {
-        top: rowBox.top,
-        bottom: rowBox.bottom,
-        height: rowBox.height,
-        statusTop: statusBox?.top,
-        statusBottom: statusBox?.bottom,
-        indicatorTop: indicatorBox?.top,
-        indicatorBottom: indicatorBox?.bottom,
-        journeyTop: journeyBox?.top,
-        journeyBottom: journeyBox?.bottom,
+    const layout = await rows.evaluateAll((elements) =>
+      elements.map((row) => {
+        const rowBox = row.getBoundingClientRect()
+        const titleBox = row
+          .querySelector('.day-title')
+          ?.getBoundingClientRect()
+        const status = row.querySelector('.day-row-status')
+        const statusBox = status?.getBoundingClientRect()
+        const indicatorBox = status
+          ?.querySelector('.indicator')
+          ?.getBoundingClientRect()
+        const journeyBox = status
+          ?.querySelector('.itinerary-day-icon')
+          ?.getBoundingClientRect()
+        return {
+          top: rowBox.top,
+          bottom: rowBox.bottom,
+          height: rowBox.height,
+          titleTop: titleBox?.top,
+          titleBottom: titleBox?.bottom,
+          titleRight: titleBox?.right,
+          titleWhiteSpace: titleBox
+            ? getComputedStyle(row.querySelector('.day-title')!).whiteSpace
+            : undefined,
+          statusLeft: statusBox?.left,
+          statusTop: statusBox?.top,
+          statusBottom: statusBox?.bottom,
+          indicatorTop: indicatorBox?.top,
+          indicatorBottom: indicatorBox?.bottom,
+          journeyTop: journeyBox?.top,
+          journeyBottom: journeyBox?.bottom,
+        }
+      }),
+    )
+
+    expect(layout.every((row) => row.height === layout[0].height)).toBe(true)
+    for (const row of layout) {
+      expect(row.titleWhiteSpace).toBe('nowrap')
+      expect(row.titleTop).toBeLessThan(row.statusBottom!)
+      expect(row.titleBottom).toBeGreaterThan(row.statusTop!)
+      expect(row.titleRight).toBeLessThanOrEqual(row.statusLeft!)
+      expect(row.statusTop).toBeGreaterThanOrEqual(row.top)
+      expect(row.statusBottom).toBeLessThanOrEqual(row.bottom)
+      expect(row.indicatorTop).toBeGreaterThanOrEqual(row.statusTop!)
+      expect(row.indicatorBottom).toBeLessThanOrEqual(row.statusBottom!)
+      if (row.journeyTop !== undefined) {
+        expect(row.journeyTop).toBeGreaterThanOrEqual(row.statusTop!)
+        expect(row.journeyBottom).toBeLessThanOrEqual(row.statusBottom!)
+        expect(row.journeyTop).toBeLessThan(row.indicatorBottom!)
+        expect(row.journeyBottom).toBeGreaterThan(row.indicatorTop!)
       }
-    }),
-  )
-
-  expect(layout.every((row) => row.height === layout[0].height)).toBe(true)
-  for (const row of layout) {
-    expect(row.statusTop).toBeGreaterThanOrEqual(row.top)
-    expect(row.statusBottom).toBeLessThanOrEqual(row.bottom)
-    expect(row.indicatorTop).toBeGreaterThanOrEqual(row.statusTop!)
-    expect(row.indicatorBottom).toBeLessThanOrEqual(row.statusBottom!)
-    if (row.journeyTop !== undefined) {
-      expect(row.journeyTop).toBeGreaterThanOrEqual(row.statusTop!)
-      expect(row.journeyBottom).toBeLessThanOrEqual(row.statusBottom!)
-      expect(row.journeyTop).toBeLessThan(row.indicatorBottom!)
-      expect(row.journeyBottom).toBeGreaterThan(row.indicatorTop!)
     }
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width)
   }
 })
 
@@ -531,6 +557,23 @@ test('location actions remain inline and tappable without overflow on mobile wid
         itemBox!.y + itemBox!.height,
       )
     }
+    expect(
+      await share.evaluate(
+        (element) => getComputedStyle(element).backgroundColor,
+      ),
+    ).toBe('rgba(0, 0, 0, 0)')
+    expect(
+      await share.evaluate(
+        (element) => getComputedStyle(element).borderTopStyle,
+      ),
+    ).toBe('none')
+    expect(
+      Math.abs(
+        controlBoxes[3]!.x +
+          controlBoxes[3]!.width -
+          (actionRowBox!.x + actionRowBox!.width),
+      ),
+    ).toBeLessThanOrEqual(1)
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width)

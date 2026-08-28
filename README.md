@@ -1492,7 +1492,8 @@ progress, Maps navigation, and sharing actions retain their existing
 eligibility rules.
 
 All applicable Location Item actions remain in one horizontal row across
-supported viewport widths.
+supported viewport widths. Location Share is intentionally a minimal,
+transparent icon action.
 
 ---
 
@@ -1525,7 +1526,8 @@ itinerary without DATA-specific conditions.
 Days list items have a uniform height: the date, title, departure/arrival
 indicator, and progress indicator remain inline. The title is the flexible
 region, while indicators stay together in a dedicated non-wrapping status
-region.
+region. Cards use compact single-row spacing; day titles receive the central
+flexible space and truncate with an ellipsis only when necessary.
 
 ## Duration display
 

@@ -410,7 +410,7 @@ describe('Phase 3 itinerary selection', () => {
           'https://www.google.com/maps/place/alpha',
         ),
       )
-      expect(locationShare()).toHaveTextContent('Copy Link')
+      expect(locationShare()).toHaveTextContent('↗')
       copied.unmount()
 
       Object.defineProperty(navigator, 'clipboard', {

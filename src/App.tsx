@@ -652,6 +652,7 @@ function DayView({
                         url={location.googleMapsUrl}
                         label={t.shareGoogleMapsLocation}
                         className="location-share"
+                        iconOnly
                       />
                     )}
                   </div>
@@ -721,7 +722,7 @@ function Days({
 }: SharedProps & { itinerary: Itinerary; progress: ProgressStore }) {
   const today = localDate()
   return (
-    <section className="page">
+    <section className="page days-page">
       <h1>{t.days}</h1>
       <div className="day-list">
         {itinerary.days.map((day, index) => {
@@ -957,11 +958,13 @@ function ShareButton({
   url,
   label,
   className,
+  iconOnly = false,
 }: {
   t: Copy
   url: string
   label: string
   className: string
+  iconOnly?: boolean
 }) {
   const [copied, setCopied] = useState(false)
   const share = async () => {
@@ -983,7 +986,7 @@ function ShareButton({
   }
   return (
     <button className={className} onClick={share} aria-label={label}>
-      {copied ? t.copyLink : '↗'}
+      {copied && !iconOnly ? t.copyLink : '↗'}
     </button>
   )
 }
