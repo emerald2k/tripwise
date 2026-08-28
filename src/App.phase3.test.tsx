@@ -113,6 +113,7 @@ vi.mock('./data', () => ({
           locationId: 'alpha-museum',
           name: 'Alpha museum',
           category: 'attraction',
+          address: 'Museum secondary detail',
         },
       ],
       [
@@ -376,8 +377,41 @@ describe('Phase 3 itinerary selection', () => {
     fireEvent.change(screen.getByRole('textbox'), {
       target: { value: 'alpha' },
     })
+
     fireEvent.change(screen.getByRole('textbox'), { target: { value: '' } })
     expect(document.querySelectorAll('.search-day')).toHaveLength(0)
+  })
+
+  it('searches location title, primary and secondary descriptions in stable day order', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const search = screen.getByRole('textbox')
+    fireEvent.change(search, { target: { value: 'ALPHA PLACE' } })
+    expect(screen.getAllByRole('link', { name: /Alpha place/ })).toHaveLength(2)
+    fireEvent.change(search, { target: { value: 'waterfront' } })
+    expect(screen.getAllByRole('link', { name: /Alpha place/ })).toHaveLength(2)
+    fireEvent.change(search, { target: { value: 'SECONDARY DETAIL' } })
+    expect(screen.getByRole('link', { name: /Alpha museum/ })).toBeVisible()
+  })
+
+  it('returns a day-only result only when the day has no matching locations', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const search = screen.getByRole('textbox')
+    fireEvent.change(search, { target: { value: 'follow up' } })
+    expect(
+      screen.getByRole('link', { name: /Alpha follow up/ }),
+    ).toHaveAttribute('href', '/day/2026-09-12')
+    fireEvent.change(search, { target: { value: 'alpha' } })
+    expect(screen.queryByRole('link', { name: /Alpha day$/ })).toBeNull()
   })
 
   it('isolates persisted progress between itineraries and restores it', () => {

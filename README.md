@@ -1532,42 +1532,26 @@ Search is:
 
 - local;
 - instant;
-- fuzzy;
 - day-oriented.
 
-Fuse.js searches relevant textual DATA.
+Search is case-insensitive and deterministic. It inspects each active-itinerary
+day title and each Location Item's name, primary description, and secondary
+description. It does not index transport details, categories, city metadata, or
+serialized DATA.
 
-Potential searchable content includes:
+Matching locations are returned individually and grouped beneath their authored
+day, preserving day and Location Item order. Selecting a location result opens
+its day, scrolls to the matching item, and applies the search highlight.
 
-- location names;
-- descriptions;
-- categories;
-- transport details;
-- hotels;
-- restaurants;
-- flights;
-- notes.
-
-The search result is a day.
-
-Example:
-
-```text
-Search
-
-05 SEP
-Montréal
-
-06 SEP
-Québec City
-```
+A day-title-only match is returned as a standalone day result only when no
+Location Item on that day matches. Selecting it opens the day normally without
+an item target. Search is manifest/data-driven and applies to every itinerary
+without itinerary, city, or location-specific conditions.
 
 Do not display:
 
 - result count;
-- Fuse score;
-- snippets;
-- location result cards;
+- score;
 - advanced filters;
 - sorting controls;
 - AI semantic interpretation.

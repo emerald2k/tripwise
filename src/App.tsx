@@ -8,7 +8,6 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom'
-import Fuse from 'fuse.js'
 import {
   getRuntimeData,
   persistActiveItineraryId,
@@ -23,7 +22,7 @@ import {
   sortItems,
 } from './domain/itinerary'
 import { isCompactStatus } from './domain/presentation'
-import type { Day, Itinerary, Item } from './data/schema'
+import type { City, Day, Itinerary, Item } from './data/schema'
 import {
   readProgress,
   resetItineraryProgress,
@@ -45,6 +44,13 @@ import './styles.css'
 type Language = 'ro' | 'en'
 type Copy = typeof ro
 const translations: Record<Language, Copy> = { ro, en }
+type SearchLocationResult = {
+  item: Extract<Item, { locationId: string }>
+  location: City['locations'][number]
+}
+type SearchResultDay =
+  | { day: Day; type: 'locations'; matches: SearchLocationResult[] }
+  | { day: Day; type: 'day' }
 
 interface AppProps {
   initialInstallPrompt?: BeforeInstallPromptEvent | null
@@ -698,48 +704,27 @@ function Search({
   itinerary,
 }: SharedProps & { itinerary: Itinerary }) {
   const [query, setQuery] = useState('')
-  const entries = useMemo(
-    () =>
-      itinerary.days.flatMap((day) =>
-        day.items.map((item) => {
-          const location =
-            'locationId' in item
-              ? getRuntimeData().locations.get(item.locationId)
-              : undefined
-          return {
-            day,
-            item,
-            location,
-            text: [
-              item.title,
-              location?.name,
-              location?.description,
-              location?.address,
-              location?.category,
-              'locationId' in item
-                ? getRuntimeData().locationCities.get(item.locationId)
-                : item.transport.mode,
-            ]
-              .filter(Boolean)
-              .join(' '),
-          }
-        }),
-      ),
-    [itinerary],
-  )
-  const fuse = useMemo(
-    () => new Fuse(entries, { keys: ['text'], threshold: 0.35 }),
-    [entries],
-  )
-  const matches = query.trim()
-    ? fuse.search(query).map((result) => result.item)
-    : []
-  const resultDays = itinerary.days
-    .map((day) => ({
-      day,
-      matches: matches.filter((match) => match.day.date === day.date),
-    }))
-    .filter((result) => result.matches.length)
+  const normalizedQuery = query.trim().toLocaleLowerCase()
+  const resultDays = useMemo(() => {
+    if (!normalizedQuery) return []
+    return itinerary.days.flatMap<SearchResultDay>((day) => {
+      const matches: SearchLocationResult[] = []
+      for (const item of day.items) {
+        if (!('locationId' in item)) continue
+        const location = getRuntimeData().locations.get(item.locationId)
+        if (!location) continue
+        const text = [location.name, location.description, location.address]
+          .filter(Boolean)
+          .join(' ')
+          .toLocaleLowerCase()
+        if (text.includes(normalizedQuery)) matches.push({ item, location })
+      }
+      if (matches.length) return [{ day, type: 'locations' as const, matches }]
+      return day.title?.toLocaleLowerCase().includes(normalizedQuery)
+        ? [{ day, type: 'day' as const }]
+        : []
+    })
+  }, [itinerary, normalizedQuery])
   return (
     <section className="page">
       <h1>{t.search}</h1>
@@ -753,33 +738,43 @@ function Search({
       {query.trim() && (
         <div className="search-results">
           {resultDays.length ? (
-            resultDays.map(({ day, matches }) => (
-              <section className="search-day" key={day.date}>
+            resultDays.map((result) => (
+              <section className="search-day" key={result.day.date}>
                 <h2>
-                  {formatDate(day.date, language)}
-                  {day.title && <span>{day.title}</span>}
+                  {formatDate(result.day.date, language)}
+                  {result.day.title && <span>{result.day.title}</span>}
                 </h2>
-                {matches.map(({ item, location }) => {
-                  const name = location?.name || item.title
-                  const detail =
-                    location?.name && item.title !== location.name
-                      ? item.title
-                      : location?.description || location?.address
-                  return (
-                    <Link
-                      to={`/day/${day.date}?item=${encodeURIComponent(item.itemId)}`}
-                      className="result-row"
-                      key={item.itemId}
-                      aria-label={`${item.startTime} ${name}${detail ? `. ${detail}` : ''}`}
-                    >
-                      <span>{item.startTime}</span>
-                      <strong>{name}</strong>
-                      {detail && (
-                        <span className="search-result-detail">{detail}</span>
-                      )}
-                    </Link>
-                  )
-                })}
+                {result.type === 'day' ? (
+                  <Link
+                    to={`/day/${result.day.date}`}
+                    className="result-row"
+                    aria-label={`${formatDate(result.day.date, language)} ${result.day.title}`}
+                  >
+                    <strong>{result.day.title}</strong>
+                  </Link>
+                ) : (
+                  result.matches.map(({ item, location }) => {
+                    const name = location?.name || item.title
+                    const detail =
+                      location?.name && item.title !== location.name
+                        ? item.title
+                        : location?.description || location?.address
+                    return (
+                      <Link
+                        to={`/day/${result.day.date}?item=${encodeURIComponent(item.itemId)}`}
+                        className="result-row"
+                        key={item.itemId}
+                        aria-label={`${item.startTime} ${name}${detail ? `. ${detail}` : ''}`}
+                      >
+                        <span>{item.startTime}</span>
+                        <strong>{name}</strong>
+                        {detail && (
+                          <span className="search-result-detail">{detail}</span>
+                        )}
+                      </Link>
+                    )
+                  })
+                )}
               </section>
             ))
           ) : (
