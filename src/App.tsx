@@ -585,13 +585,22 @@ function DayView({
                     )}
                     {!compact &&
                       location?.name &&
-                      item.title !== location.name && <p>{item.title}</p>}
+                      item.title !== location.name && (
+                        <p className="location-context">{item.title}</p>
+                      )}
                     {!compact && location?.description && (
-                      <p>{location.description}</p>
+                      <p className="location-primary-description">
+                        {location.description}
+                      </p>
+                    )}
+                    {!compact && location?.address && (
+                      <p className="location-secondary-description">
+                        {location.address}
+                      </p>
                     )}
                     {'durationMinutes' in item &&
                       formatDurationMinutes(item.durationMinutes) && (
-                        <span className="muted">
+                        <span className="location-duration muted">
                           {formatDurationMinutes(item.durationMinutes)}
                         </span>
                       )}

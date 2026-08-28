@@ -200,6 +200,19 @@ main {
   margin: 0.1rem 0;
   color: #bdc5d1;
 }
+.location-context {
+  font-weight: 600;
+}
+.location-primary-description {
+  font-size: 16px;
+}
+.location-secondary-description {
+  color: #9ba5b5;
+  font-size: 12px;
+}
+.location-duration {
+  font-variant-numeric: tabular-nums;
+}
 .is-compact {
   opacity: 0.58;
 }

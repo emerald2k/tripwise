@@ -21,7 +21,13 @@ function readDataFile(path: string) {
 const locations = new Map(
   manifest.cities.flatMap((path) => {
     const city = readDataFile(path) as {
-      locations: { locationId: string; name: string; googleMapsUrl?: string }[]
+      locations: {
+        locationId: string
+        name: string
+        description?: string
+        address?: string
+        googleMapsUrl?: string
+      }[]
     }
     return city.locations.map((location) => [location.locationId, location])
   }),
@@ -44,6 +50,25 @@ const mobileProgressItem = (() => {
       }
   }
   throw new Error('Expected a progress-enabled mapped Location Item')
+})()
+
+const locationHierarchyDay = (() => {
+  for (const entry of manifest.itineraries) {
+    const itinerary = readDataFile(entry.file) as {
+      days: { date: string; items: { locationId?: string }[] }[]
+    }
+    for (const day of itinerary.days)
+      if (
+        day.items.some((item) => {
+          const location = item.locationId
+            ? locations.get(item.locationId)
+            : undefined
+          return location?.description && location.address
+        })
+      )
+        return { itineraryId: entry.id, date: day.date }
+  }
+  throw new Error('Expected a Location Item with a description and address')
 })()
 
 test.beforeEach(async ({ page }) => {
@@ -194,6 +219,29 @@ test('disables Header slide animation when reduced motion is requested', async (
   await expect(header).toHaveCSS('transition-duration', '0s')
   await page.evaluate(() => window.scrollTo(0, 120))
   await expect(header).toHaveClass(/is-hidden/)
+})
+
+test('renders primary and secondary location descriptions with a 4px size difference', async ({
+  page,
+}) => {
+  await page.addInitScript(
+    (itineraryId) =>
+      localStorage.setItem('tripwise.activeItineraryId', itineraryId),
+    locationHierarchyDay.itineraryId,
+  )
+  await page.goto(`/day/${locationHierarchyDay.date}`)
+  await waitForApplication(page)
+
+  const primary = page.locator('.location-primary-description').first()
+  const secondary = page.locator('.location-secondary-description').first()
+  await expect(primary).toBeVisible()
+  await expect(secondary).toBeVisible()
+  expect(
+    await primary.evaluate((element) => getComputedStyle(element).fontSize),
+  ).toBe('16px')
+  expect(
+    await secondary.evaluate((element) => getComputedStyle(element).fontSize),
+  ).toBe('12px')
 })
 
 test('keeps day metadata and indicators inline with uniform row heights', async ({

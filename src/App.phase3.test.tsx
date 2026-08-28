@@ -23,6 +23,7 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             startTime: '09:00',
             title: 'Alpha place',
             locationId: 'alpha-place',
+            durationMinutes: 90,
             progress: true,
           },
           {
@@ -118,6 +119,7 @@ vi.mock('./data', () => ({
           name: 'Alpha place',
           category: 'attraction',
           description: 'Waterfront landmark',
+          address: 'Synthetic waterfront address',
         },
       ],
       [
@@ -210,6 +212,31 @@ describe('Phase 3 itinerary selection', () => {
         name: 'Share Google Maps location',
       }),
     ).toBeNull()
+  })
+
+  it('renders location content in title, description, duration, and action hierarchy', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const item = screen
+      .getByRole('heading', { name: 'Alpha place' })
+      .closest('article') as HTMLElement
+    expect(
+      within(item).getByRole('heading', { name: 'Alpha place' }),
+    ).toBeVisible()
+    const primaryDescription = within(item).getByText('Waterfront landmark')
+    const secondaryDescription = within(item).getByText(
+      'Synthetic waterfront address',
+    )
+    expect(primaryDescription).toHaveClass('location-primary-description')
+    expect(secondaryDescription).toHaveClass('location-secondary-description')
+    expect(within(item).getByText('1h 30m')).toHaveClass('location-duration')
+    expect(within(item).getByRole('button', { name: 'DONE' })).toBeVisible()
+    expect(within(item).getByRole('button', { name: 'SKIP' })).toBeVisible()
   })
 
   it('renders actions from item progress and Maps availability independently', () => {

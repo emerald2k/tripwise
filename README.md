@@ -1476,6 +1476,23 @@ Other days do not auto-scroll.
 
 ---
 
+## Location Item presentation
+
+Location Items present their content in this order:
+
+1. Title
+2. Primary description
+3. Secondary description
+4. Suggested visit duration
+5. Actions
+
+The secondary description is the location address and uses a font size 4px
+smaller than the primary description. Duration uses the compact duration
+format, while progress, Maps navigation, and sharing actions retain their
+existing eligibility rules.
+
+---
+
 # Header behavior
 
 The Header is visible at the top of the page. Scrolling down hides it, while
