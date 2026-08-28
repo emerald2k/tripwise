@@ -1,6 +1,65 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
+test('shows the bootstrap loader until the application initializes', async ({
+  page,
+}) => {
+  await page.route('**/src/main.tsx', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await route.continue()
+  })
+
+  const navigation = page.goto('/')
+  await expect(page.getByRole('status')).toHaveText('Loading application')
+  await expect(page.locator('.app-loader__icon')).toHaveAttribute(
+    'src',
+    '/icon.svg',
+  )
+  await expect(page.locator('.app-loader__spinner')).toHaveCount(0)
+  await expect(page.locator('.app-loader__ring')).toHaveCSS(
+    'animation-name',
+    'app-loader-rotate',
+  )
+  await navigation
+  await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
+  await expect(page.locator('#app-loader')).toHaveCount(0)
+})
+
+test('disables bootstrap ring animation for reduced motion', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.route('**/src/main.tsx', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await route.continue()
+  })
+
+  const navigation = page.goto('/')
+  await expect(page.locator('.app-loader__ring')).toHaveCSS(
+    'animation-name',
+    'none',
+  )
+  await navigation
+  await expect(page.locator('#app-loader')).toHaveCount(0)
+})
+
+test('localizes the bootstrap loader from persisted language', async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    localStorage.setItem('tripwise.language', 'ro'),
+  )
+  await page.route('**/src/main.tsx', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await route.continue()
+  })
+
+  const navigation = page.goto('/')
+  await expect(page.getByRole('status')).toHaveText('Se încarcă aplicația')
+  await navigation
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
+})
+
 test('loads Today and navigates through core pages', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
@@ -12,15 +71,31 @@ test('loads Today and navigates through core pages', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('search returns days only', async ({ page }) => {
+test('search groups planned item matches and opens the selected activity', async ({
+  page,
+}) => {
   await page.goto('/search')
-  await page.getByRole('textbox').fill('Olympic')
-  const result = page.getByRole('link', { name: /Montréal/ })
+  await page.getByRole('textbox').fill('Hotel Le Roberval')
+  const day = page.locator('.search-day').filter({ hasText: 'SEP 04' })
+  await expect(day).toContainText('Old Montréal + Old Port')
+  await expect(day).toContainText('23:15')
+  await expect(day).toContainText('Hotel Le Roberval')
+  await expect(day).toContainText('Revenire la Hotel Le Roberval')
+  const result = day.locator(
+    'a[href="/day/2026-09-04?item=0904-20-revenire-la-hotel-le-roberval"]',
+  )
   await expect(result).toBeVisible()
   await result.click()
   await expect(
-    page.getByRole('heading', { name: /Olympic Park|Old Port/ }).first(),
+    page.getByRole('heading', { name: 'Old Montréal + Old Port' }),
   ).toBeVisible()
+  const match = page.locator(
+    '.timeline-item.is-search-match:has(h2:text("Hotel Le Roberval"))',
+  )
+  await expect(match).toContainText('23:15')
+  await expect(match).toContainText('Revenire la Hotel Le Roberval')
+  await expect(match).toBeFocused()
+  await expect(page.getByText('Match')).toBeVisible()
 })
 
 test('settings persists the selected language', async ({ page }) => {
@@ -32,17 +107,78 @@ test('settings persists the selected language', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Setări' })).toBeVisible()
 })
 
-test('first visit prompt directs users to the existing Settings install flow', async ({
+test('install awareness prompt directly uses the native install flow', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperties(event, {
+      prompt: {
+        value: () => {
+          document.documentElement.dataset.installPrompt = 'called'
+          return Promise.resolve()
+        },
+      },
+      userChoice: { value: Promise.resolve({ outcome: 'accepted' }) },
+    })
+    window.dispatchEvent(event)
+  })
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).toBeVisible()
+  await expect(
+    page.getByText('Install the app for quick access and offline use.'),
+  ).toBeVisible()
+  await page.getByRole('button', { name: 'Install' }).click()
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-install-prompt',
+    'called',
+  )
+  await expect(page).toHaveURL(/\/$/)
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).not.toBeVisible()
+})
+
+test('dismissed native installation consumes the awareness prompt', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperties(event, {
+      prompt: { value: () => Promise.resolve() },
+      userChoice: { value: Promise.resolve({ outcome: 'dismissed' }) },
+    })
+    window.dispatchEvent(event)
+  })
+  await page.getByRole('button', { name: 'Install' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
+  ).not.toBeVisible()
+})
+
+test('installed and unsupported browsers do not show the awareness prompt', async ({
   page,
 }) => {
   await page.goto('/')
   await expect(
     page.getByRole('heading', { name: 'Install Volala' }),
+  ).not.toBeVisible()
+
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true })
+    Object.defineProperties(event, {
+      prompt: { value: () => Promise.resolve() },
+      userChoice: { value: Promise.resolve({ outcome: 'accepted' }) },
+    })
+    window.dispatchEvent(event)
+  })
+  await expect(
+    page.getByRole('heading', { name: 'Install Volala' }),
   ).toBeVisible()
-  await expect(page.getByText(/better offline experience/i)).toBeVisible()
-  await page.getByRole('link', { name: 'Go to Settings' }).click()
-  await expect(page).toHaveURL(/\/settings$/)
-  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
+  await page.evaluate(() => window.dispatchEvent(new Event('appinstalled')))
   await expect(
     page.getByRole('heading', { name: 'Install Volala' }),
   ).not.toBeVisible()
@@ -55,12 +191,19 @@ test('Settings keeps the browser installation control when available', async ({
   await page.evaluate(() => {
     const event = new Event('beforeinstallprompt', { cancelable: true })
     Object.defineProperty(event, 'prompt', {
-      value: () => Promise.resolve(),
+      value: () => {
+        document.documentElement.dataset.installPrompt = 'called'
+        return Promise.resolve()
+      },
     })
     window.dispatchEvent(event)
   })
   await page.getByRole('link', { name: 'Settings', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Install App' })).toBeVisible()
+  await page.getByRole('button', { name: 'Install App' }).click()
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-install-prompt',
+    'called',
+  )
 })
 
 test('timeline supports DONE, UNDO, and Google Maps actions', async ({

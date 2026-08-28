@@ -6,6 +6,7 @@ import {
   Routes,
   useNavigate,
   useParams,
+  useSearchParams,
 } from 'react-router-dom'
 import Fuse from 'fuse.js'
 import {
@@ -45,6 +46,7 @@ const translations: Record<Language, Copy> = { ro, en }
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
+  userChoice?: Promise<{ outcome: 'accepted' | 'dismissed' }>
 }
 
 const installPromptSeenKey = 'tripwise.installPromptSeen'
@@ -90,6 +92,7 @@ export default function App() {
   const [offline, setOffline] = useState(!navigator.onLine)
   const [deferredInstall, setDeferredInstall] =
     useState<BeforeInstallPromptEvent | null>(null)
+  const [installed, setInstalled] = useState(isInstalledPwa)
   const [showInstallAwareness, setShowInstallAwareness] = useState(
     () => !localStorage.getItem(installPromptSeenKey) && !isInstalledPwa(),
   )
@@ -106,11 +109,18 @@ export default function App() {
       event.preventDefault()
       setDeferredInstall(event as BeforeInstallPromptEvent)
     }
+    const installed = () => {
+      setInstalled(true)
+      setDeferredInstall(null)
+      setShowInstallAwareness(false)
+    }
     window.addEventListener('beforeinstallprompt', install)
+    window.addEventListener('appinstalled', installed)
     return () => {
       window.removeEventListener('online', on)
       window.removeEventListener('offline', off)
       window.removeEventListener('beforeinstallprompt', install)
+      window.removeEventListener('appinstalled', installed)
     }
   }, [])
 
@@ -135,7 +145,9 @@ export default function App() {
   const install = async () => {
     if (!deferredInstall) return
     await deferredInstall.prompt()
+    await deferredInstall.userChoice
     setDeferredInstall(null)
+    setShowInstallAwareness(false)
   }
   const dismissInstallAwareness = () => {
     localStorage.setItem(installPromptSeenKey, 'true')
@@ -208,8 +220,12 @@ export default function App() {
         </div>
       </header>
       <main>
-        {showInstallAwareness && (
-          <InstallAwareness t={language.t} dismiss={dismissInstallAwareness} />
+        {showInstallAwareness && !installed && deferredInstall && (
+          <InstallAwareness
+            t={language.t}
+            dismiss={dismissInstallAwareness}
+            install={install}
+          />
         )}
         <Routes>
           <Route
@@ -285,7 +301,15 @@ function withBrandName(copy: string) {
   return copy.replace('{brandName}', brand.name)
 }
 
-function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
+function InstallAwareness({
+  t,
+  dismiss,
+  install,
+}: {
+  t: Copy
+  dismiss: () => void
+  install: () => void
+}) {
   return (
     <aside
       className="install-awareness"
@@ -299,9 +323,13 @@ function InstallAwareness({ t, dismiss }: { t: Copy; dismiss: () => void }) {
         <div>{withBrandName(t.installPromptBody)}</div>
       </div>
       <div className="install-awareness-actions">
-        <Link className="button" to="/settings" onClick={dismiss}>
-          {t.installPromptSettings}
-        </Link>
+        <button
+          className="button install-prompt-primary"
+          type="button"
+          onClick={install}
+        >
+          {t.installPromptInstall}
+        </button>
         <button type="button" onClick={dismiss}>
           {t.installPromptDismiss}
         </button>
@@ -375,6 +403,7 @@ function Today(props: DayProps) {
 
 function DayRoute(props: DayProps) {
   const { date } = useParams()
+  const [searchParams] = useSearchParams()
   const day = props.itinerary.days.find((item) => item.date === date)
   if (!day)
     return (
@@ -385,7 +414,13 @@ function DayRoute(props: DayProps) {
         </Link>
       </section>
     )
-  return <DayView {...props} day={day} />
+  return (
+    <DayView
+      {...props}
+      day={day}
+      highlightedItemId={searchParams.get('item') ?? undefined}
+    />
+  )
 }
 
 function DayView({
@@ -397,11 +432,18 @@ function DayView({
   updateStatus,
   today,
   now,
-}: DayProps & { day: Day; today?: boolean; now?: Date }) {
+  highlightedItemId,
+}: DayProps & {
+  day: Day
+  today?: boolean
+  now?: Date
+  highlightedItemId?: string
+}) {
   const statuses = progress[itinerary.id]?.[day.date] || {}
   const ordered = sortItems(day.items)
   const [, refresh] = useState(0)
   const currentRef = useRef<HTMLDivElement>(null)
+  const highlightedRef = useRef<HTMLDivElement>(null)
   const evaluationTime = now ?? new Date()
   const current = today ? currentItem(day, statuses, evaluationTime) : null
   useEffect(() => {
@@ -418,6 +460,16 @@ function DayView({
       block: 'center',
     })
   }, [current?.itemId])
+  useEffect(() => {
+    if (!highlightedRef.current) return
+    const reduced =
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+    highlightedRef.current.scrollIntoView?.({
+      behavior: reduced ? 'auto' : 'smooth',
+      block: 'center',
+    })
+    highlightedRef.current.focus({ preventScroll: true })
+  }, [highlightedItemId])
   const trackable = day.items.filter(
     (item) => 'progress' in item && item.progress,
   )
@@ -448,11 +500,19 @@ function DayView({
             'locationId' in item ? locations.get(item.locationId) : undefined
           const status = 'progress' in item ? statuses[item.itemId] : undefined
           const compact = isCompactStatus(status)
+          const highlighted = highlightedItemId === item.itemId
           return (
             <div
-              ref={current?.itemId === item.itemId ? currentRef : undefined}
-              className={`timeline-item ${current?.itemId === item.itemId ? 'is-current' : ''} ${compact ? 'is-compact' : ''}`}
+              ref={
+                highlighted
+                  ? highlightedRef
+                  : current?.itemId === item.itemId
+                    ? currentRef
+                    : undefined
+              }
+              className={`timeline-item ${current?.itemId === item.itemId ? 'is-current' : ''} ${highlighted ? 'is-search-match' : ''} ${compact ? 'is-compact' : ''}`}
               key={item.itemId}
+              tabIndex={highlighted ? -1 : undefined}
             >
               {'transport' in item && (
                 <TransportInfo transport={item.transport} />
@@ -470,6 +530,11 @@ function DayView({
                       </span>
                     )}
                     <h2>{location?.name || item.title}</h2>
+                    {highlighted && (
+                      <span className="search-match-label">
+                        {t.searchMatch}
+                      </span>
+                    )}
                     {compact && (
                       <span className="item-status">
                         {status === 'skipped' ? t.skip : t.done}
@@ -617,37 +682,44 @@ function Search({
   const [query, setQuery] = useState('')
   const entries = useMemo(
     () =>
-      itinerary.days.map((day) => ({
-        day,
-        text: [
-          day.date,
-          day.title,
-          ...day.items.flatMap((item) => {
-            if ('locationId' in item) {
-              const location = locations.get(item.locationId)
-              return [
-                item.title,
-                location?.name,
-                location?.description,
-                location?.category,
-                locationCities.get(item.locationId),
-              ]
-            }
-            return [item.title, item.transport.mode]
-          }),
-        ]
-          .filter(Boolean)
-          .join(' '),
-      })),
+      itinerary.days.flatMap((day) =>
+        day.items.map((item) => {
+          const location =
+            'locationId' in item ? locations.get(item.locationId) : undefined
+          return {
+            day,
+            item,
+            location,
+            text: [
+              item.title,
+              location?.name,
+              location?.description,
+              location?.address,
+              location?.category,
+              'locationId' in item
+                ? locationCities.get(item.locationId)
+                : item.transport.mode,
+            ]
+              .filter(Boolean)
+              .join(' '),
+          }
+        }),
+      ),
     [itinerary],
   )
   const fuse = useMemo(
     () => new Fuse(entries, { keys: ['text'], threshold: 0.35 }),
     [entries],
   )
-  const results = query.trim()
-    ? fuse.search(query).map((result) => result.item.day)
+  const matches = query.trim()
+    ? fuse.search(query).map((result) => result.item)
     : []
+  const resultDays = itinerary.days
+    .map((day) => ({
+      day,
+      matches: matches.filter((match) => match.day.date === day.date),
+    }))
+    .filter((result) => result.matches.length)
   return (
     <section className="page">
       <h1>{t.search}</h1>
@@ -660,16 +732,35 @@ function Search({
       />
       {query.trim() && (
         <div className="search-results">
-          {results.length ? (
-            results.map((day) => (
-              <Link
-                to={`/day/${day.date}`}
-                className="result-row"
-                key={day.date}
-              >
-                <span>{formatDate(day.date, language)}</span>
-                <strong>{cityNames(day)}</strong>
-              </Link>
+          {resultDays.length ? (
+            resultDays.map(({ day, matches }) => (
+              <section className="search-day" key={day.date}>
+                <h2>
+                  {formatDate(day.date, language)}
+                  {day.title && <span>{day.title}</span>}
+                </h2>
+                {matches.map(({ item, location }) => {
+                  const name = location?.name || item.title
+                  const detail =
+                    location?.name && item.title !== location.name
+                      ? item.title
+                      : location?.description || location?.address
+                  return (
+                    <Link
+                      to={`/day/${day.date}?item=${encodeURIComponent(item.itemId)}`}
+                      className="result-row"
+                      key={item.itemId}
+                      aria-label={`${item.startTime} ${name}${detail ? `. ${detail}` : ''}`}
+                    >
+                      <span>{item.startTime}</span>
+                      <strong>{name}</strong>
+                      {detail && (
+                        <span className="search-result-detail">{detail}</span>
+                      )}
+                    </Link>
+                  )
+                })}
+              </section>
             ))
           ) : (
             <p className="muted">{t.noResults}</p>

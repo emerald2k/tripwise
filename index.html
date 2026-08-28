@@ -7,8 +7,89 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <title></title>
+    <style>
+      .app-loader {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #000;
+        color: #fff;
+      }
+      .app-loader__indicator {
+        position: relative;
+        display: grid;
+        width: 6.25rem;
+        height: 6.25rem;
+        place-items: center;
+      }
+      .app-loader__icon {
+        width: 4.5rem;
+        height: 4.5rem;
+      }
+      .app-loader__ring {
+        position: absolute;
+        inset: 0;
+        border: 3px solid rgba(255, 255, 255, 0.25);
+        border-radius: 50%;
+        border-top-color: #fff;
+        border-right-color: #fff;
+        animation: app-loader-rotate 0.9s linear infinite;
+      }
+      .app-loader__label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @keyframes app-loader-rotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .app-loader__ring {
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div id="app-loader" class="app-loader" role="status" aria-live="polite">
+      <div class="app-loader__indicator" aria-hidden="true">
+        <div class="app-loader__ring"></div>
+        <img class="app-loader__icon" src="/icon.svg" alt="" />
+      </div>
+      <span id="app-loader-label" class="app-loader__label"
+        >Loading application</span
+      >
+    </div>
+    <script>
+      ;(() => {
+        let language
+        try {
+          const saved = localStorage.getItem('tripwise.language')
+          language =
+            saved === 'en' || saved === 'ro'
+              ? saved
+              : navigator.language.toLowerCase().startsWith('en')
+                ? 'en'
+                : 'ro'
+        } catch {
+          language = navigator.language.toLowerCase().startsWith('en')
+            ? 'en'
+            : 'ro'
+        }
+        document.documentElement.lang = language
+        document.getElementById('app-loader-label').textContent =
+          language === 'en' ? 'Loading application' : 'Se încarcă aplicația'
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

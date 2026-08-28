@@ -3,6 +3,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -10,6 +11,17 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import packageJson from '../package.json'
 import App from './App'
 import { appVersion } from './version'
+
+function dispatchInstallPrompt(outcome: 'accepted' | 'dismissed' = 'accepted') {
+  const prompt = vi.fn(() => Promise.resolve())
+  const event = new Event('beforeinstallprompt', { cancelable: true })
+  Object.defineProperties(event, {
+    prompt: { value: prompt },
+    userChoice: { value: Promise.resolve({ outcome }) },
+  })
+  fireEvent(window, event)
+  return prompt
+}
 
 describe('day item presentation', () => {
   beforeEach(() => localStorage.clear())
@@ -72,6 +84,66 @@ describe('day item presentation', () => {
     expect(within(item).getByText('SKIP')).toBeVisible()
   })
 
+  it('persists DONE through a remount and persists UNDO', () => {
+    const view = renderDay()
+    const item = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+
+    fireEvent.click(within(item).getByRole('button', { name: 'DONE' }))
+    view.unmount()
+
+    const restored = renderDay()
+    const restoredItem = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+    expect(
+      within(restoredItem).getByRole('button', { name: 'UNDO' }),
+    ).toBeVisible()
+
+    fireEvent.click(within(restoredItem).getByRole('button', { name: 'UNDO' }))
+    restored.unmount()
+
+    renderDay()
+    const undoneItem = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+    expect(
+      within(undoneItem).getByRole('button', { name: 'DONE' }),
+    ).toBeVisible()
+  })
+
+  it('persists SKIP through a remount', () => {
+    const view = renderDay()
+    const item = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+
+    fireEvent.click(within(item).getByRole('button', { name: 'SKIP' }))
+    view.unmount()
+
+    renderDay()
+    const restoredItem = screen
+      .getByRole('heading', { name: 'Notre-Dame Basilica' })
+      .closest('article') as HTMLElement
+    expect(
+      within(restoredItem).getByRole('button', { name: 'UNDO' }),
+    ).toBeVisible()
+    expect(within(restoredItem).getByText('SKIP')).toBeVisible()
+  })
+
+  it('uses the browser language fallback when no language is persisted', () => {
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(document.documentElement.lang).toBe(
+      navigator.language.toLowerCase().startsWith('en') ? 'en' : 'ro',
+    )
+  })
+
   it('changes the persisted language from Settings', () => {
     render(
       <MemoryRouter initialEntries={['/settings']}>
@@ -120,7 +192,7 @@ describe('day item presentation', () => {
     fireEvent.change(screen.getByRole('textbox'), {
       target: { value: 'no matching itinerary content' },
     })
-    expect(screen.getByText('No days found.')).toBeVisible()
+    expect(screen.getByText('No matches in your itinerary.')).toBeVisible()
   })
 
   it('renders the package version in Settings', () => {
@@ -226,10 +298,15 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     expect(
       screen.getByRole('heading', { name: 'Install Volala' }),
     ).toBeVisible()
+    expect(
+      screen.getByText('Install the app for quick access and offline use.'),
+    ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Install' })).toBeVisible()
     expect(screen.getByRole('button', { name: 'Not now' })).toBeVisible()
   })
 
@@ -239,6 +316,7 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     fireEvent.click(screen.getByRole('button', { name: 'Not now' }))
     expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
@@ -257,16 +335,23 @@ describe('day item presentation', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('navigates to Settings and persists when the prompt CTA is used', () => {
+  it('uses the shared install flow without navigating to Settings', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     )
+    const prompt = dispatchInstallPrompt()
 
-    fireEvent.click(screen.getByRole('link', { name: 'Go to Settings' }))
-    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
-    expect(localStorage.getItem('tripwise.installPromptSeen')).toBe('true')
+    fireEvent.click(screen.getByRole('button', { name: 'Install' }))
+
+    await waitFor(() => expect(prompt).toHaveBeenCalledTimes(1))
+    expect(screen.queryByRole('heading', { name: 'Settings' })).toBeNull()
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('heading', { name: 'Install Volala' }),
+      ).not.toBeInTheDocument(),
+    )
   })
 
   it('renders the install awareness prompt in Romanian', () => {
@@ -276,10 +361,12 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     expect(
       screen.getByRole('heading', { name: 'Instalează Volala' }),
     ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Instalează' })).toBeVisible()
     expect(screen.getByRole('button', { name: 'Nu acum' })).toBeVisible()
   })
 
@@ -290,11 +377,14 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
+    dispatchInstallPrompt()
 
     expect(
       screen.getByRole('heading', { name: 'Install Volala' }),
     ).toBeVisible()
-    expect(screen.getByText(/Install Volala on your device/)).toBeVisible()
+    expect(
+      screen.getByText('Install the app for quick access and offline use.'),
+    ).toBeVisible()
     expect(screen.queryByText(/Tripwise/)).not.toBeInTheDocument()
   })
 
