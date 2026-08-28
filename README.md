@@ -1783,6 +1783,19 @@ Required capabilities:
 
 The application shell and required DATA should remain usable after caching.
 
+## Phase 7 Acceptance
+
+Phase 7 — PWA and Offline was accepted at version `0.7.0`. Automated
+typecheck, lint, formatting, DATA validation, unit, coverage, E2E, build, and
+verification gates passed. Genuine manual desktop, mobile, PWA installation,
+standalone-mode, offline shell/DATA, and Service Worker/cache validation also
+passed.
+
+The application uses cache-first application assets and manifest-driven DATA.
+Background DATA candidates are validated before activation; invalid candidates
+leave the previous valid DATA package active. Google Maps URLs remain external
+resources.
+
 ## Media
 
 No large images.

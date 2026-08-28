@@ -217,6 +217,42 @@ Phase 2 remains version `0.2.0` on its Phase Branch. The next Phase version,
 - [x] Gate 6: Persistence PASS
 - [x] Ready for PR
 
+## Phase 7 — PWA and Offline
+
+### Implementation and automated validation
+
+- [x] Runtime DATA loading remains manifest-driven and canonically validated
+- [x] Service Worker and Cache Storage provide cache-first application shell
+      and DATA behavior
+- [x] Background DATA updates validate candidates before activating them and
+      preserve the previous valid package after an invalid update
+- [x] Active DATA package recovery and stale candidate-cache cleanup covered
+- [x] Offline shell, DATA reload, route navigation, and external Google Maps
+      behavior covered
+- [x] Generic Location Item action rule covered: `progress === true` controls
+      DONE/SKIP, Maps remains independent, and Transport has no progress
+      controls
+- [x] Typecheck, lint, formatting, DATA validation, unit tests, coverage, E2E
+      tests, production build, `verify`, and `git diff --check` pass
+- [x] Production dependency audit has no high-or-higher vulnerabilities; two
+      existing moderate React Router advisories require a breaking upgrade
+
+### Manual validation
+
+- [x] Desktop startup, navigation, Search, Settings, and Location Actions: PASS
+- [x] Mobile layout, navigation, touch targets, and Location Actions: PASS
+- [x] PWA installation, icon, installed launch, and standalone mode: PASS
+- [x] Offline shell, DATA reload, route navigation, and cached content: PASS
+- [x] Service Worker registration, cache behavior, DATA replacement, and
+      previous-valid-package preservation: PASS
+
+### Acceptance status
+
+- [x] Phase 7 acceptance complete
+- [x] Gate 7: Offline/PWA PASS
+- [x] Version `0.7.0`
+- [x] Phase 8 has not started
+
 ## Automated
 
 - [ ] Relevant unit tests pass
