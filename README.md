@@ -1494,6 +1494,19 @@ itinerary shows one combined departure-and-arrival indicator. These indicators
 are derived from itinerary order, so they apply to every manifest-loaded
 itinerary without DATA-specific conditions.
 
+## Duration display
+
+Visit and transport `durationMinutes` values are displayed compactly:
+
+```text
+<60 min -> X min
+60+ min -> Xh
+hours plus remaining minutes -> Xh Ym
+```
+
+Examples: `45 min`, `1h`, and `2h 30m`. Missing or invalid durations are not
+displayed.
+
 Indicators:
 
 ```text

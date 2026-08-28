@@ -15,6 +15,7 @@ import {
   resolveActiveItinerary,
 } from './data'
 import { localDate } from './domain/date'
+import { formatDurationMinutes } from './domain/duration'
 import {
   currentItem,
   dayProgress,
@@ -559,9 +560,12 @@ function DayView({
                     {!compact && location?.description && (
                       <p>{location.description}</p>
                     )}
-                    {'durationMinutes' in item && item.durationMinutes && (
-                      <span className="muted">{item.durationMinutes} min</span>
-                    )}
+                    {'durationMinutes' in item &&
+                      formatDurationMinutes(item.durationMinutes) && (
+                        <span className="muted">
+                          {formatDurationMinutes(item.durationMinutes)}
+                        </span>
+                      )}
                     {supportsProgress && (
                       <div className="item-actions">
                         {status ? (
@@ -656,7 +660,7 @@ function TransportInfo({
 }) {
   const parts = [
     transport.mode,
-    transport.durationMinutes ? `${transport.durationMinutes} min` : '',
+    formatDurationMinutes(transport.durationMinutes) || '',
     transport.distanceMeters !== undefined
       ? formatDistance(transport.distanceMeters)
       : '',
