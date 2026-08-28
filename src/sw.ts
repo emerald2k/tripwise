@@ -31,7 +31,7 @@ interface ServiceWorkerScope {
 const worker = globalThis as unknown as ServiceWorkerScope
 const cacheStorage = caches as unknown as DataCacheStorage
 const appCacheName = `tripwise-app-v${appVersion}`
-const metadataCacheName = `tripwise-data-meta-v${appVersion}`
+const metadataCacheName = 'tripwise-data-meta'
 const dataPointerUrl = new URL(
   '/__tripwise-data',
   worker.location.origin,
@@ -68,6 +68,32 @@ async function cacheFirstAppRequest(request: Request) {
   }
 }
 
+function appResourceUrls(index: string) {
+  return [...index.matchAll(/(?:src|href)="([^"]+)"/g)]
+    .map((match) => match[1])
+    .filter((resource) => resource.startsWith('/'))
+}
+
+async function cacheAppShell() {
+  const cache = await cacheStorage.open(appCacheName)
+  const indexResponse = await fetch('/index.html')
+  if (!indexResponse.ok)
+    throw new Error('Unable to cache application resource: /index.html')
+  const index = await indexResponse.clone().text()
+  const resources = new Set([...appShell, ...appResourceUrls(index)])
+  await Promise.all(
+    [...resources].map(async (resource) => {
+      const response =
+        resource === '/index.html'
+          ? indexResponse.clone()
+          : await fetch(resource)
+      if (!response.ok)
+        throw new Error(`Unable to cache application resource: ${resource}`)
+      await cache.put(resource, response)
+    }),
+  )
+}
+
 async function updateDataPackage() {
   if (dataUpdate !== undefined) return dataUpdate
   const cacheName = `${dataCachePrefix}${appVersion}-${Date.now()}`
@@ -92,6 +118,14 @@ async function updateDataPackage() {
 }
 
 async function cacheFirstDataRequest(request: Request, event: FetchEvent) {
+  const url = new URL(request.url)
+  const pinnedCacheName = url.searchParams.get('tripwise-data-cache')
+  if (pinnedCacheName) {
+    const cache = await cacheStorage.open(pinnedCacheName)
+    const pinned = await cache.match(url.origin + url.pathname)
+    if (pinned !== undefined) return pinned
+  }
+
   const activeCacheName = await readActiveDataCacheName(
     cacheStorage,
     metadataCacheName,
@@ -102,6 +136,15 @@ async function cacheFirstDataRequest(request: Request, event: FetchEvent) {
     const cached = await cache.match(request)
     if (cached !== undefined) {
       event.waitUntil(updateDataPackage().catch(() => undefined))
+      if (url.pathname === '/data/manifest.json') {
+        const headers = new Headers(cached.headers)
+        headers.set('X-Tripwise-Data-Cache', activeCacheName)
+        return new Response(cached.body, {
+          status: cached.status,
+          statusText: cached.statusText,
+          headers,
+        })
+      }
       return cached
     }
   }
@@ -122,21 +165,9 @@ async function cacheFirstDataRequest(request: Request, event: FetchEvent) {
 
 worker.addEventListener('install', (event) => {
   event.waitUntil(
-    cacheStorage
-      .open(appCacheName)
-      .then(async (cache) =>
-        Promise.all(
-          appShell.map(async (resource) => {
-            const response = await fetch(resource)
-            if (!response.ok)
-              throw new Error(
-                `Unable to cache application resource: ${resource}`,
-              )
-            await cache.put(resource, response)
-          }),
-        ),
-      )
-      .then(() => worker.skipWaiting()),
+    Promise.all([cacheAppShell(), updateDataPackage()]).then(() =>
+      worker.skipWaiting(),
+    ),
   )
 })
 
@@ -152,10 +183,7 @@ worker.addEventListener('activate', (event) => {
       await Promise.all(
         names
           .filter(
-            (name) =>
-              (name.startsWith('tripwise-app-') && name !== appCacheName) ||
-              (name.startsWith('tripwise-data-meta-') &&
-                name !== metadataCacheName),
+            (name) => name.startsWith('tripwise-app-') && name !== appCacheName,
           )
           .map((name) => cacheStorage.delete(name)),
       )

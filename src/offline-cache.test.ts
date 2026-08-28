@@ -1,8 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
 import manifest from '../data/manifest.json'
-import montreal from '../data/cities/montreal.json'
-import quebecCity from '../data/cities/quebec-city.json'
-import canada2026 from '../data/itineraries/canada-2026.json'
 import {
   cacheValidatedDataPackage,
   dataCachePrefix,
@@ -60,12 +57,24 @@ function dataFetcher(resources: Record<string, unknown>) {
 }
 
 const origin = 'https://tripwise.test'
-const resources = {
-  [`${origin}/data/manifest.json`]: manifest,
-  [`${origin}/data/cities/montreal.json`]: montreal,
-  [`${origin}/data/cities/quebec-city.json`]: quebecCity,
-  [`${origin}/data/itineraries/canada-2026.json`]: canada2026,
-}
+const authoredFiles = Object.fromEntries(
+  Object.entries(
+    import.meta.glob('../data/{itineraries,cities}/*.json', {
+      eager: true,
+      import: 'default',
+    }),
+  ).map(([file, value]) => [
+    `./${file.replace(/^..\/data\//, '').replace(/\\/g, '/')}`,
+    value,
+  ]),
+)
+const resources = Object.fromEntries([
+  [`${origin}/data/manifest.json`, manifest],
+  ...Object.entries(authoredFiles).map(([path, value]) => [
+    `${origin}/data/${path.replace(/^\.\//, '')}`,
+    value,
+  ]),
+])
 
 describe('offline DATA cache', () => {
   it('stores a complete package only after canonical validation succeeds', async () => {
@@ -79,12 +88,13 @@ describe('offline DATA cache', () => {
 
     const cache = await cacheStorage.open(`${dataCachePrefix}candidate`)
     expect(await cache.match(`${origin}/data/manifest.json`)).toBeDefined()
-    expect(
-      await cache.match(`${origin}/data/itineraries/canada-2026.json`),
-    ).toBeDefined()
-    expect(
-      await cache.match(`${origin}/data/cities/montreal.json`),
-    ).toBeDefined()
+    for (const path of [
+      ...manifest.itineraries.map((entry) => entry.file),
+      ...manifest.cities,
+    ])
+      expect(
+        await cache.match(`${origin}/data/${path.replace(/^\.\//, '')}`),
+      ).toBeDefined()
   })
 
   it('keeps the prior cache when a network package fails validation', async () => {
@@ -95,7 +105,8 @@ describe('offline DATA cache', () => {
       `${origin}/data/manifest.json`,
       new Response(JSON.stringify(manifest)),
     )
-    const invalidItinerary = structuredClone(canada2026) as {
+    const itineraryFile = manifest.itineraries[0].file
+    const invalidItinerary = structuredClone(authoredFiles[itineraryFile]) as {
       days: { items: Array<Record<string, unknown>> }[]
     }
     const locationItem = invalidItinerary.days
@@ -109,7 +120,8 @@ describe('offline DATA cache', () => {
         cacheStorage,
         dataFetcher({
           ...resources,
-          [`${origin}/data/itineraries/canada-2026.json`]: invalidItinerary,
+          [`${origin}/data/${itineraryFile.replace(/^\.\//, '')}`]:
+            invalidItinerary,
         }),
         origin,
         `${dataCachePrefix}candidate`,
@@ -143,5 +155,33 @@ describe('offline DATA cache', () => {
     expect(await readActiveDataCacheName(cacheStorage, metadata, pointer)).toBe(
       `${dataCachePrefix}current`,
     )
+  })
+
+  it('ignores malformed, invalid, and missing active-cache pointers', async () => {
+    const cacheStorage = new MemoryCacheStorage()
+    const metadata = 'tripwise-data-meta'
+    const pointer = `${origin}/__tripwise-data`
+    const cache = await cacheStorage.open(metadata)
+
+    await cache.put(pointer, new Response('not json'))
+    expect(
+      await readActiveDataCacheName(cacheStorage, metadata, pointer),
+    ).toBeUndefined()
+
+    await cache.put(
+      pointer,
+      new Response(JSON.stringify({ cacheName: 'tripwise-data-meta' })),
+    )
+    expect(
+      await readActiveDataCacheName(cacheStorage, metadata, pointer),
+    ).toBeUndefined()
+
+    await cache.put(
+      pointer,
+      new Response(JSON.stringify({ cacheName: `${dataCachePrefix}missing` })),
+    )
+    expect(
+      await readActiveDataCacheName(cacheStorage, metadata, pointer),
+    ).toBeUndefined()
   })
 })

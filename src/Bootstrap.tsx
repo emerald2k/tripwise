@@ -2,25 +2,21 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { initializeRuntimeData, loadRuntimeData } from './data'
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>
-  userChoice?: Promise<{ outcome: 'accepted' | 'dismissed' }>
-}
+import {
+  readInstallPrompt,
+  subscribeToInstallPrompt,
+  type BeforeInstallPromptEvent,
+} from './install-prompt'
 
 export function Bootstrap() {
   const [ready, setReady] = useState(false)
   const [installPrompt, setInstallPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null)
+    useState<BeforeInstallPromptEvent | null>(readInstallPrompt)
 
   useEffect(() => {
-    const captureInstallPrompt = (event: Event) => {
-      event.preventDefault()
-      setInstallPrompt(event as BeforeInstallPromptEvent)
-    }
     let cancelled = false
     let frame = 0
-    window.addEventListener('beforeinstallprompt', captureInstallPrompt)
+    const unsubscribe = subscribeToInstallPrompt(setInstallPrompt)
     void loadRuntimeData().then((data) => {
       if (cancelled) return
       initializeRuntimeData(data)
@@ -32,7 +28,7 @@ export function Bootstrap() {
     return () => {
       cancelled = true
       window.cancelAnimationFrame(frame)
-      window.removeEventListener('beforeinstallprompt', captureInstallPrompt)
+      unsubscribe()
     }
   }, [])
 

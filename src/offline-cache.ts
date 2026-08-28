@@ -41,8 +41,20 @@ export async function readActiveDataCacheName(
   const metadata = await cacheStorage.open(metadataCacheName)
   const pointer = await metadata.match(pointerUrl)
   if (pointer === undefined) return undefined
-  const { cacheName } = (await pointer.json()) as { cacheName?: unknown }
-  return typeof cacheName === 'string' ? cacheName : undefined
+  try {
+    const { cacheName } = (await pointer.json()) as { cacheName?: unknown }
+    if (
+      typeof cacheName !== 'string' ||
+      !cacheName.startsWith(dataCachePrefix) ||
+      cacheName.startsWith('tripwise-data-meta')
+    )
+      return undefined
+    return (await cacheStorage.keys()).includes(cacheName)
+      ? cacheName
+      : undefined
+  } catch {
+    return undefined
+  }
 }
 
 export async function setActiveDataCacheName(
