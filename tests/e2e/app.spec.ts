@@ -107,6 +107,30 @@ test('settings persists the selected language', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Setări' })).toBeVisible()
 })
 
+test('reloads the application shell and cached DATA while offline', async ({
+  page,
+  context,
+}) => {
+  await page.goto('/day/2026-09-04')
+  await expect(
+    page.getByRole('heading', { name: 'Old Montréal + Old Port' }),
+  ).toBeVisible()
+  await page.waitForFunction(() => navigator.serviceWorker.controller !== null)
+  await page.reload()
+  await expect(
+    page.getByRole('heading', { name: 'Old Montréal + Old Port' }),
+  ).toBeVisible()
+
+  await context.setOffline(true)
+  await page.reload()
+  await expect(
+    page.getByRole('heading', { name: 'Old Montréal + Old Port' }),
+  ).toBeVisible()
+  await page.evaluate(() => window.dispatchEvent(new Event('offline')))
+  await expect(page.locator('.offline')).toBeVisible()
+  await context.setOffline(false)
+})
+
 test('install awareness prompt directly uses the native install flow', async ({
   page,
 }) => {

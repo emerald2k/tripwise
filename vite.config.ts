@@ -65,4 +65,17 @@ function runtimeData(): Plugin {
 
 export default defineConfig({
   plugins: [react(), webManifest(), runtimeData()],
+  worker: {
+    format: 'es',
+    rollupOptions: {
+      output: {
+        entryFileNames: 'sw.js',
+      },
+    },
+  },
+  server: {
+    headers: {
+      'Service-Worker-Allowed': '/',
+    },
+  },
 })

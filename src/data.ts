@@ -2,6 +2,10 @@ import { manifestSchema, type City, type Itinerary } from './data/schema'
 import { validateDataPackage } from './domain/validation'
 
 type DataFiles = Record<string, unknown>
+export type JsonFetcher = (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+) => Promise<Response>
 
 export interface RuntimeData {
   datasets: ReturnType<typeof validateDataPackage>
@@ -18,7 +22,7 @@ function dataUrl(path: string) {
   return `/data/${path.replace(/^\.\//, '')}`
 }
 
-async function readJson(fetcher: typeof fetch, url: string) {
+async function readJson(fetcher: JsonFetcher, url: string) {
   const response = await fetcher(url)
   if (!response.ok) throw new Error(`Unable to load DATA resource: ${url}`)
   return response.json()
@@ -52,7 +56,7 @@ export function createRuntimeData(
 }
 
 export async function fetchRuntimeData(
-  fetcher: typeof fetch = fetch,
+  fetcher: JsonFetcher = fetch,
 ): Promise<RuntimeData> {
   const manifest = await readJson(fetcher, '/data/manifest.json')
   const packageManifest = manifestSchema.parse(manifest)
