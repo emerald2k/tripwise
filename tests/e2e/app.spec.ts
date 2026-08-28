@@ -120,6 +120,27 @@ test('localizes the bootstrap loader from persisted language', async ({
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
 })
 
+test('renders accessible production recovery when runtime DATA fails', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 667 })
+  await page.route('**/data/manifest.json', (route) =>
+    route.fulfill({ status: 503 }),
+  )
+
+  await page.goto('/')
+
+  await expect(
+    page.getByRole('heading', { name: 'Unable to open the app' }),
+  ).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Try again' })).toBeVisible()
+  await expect(page.getByText(/manifest\.json|Zod|stack/i)).toHaveCount(0)
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(320)
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+})
+
 test('loads Today and navigates through core pages', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
