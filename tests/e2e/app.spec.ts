@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import AxeBuilder from '@axe-core/playwright'
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 const manifest = JSON.parse(
   readFileSync(new URL('../../data/manifest.json', import.meta.url), 'utf8'),
@@ -53,6 +53,13 @@ test.beforeEach(async ({ page }) => {
     manifest.itineraries[0].id,
   )
 })
+
+async function waitForApplication(page: Page) {
+  await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible({
+    timeout: 10_000,
+  })
+  await expect(page.locator('#app-loader')).toHaveCount(0)
+}
 
 test('shows the bootstrap loader until the application initializes', async ({
   page,
@@ -364,10 +371,12 @@ test('application routes survive direct refresh', async ({ page }) => {
     ['/day/2026-09-04', /Olympic Park|Old Port/],
   ] as const) {
     await page.goto(route)
+    await waitForApplication(page)
     await expect(
       page.getByRole('heading', { name: heading }).first(),
     ).toBeVisible()
     await page.reload()
+    await waitForApplication(page)
     await expect(
       page.getByRole('heading', { name: heading }).first(),
     ).toBeVisible()
@@ -437,6 +446,7 @@ test('core routes have no detectable accessibility violations', async ({
     '/settings',
   ]) {
     await page.goto(route)
+    await waitForApplication(page)
     const results = await new AxeBuilder({ page }).analyze()
     expect(results.violations, `Accessibility violations on ${route}`).toEqual(
       [],
