@@ -1494,6 +1494,11 @@ itinerary shows one combined departure-and-arrival indicator. These indicators
 are derived from itinerary order, so they apply to every manifest-loaded
 itinerary without DATA-specific conditions.
 
+Days list items have a uniform height: the date, title, departure/arrival
+indicator, and progress indicator remain inline. The title is the flexible
+region, while indicators stay together in a dedicated non-wrapping status
+region.
+
 ## Duration display
 
 Visit and transport `durationMinutes` values are displayed compactly:

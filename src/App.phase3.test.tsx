@@ -322,15 +322,27 @@ describe('Phase 3 itinerary selection', () => {
       </MemoryRouter>,
     )
     const days = document.querySelectorAll('.day-row')
+    const firstStatus = (days[0] as HTMLElement).querySelector(
+      '.day-row-status',
+    ) as HTMLElement
+    const middleStatus = (days[1] as HTMLElement).querySelector(
+      '.day-row-status',
+    ) as HTMLElement
+    const lastStatus = (days[2] as HTMLElement).querySelector(
+      '.day-row-status',
+    ) as HTMLElement
     expect(
-      within(days[0] as HTMLElement).getByRole('img', {
+      within(firstStatus).getByRole('img', {
         name: 'Departure day',
       }),
     ).toBeVisible()
-    expect(within(days[1] as HTMLElement).queryByRole('img')).toBeNull()
+    expect(within(firstStatus).getByText('○')).toBeVisible()
+    expect(within(middleStatus).queryByRole('img')).toBeNull()
+    expect(within(middleStatus).getByText('○')).toBeVisible()
     expect(
-      within(days[2] as HTMLElement).getByRole('img', { name: 'Arrival day' }),
+      within(lastStatus).getByRole('img', { name: 'Arrival day' }),
     ).toBeVisible()
+    expect(within(lastStatus).getByText('○')).toBeVisible()
   })
 
   it('uses one combined indicator for a single-day itinerary', () => {
@@ -340,11 +352,17 @@ describe('Phase 3 itinerary selection', () => {
         <App />
       </MemoryRouter>,
     )
+    const status = document.querySelector('.day-row-status') as HTMLElement
     expect(
-      screen.getByRole('img', { name: 'Departure and arrival day' }),
+      within(status).getByRole('img', { name: 'Departure and arrival day' }),
     ).toBeVisible()
-    expect(screen.queryByRole('img', { name: 'Departure day' })).toBeNull()
-    expect(screen.queryByRole('img', { name: 'Arrival day' })).toBeNull()
+    expect(within(status).getByText('○')).toBeVisible()
+    expect(
+      within(status).queryByRole('img', { name: 'Departure day' }),
+    ).toBeNull()
+    expect(
+      within(status).queryByRole('img', { name: 'Arrival day' }),
+    ).toBeNull()
   })
 
   it('uses the selected itinerary for Days, Search, and day routes', () => {

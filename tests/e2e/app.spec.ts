@@ -152,6 +152,56 @@ test('loads Today and navigates through core pages', async ({ page }) => {
   ).toBeVisible()
 })
 
+test('keeps day metadata and indicators inline with uniform row heights', async ({
+  page,
+}) => {
+  await page.goto('/days')
+  await waitForApplication(page)
+
+  const rows = page.locator('.day-row')
+  const rowCount = await rows.count()
+  expect(rowCount).toBeGreaterThan(0)
+
+  const layout = await rows.evaluateAll((elements) =>
+    elements.map((row) => {
+      const rowBox = row.getBoundingClientRect()
+      const status = row.querySelector('.day-row-status')
+      const statusBox = status?.getBoundingClientRect()
+      const indicatorBox = status
+        ?.querySelector('.indicator')
+        ?.getBoundingClientRect()
+      const journeyBox = status
+        ?.querySelector('.itinerary-day-icon')
+        ?.getBoundingClientRect()
+      return {
+        top: rowBox.top,
+        bottom: rowBox.bottom,
+        height: rowBox.height,
+        statusTop: statusBox?.top,
+        statusBottom: statusBox?.bottom,
+        indicatorTop: indicatorBox?.top,
+        indicatorBottom: indicatorBox?.bottom,
+        journeyTop: journeyBox?.top,
+        journeyBottom: journeyBox?.bottom,
+      }
+    }),
+  )
+
+  expect(layout.every((row) => row.height === layout[0].height)).toBe(true)
+  for (const row of layout) {
+    expect(row.statusTop).toBeGreaterThanOrEqual(row.top)
+    expect(row.statusBottom).toBeLessThanOrEqual(row.bottom)
+    expect(row.indicatorTop).toBeGreaterThanOrEqual(row.statusTop!)
+    expect(row.indicatorBottom).toBeLessThanOrEqual(row.statusBottom!)
+    if (row.journeyTop !== undefined) {
+      expect(row.journeyTop).toBeGreaterThanOrEqual(row.statusTop!)
+      expect(row.journeyBottom).toBeLessThanOrEqual(row.statusBottom!)
+      expect(row.journeyTop).toBeLessThan(row.indicatorBottom!)
+      expect(row.journeyBottom).toBeGreaterThan(row.indicatorTop!)
+    }
+  }
+})
+
 test('search groups planned item matches and opens the selected activity', async ({
   page,
 }) => {

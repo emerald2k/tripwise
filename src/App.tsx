@@ -689,22 +689,24 @@ function Days({
           )
           return (
             <Link to={`/day/${day.date}`} className="day-row" key={day.date}>
-              <span>{formatDate(day.date, language)}</span>
-              <strong>{cityNames(day)}</strong>
-              <ItineraryDayIcon
-                type={
-                  itinerary.days.length === 1
-                    ? 'journey'
-                    : index === 0
-                      ? 'departure'
-                      : index === itinerary.days.length - 1
-                        ? 'arrival'
-                        : undefined
-                }
-                t={t}
-              />
-              <span className="indicator">
-                {state === 'complete' ? '✓' : state === 'partial' ? '◐' : '○'}
+              <span className="day-date">{formatDate(day.date, language)}</span>
+              <strong className="day-title">{cityNames(day)}</strong>
+              <span className="day-row-status">
+                <ItineraryDayIcon
+                  type={
+                    itinerary.days.length === 1
+                      ? 'journey'
+                      : index === 0
+                        ? 'departure'
+                        : index === itinerary.days.length - 1
+                          ? 'arrival'
+                          : undefined
+                  }
+                  t={t}
+                />
+                <span className="indicator">
+                  {state === 'complete' ? '✓' : state === 'partial' ? '◐' : '○'}
+                </span>
               </span>
             </Link>
           )

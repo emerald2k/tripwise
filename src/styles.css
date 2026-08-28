@@ -326,19 +326,33 @@ main {
 .day-row,
 .result-row {
   display: grid;
-  grid-template-columns: 6.5rem 1fr 2rem;
+  grid-template-columns: 6.5rem minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
   border-radius: 12px;
   background: #1a2029;
 }
-.day-row span:first-child,
+.day-date,
 .result-row span {
   color: #a7b0bf;
   font-size: 0.82rem;
 }
+.day-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.day-row-status {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
 .indicator {
+  display: block;
   text-align: right;
   color: #9fbfff;
   font-size: 1.2rem;
