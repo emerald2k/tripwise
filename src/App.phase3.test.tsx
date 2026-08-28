@@ -545,6 +545,16 @@ describe('Phase 3 itinerary selection', () => {
       </MemoryRouter>,
     )
     const days = document.querySelectorAll('.day-row')
+    expect(screen.getByRole('heading', { name: 'Days' })).toBeVisible()
+    expect(screen.getByText('Your itinerary day by day')).toBeVisible()
+    expect(
+      (days[0] as HTMLElement).querySelector('.day-date-month'),
+    ).toHaveTextContent('SEP')
+    expect(
+      (days[0] as HTMLElement).querySelector('.day-date-number'),
+    ).toHaveTextContent('10')
+    expect((days[0] as HTMLElement).querySelector('.day-date')).toBeVisible()
+    expect((days[0] as HTMLElement).querySelector('.day-title')).toBeVisible()
     const firstStatus = (days[0] as HTMLElement).querySelector(
       '.day-row-status',
     ) as HTMLElement
@@ -597,7 +607,7 @@ describe('Phase 3 itinerary selection', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Beta itinerary' }))
     fireEvent.click(screen.getByRole('link', { name: 'Days' }))
-    expect(screen.getByRole('strong')).toHaveTextContent('Beta day')
+    expect(document.querySelector('.day-title')).toHaveTextContent('Beta day')
 
     fireEvent.click(screen.getByRole('link', { name: /11/ }))
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()

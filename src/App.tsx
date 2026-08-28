@@ -748,8 +748,10 @@ function Days({
   return (
     <section className="page days-page">
       <h1>{t.days}</h1>
+      <p className="days-subtitle">{t.itineraryDayByDay}</p>
       <div className="day-list">
         {itinerary.days.map((day, index) => {
+          const date = formatDayDateParts(day.date, language)
           const state = dayProgress(
             day,
             progress[itinerary.id]?.[day.date] || {},
@@ -757,7 +759,13 @@ function Days({
           )
           return (
             <Link to={`/day/${day.date}`} className="day-row" key={day.date}>
-              <span className="day-date">{formatDate(day.date, language)}</span>
+              <span
+                className="day-date"
+                aria-label={formatDate(day.date, language)}
+              >
+                <span className="day-date-month">{date.month}</span>
+                <strong className="day-date-number">{date.day}</strong>
+              </span>
               <strong className="day-title">{cityNames(day)}</strong>
               <span className="day-row-status">
                 <ItineraryDayIcon
@@ -1035,6 +1043,19 @@ function formatDate(value: string, language: Language) {
   })
     .format(new Date(`${value}T12:00:00`))
     .toUpperCase()
+}
+
+function formatDayDateParts(value: string, language: Language) {
+  const parts = new Intl.DateTimeFormat(language === 'ro' ? 'ro-RO' : 'en-CA', {
+    day: '2-digit',
+    month: 'short',
+  }).formatToParts(new Date(`${value}T12:00:00`))
+  return {
+    day: parts.find((part) => part.type === 'day')?.value || '',
+    month: (
+      parts.find((part) => part.type === 'month')?.value || ''
+    ).toUpperCase(),
+  }
 }
 
 function formatDistance(meters: number) {

@@ -390,18 +390,23 @@ main {
   gap: 0.55rem;
 }
 .days-page h1 {
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+.days-subtitle {
+  margin: 0 0 1rem;
+  color: #9ba5b5;
+  font-size: 0.9rem;
 }
 .days-page .day-list {
-  gap: 0.4rem;
+  gap: 0.6rem;
 }
 .day-row {
   display: grid;
-  grid-template-columns: 4.75rem minmax(0, 1fr) auto;
-  min-height: 44px;
+  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  min-height: 88px;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 0.8rem;
+  gap: 0.75rem;
+  padding: 1rem;
   border-radius: 12px;
   background: #1a2029;
 }
@@ -419,11 +424,31 @@ main {
   color: #a7b0bf;
   font-size: 0.82rem;
 }
+.day-date {
+  display: flex;
+  height: 3.5rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  border-right: 1px solid #3a4454;
+  font-variant-numeric: tabular-nums;
+}
+.day-date-month {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.day-date-number {
+  color: #e9f0ff;
+  font-size: 1.35rem;
+  line-height: 1;
+}
 .day-title {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 1.05rem;
 }
 .day-row-status {
   display: flex;
@@ -431,6 +456,13 @@ main {
   align-items: center;
   gap: 0.5rem;
   white-space: nowrap;
+}
+@media (max-width: 360px) {
+  .day-row {
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    padding: 0.875rem;
+  }
 }
 .indicator {
   display: block;

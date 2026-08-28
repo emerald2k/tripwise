@@ -333,7 +333,7 @@ test('keeps Location Item duration metadata on the title row', async ({
   }
 })
 
-test('keeps Days metadata and indicators inline with compact uniform row heights', async ({
+test('keeps generous Days cards structured and responsive', async ({
   page,
 }) => {
   for (const width of [320, 375, 390, 430]) {
@@ -341,6 +341,8 @@ test('keeps Days metadata and indicators inline with compact uniform row heights
     await page.goto('/days')
     await waitForApplication(page)
 
+    await expect(page.getByRole('heading', { name: 'Days' })).toBeVisible()
+    await expect(page.locator('.days-subtitle')).toBeVisible()
     const rows = page.locator('.day-row')
     const rowCount = await rows.count()
     expect(rowCount).toBeGreaterThan(0)
@@ -357,6 +359,14 @@ test('keeps Days metadata and indicators inline with compact uniform row heights
         const titleBox = row
           .querySelector('.day-title')
           ?.getBoundingClientRect()
+        const date = row.querySelector('.day-date')
+        const dateBox = date?.getBoundingClientRect()
+        const monthBox = date
+          ?.querySelector('.day-date-month')
+          ?.getBoundingClientRect()
+        const numberBox = date
+          ?.querySelector('.day-date-number')
+          ?.getBoundingClientRect()
         const status = row.querySelector('.day-row-status')
         const statusBox = status?.getBoundingClientRect()
         const indicatorBox = status
@@ -369,9 +379,22 @@ test('keeps Days metadata and indicators inline with compact uniform row heights
           top: rowBox.top,
           bottom: rowBox.bottom,
           height: rowBox.height,
+          dateDisplay: date ? getComputedStyle(date).display : undefined,
+          dateDirection: date
+            ? getComputedStyle(date).flexDirection
+            : undefined,
+          dateBorder: date
+            ? getComputedStyle(date).borderRightWidth
+            : undefined,
+          dateRight: dateBox?.right,
+          monthBottom: monthBox?.bottom,
+          numberTop: numberBox?.top,
+          titleLeft: titleBox?.left,
           titleTop: titleBox?.top,
           titleBottom: titleBox?.bottom,
           titleRight: titleBox?.right,
+          titleClientWidth: titleBox?.width,
+          titleScrollWidth: row.querySelector('.day-title')?.scrollWidth,
           titleWhiteSpace: titleBox
             ? getComputedStyle(row.querySelector('.day-title')!).whiteSpace
             : undefined,
@@ -388,6 +411,12 @@ test('keeps Days metadata and indicators inline with compact uniform row heights
 
     expect(layout.every((row) => row.height === layout[0].height)).toBe(true)
     for (const row of layout) {
+      expect(row.height).toBeGreaterThanOrEqual(88)
+      expect(row.dateDisplay).toBe('flex')
+      expect(row.dateDirection).toBe('column')
+      expect(row.dateBorder).not.toBe('0px')
+      expect(row.monthBottom).toBeLessThanOrEqual(row.numberTop!)
+      expect(row.dateRight).toBeLessThanOrEqual(row.titleLeft!)
       expect(row.titleWhiteSpace).toBe('nowrap')
       expect(row.titleTop).toBeLessThan(row.statusBottom!)
       expect(row.titleBottom).toBeGreaterThan(row.statusTop!)
@@ -403,6 +432,9 @@ test('keeps Days metadata and indicators inline with compact uniform row heights
         expect(row.journeyBottom).toBeGreaterThan(row.indicatorTop!)
       }
     }
+    expect(layout[0].titleScrollWidth).toBeGreaterThan(
+      layout[0].titleClientWidth!,
+    )
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width)

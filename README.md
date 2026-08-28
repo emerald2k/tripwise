@@ -1511,15 +1511,10 @@ allowed and is disabled when reduced motion is requested.
 
 # Days
 
-The Days page lists all itinerary days.
-
-Each row contains:
-
-```text
-date
-city/context
-progress indicator
-```
+The Days page uses a prominent heading and localized subtitle, followed by
+generous, uniformly sized cards. Each card has a vertically stacked month/day
+date region, a subtle divider, a flexible central title region, and a
+right-side status region.
 
 The first itinerary day is marked as departure/take-off and the final day as
 arrival/landing. Middle days have no journey-boundary icon. A one-day
@@ -1527,11 +1522,11 @@ itinerary shows one combined departure-and-arrival indicator. These indicators
 are derived from itinerary order, so they apply to every manifest-loaded
 itinerary without DATA-specific conditions.
 
-Days list items have a uniform height: the date, title, departure/arrival
-indicator, and progress indicator remain inline. The title is the flexible
-region, while indicators stay together in a dedicated non-wrapping status
-region. Cards use compact single-row spacing; day titles receive the central
-flexible space and truncate with an ellipsis only when necessary.
+Day titles receive the flexible central space and truncate with an ellipsis
+only when necessary. Departure/arrival and progress indicators remain inline
+in their dedicated, non-wrapping status region without altering card height.
+At narrow viewport widths, modestly reduced internal spacing preserves the
+stacked date, divider, title, and inline status hierarchy without overflow.
 
 ## Duration display
 
