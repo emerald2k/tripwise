@@ -890,7 +890,7 @@ function ShareButton({ t }: { t: Copy }) {
     }
   }
   return (
-    <button className="share" onClick={share}>
+    <button className="share" onClick={share} aria-label={t.copyLink}>
       {copied ? t.copyLink : '↗'}
     </button>
   )

@@ -61,6 +61,36 @@ describe('day item presentation', () => {
     ).toHaveClass('item-actions')
   })
 
+  it('does not report a copied link when Clipboard is unavailable or rejects', async () => {
+    const originalClipboard = navigator.clipboard
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: undefined,
+    })
+    const unavailable = renderDay()
+    fireEvent.click(screen.getByRole('button', { name: 'Copy Link' }))
+    expect(screen.getByRole('button', { name: 'Copy Link' })).toHaveTextContent(
+      '↗',
+    )
+    unavailable.unmount()
+
+    const writeText = vi.fn().mockRejectedValue(new Error('denied'))
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    })
+    renderDay()
+    fireEvent.click(screen.getByRole('button', { name: 'Copy Link' }))
+    await waitFor(() => expect(writeText).toHaveBeenCalled())
+    expect(screen.getByRole('button', { name: 'Copy Link' })).toHaveTextContent(
+      '↗',
+    )
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: originalClipboard,
+    })
+  })
+
   it('does not give non-progress location items progress controls', () => {
     renderDay()
 
