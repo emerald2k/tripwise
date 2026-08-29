@@ -703,9 +703,12 @@ test('timeline supports DONE, UNDO, and Google Maps actions', async ({
   page,
 }) => {
   await page.goto('/day/2026-09-04')
-  const item = page
-    .locator('article')
-    .filter({ hasText: 'Notre-Dame Basilica' })
+  const item = page.locator('article').filter({
+    has: page.getByRole('heading', {
+      name: 'Notre-Dame Basilica',
+      exact: true,
+    }),
+  })
   await expect(
     item.getByRole('link', { name: /Navigate GMaps/ }),
   ).toHaveAttribute('href', /google\.com\/maps/)

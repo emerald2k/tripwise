@@ -91,19 +91,6 @@ describe('day item presentation', () => {
     })
   })
 
-  it('does not give non-progress location items progress controls', () => {
-    renderDay()
-
-    const item = screen
-      .getByRole('heading', { name: 'Hotel Le Roberval' })
-      .closest('article') as HTMLElement
-    expect(within(item).queryByRole('button', { name: 'DONE' })).toBeNull()
-    expect(within(item).queryByRole('button', { name: 'SKIP' })).toBeNull()
-    expect(
-      within(item).getByRole('link', { name: /Navigate GMaps/ }),
-    ).toBeVisible()
-  })
-
   it('renders DONE items compactly with UNDO and without secondary content', () => {
     renderDay()
     const item = screen

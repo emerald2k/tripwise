@@ -214,6 +214,22 @@ describe('Phase 3 itinerary selection', () => {
     ).toBeNull()
   })
 
+  it('does not give progress-disabled locations progress controls', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const item = screen
+      .getByRole('heading', { name: 'Alpha museum' })
+      .closest('article') as HTMLElement
+    expect(within(item).queryByRole('button', { name: 'DONE' })).toBeNull()
+    expect(within(item).queryByRole('button', { name: 'SKIP' })).toBeNull()
+    expect(within(item).queryByRole('button', { name: 'UNDO' })).toBeNull()
+  })
+
   it('renders location content in title, description, duration, and action hierarchy', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'alpha')
     render(
