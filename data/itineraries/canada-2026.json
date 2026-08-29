@@ -88,27 +88,31 @@
           "itemId": "0903-11-cin-old-montr-al",
           "startTime": "20:30",
           "title": "Cină Old Montréal",
-          "locationId": "montreal-old-montr-al"
+          "locationId": "montreal-old-montr-al",
+          "progress": true
         },
         {
           "itemId": "0903-13-op-ional-jardins-gamelin",
           "startTime": "21:00",
           "title": "Opțional: Jardins Gamelin / Jardins d’Illusion",
-          "locationId": "montreal-jardins-gamelin"
+          "locationId": "montreal-jardins-gamelin",
+          "progress": true
         },
         {
           "itemId": "0903-14-jardins-alt",
           "startTime": "21:45",
           "title": "Opțional: Jardins Gamelin / Jardins d’Illusion",
           "locationId": "montreal-jardins-gamelin",
-          "durationMinutes": 90
+          "durationMinutes": 90,
+          "progress": true
         },
         {
           "itemId": "0903-15-abreuvoir-132",
           "startTime": "21:45",
           "title": "Alternativ: Abreuvoir 132, Jam Night",
           "locationId": "montreal-abreuvoir-132",
-          "durationMinutes": 90
+          "durationMinutes": 90,
+          "progress": true
         },
         {
           "itemId": "0903-16-revenire-hotel",
@@ -267,7 +271,8 @@
           "startTime": "13:45",
           "title": "Prânz Old Montréal",
           "locationId": "montreal-old-montr-al",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0904-09-to-next",
@@ -390,7 +395,8 @@
           "startTime": "20:25",
           "title": "Cină Old Montréal",
           "locationId": "montreal-old-montr-al",
-          "durationMinutes": 75
+          "durationMinutes": 75,
+          "progress": true
         },
         {
           "itemId": "0904-19-pub-wolf-workman-alternativ-pub-saint-pier",
@@ -411,7 +417,8 @@
           "itemId": "0904-20-revenire-la-hotel-le-roberval",
           "startTime": "23:15",
           "title": "Revenire la Hotel Le Roberval",
-          "locationId": "montreal-hotel-le-roberval"
+          "locationId": "montreal-hotel-le-roberval",
+          "progress": true
         }
       ]
     },
@@ -522,7 +529,8 @@
           "startTime": "15:30",
           "title": "Prânz Downtown",
           "locationId": "montreal-downtown-montr-al",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0905-14-downtown-old-montreal",
@@ -557,7 +565,8 @@
           "startTime": "18:20",
           "title": "Cină Downtown / Sainte-Catherine",
           "locationId": "montreal-downtown-montr-al",
-          "durationMinutes": 75
+          "durationMinutes": 75,
+          "progress": true
         },
         {
           "itemId": "0905-18-downtown-hotel",
@@ -574,14 +583,16 @@
           "startTime": "20:00",
           "title": "Hotel / pauză înainte de seară",
           "locationId": "montreal-hotel-le-roberval",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0905-20-hurleys",
           "startTime": "21:00",
           "title": "Hurley's Irish Pub",
           "locationId": "montreal-hurley-s-irish-pub",
-          "durationMinutes": 120
+          "durationMinutes": 120,
+          "progress": true
         }
       ]
     },
@@ -675,7 +686,8 @@
           "startTime": "13:25",
           "title": "Prânz Mile End",
           "locationId": "montreal-mile-end",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0906-06-to-next",
@@ -754,7 +766,8 @@
           "startTime": "17:50",
           "title": "Cină Little Italy",
           "locationId": "montreal-little-italy",
-          "durationMinutes": 75
+          "durationMinutes": 75,
+          "progress": true
         },
         {
           "itemId": "0906-12-little-italy-plateau",
@@ -783,7 +796,8 @@
           "itemId": "0906-15-revenire-la-hotel-le-roberval",
           "startTime": "22:30",
           "title": "Revenire la Hotel Le Roberval",
-          "locationId": "montreal-hotel-le-roberval"
+          "locationId": "montreal-hotel-le-roberval",
+          "progress": true
         }
       ]
     },
@@ -876,7 +890,8 @@
           "startTime": "12:25",
           "title": "Prânz Downtown",
           "locationId": "montreal-downtown-montr-al",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0907-09-downtown-hotel",
@@ -901,7 +916,8 @@
           "itemId": "0907-12-gara-central",
           "startTime": "15:45",
           "title": "Gara Centrală",
-          "locationId": "montreal-gare-centrale-montr-al"
+          "locationId": "montreal-gare-centrale-montr-al",
+          "progress": true
         },
         {
           "itemId": "0907-13-montr-al-qu-bec-city",
@@ -1047,7 +1063,8 @@
           "startTime": "13:50",
           "title": "Prânz Old Québec",
           "locationId": "quebec-city-old-qu-bec",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0908-08-to-next",
@@ -1144,7 +1161,8 @@
           "startTime": "18:35",
           "title": "Cină Old Québec",
           "locationId": "quebec-city-old-qu-bec",
-          "durationMinutes": 75
+          "durationMinutes": 75,
+          "progress": true
         },
         {
           "itemId": "0908-15-rue-saint-jean-evening-walk",
@@ -1175,7 +1193,8 @@
           "itemId": "0908-17-revenire-la-hotel-le-dauphin-qu-bec",
           "startTime": "22:30",
           "title": "Revenire la Hotel Le Dauphin Québec",
-          "locationId": "quebec-city-le-dauphin-qu-bec"
+          "locationId": "quebec-city-le-dauphin-qu-bec",
+          "progress": true
         }
       ]
     },
@@ -1244,7 +1263,8 @@
           "startTime": "14:30",
           "title": "Prânz Île d'Orléans",
           "locationId": "quebec-city-le-d-orl-ans",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0909-08-uber-lyft-sainte-famille-saint-pierre",
@@ -1301,7 +1321,8 @@
           "startTime": "18:45",
           "title": "Cină Old Québec",
           "locationId": "quebec-city-old-qu-bec",
-          "durationMinutes": 75
+          "durationMinutes": 75,
+          "progress": true
         },
         {
           "itemId": "0909-14-plimbare-old-qu-bec-seara",
@@ -1332,13 +1353,15 @@
           "itemId": "0909-16-alternativ-midnight-blue-club",
           "startTime": "22:15",
           "title": "Alternativ Midnight Blue / club",
-          "locationId": "quebec-city-midnight-blue"
+          "locationId": "quebec-city-midnight-blue",
+          "progress": true
         },
         {
           "itemId": "0909-17-revenire-la-hotel-le-dauphin-qu-bec",
           "startTime": "23:45",
           "title": "Revenire la Hotel Le Dauphin Québec",
-          "locationId": "quebec-city-le-dauphin-qu-bec"
+          "locationId": "quebec-city-le-dauphin-qu-bec",
+          "progress": true
         }
       ]
     },
@@ -1351,7 +1374,8 @@
           "startTime": "10:00",
           "title": "Hotel + check-out, bagaje lăsate la hotel",
           "locationId": "quebec-city-le-dauphin-qu-bec",
-          "durationMinutes": 20
+          "durationMinutes": 20,
+          "progress": true
         },
         {
           "itemId": "0910-02-hotel-parliament-building",
@@ -1456,7 +1480,8 @@
           "startTime": "14:10",
           "title": "Prânz Old Québec",
           "locationId": "quebec-city-old-qu-bec",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0910-08-to-next",
@@ -1489,13 +1514,15 @@
           "startTime": "16:20",
           "title": "Ridicare bagaje + plecare spre Gare du Palais",
           "locationId": "quebec-city-gare-du-palais",
-          "durationMinutes": 20
+          "durationMinutes": 20,
+          "progress": true
         },
         {
           "itemId": "0910-12-sosire-gare-du-palais",
           "startTime": "16:40",
           "title": "Sosire Gare du Palais",
-          "locationId": "quebec-city-gare-du-palais"
+          "locationId": "quebec-city-gare-du-palais",
+          "progress": true
         },
         {
           "itemId": "0910-13-tren-qu-bec-city-montr-al",
@@ -1510,7 +1537,8 @@
           "itemId": "0910-14-sosire-gare-centrale-montr-al",
           "startTime": "21:00",
           "title": "Sosire Gare Centrale Montréal",
-          "locationId": "montreal-gare-centrale-montr-al"
+          "locationId": "montreal-gare-centrale-montr-al",
+          "progress": true
         },
         {
           "itemId": "0910-15-gare-centrale-hotel-le-roberval",
@@ -1524,7 +1552,8 @@
           "itemId": "0910-17-op-ional-club-unity-le-date-karaoke",
           "startTime": "22:00",
           "title": "Opțional: Club Unity / Le Date Karaoke",
-          "locationId": "montreal-club-unity"
+          "locationId": "montreal-club-unity",
+          "progress": true
         }
       ]
     },
@@ -1636,7 +1665,8 @@
           "startTime": "13:20",
           "title": "Prânz Downtown",
           "locationId": "montreal-downtown-montr-al",
-          "durationMinutes": 60
+          "durationMinutes": 60,
+          "progress": true
         },
         {
           "itemId": "0911-10-downtown-old-montr-al",
@@ -1677,7 +1707,8 @@
           "startTime": "17:15",
           "title": "Sosire Montréal-Trudeau Airport",
           "locationId": "montreal-montreal-trudeau-airport",
-          "durationMinutes": 80
+          "durationMinutes": 80,
+          "progress": true
         },
         {
           "itemId": "0911-16-montr-al-amsterdam-klm",

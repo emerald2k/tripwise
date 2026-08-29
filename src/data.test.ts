@@ -118,4 +118,32 @@ describe('runtime DATA delivery', () => {
       }),
     ).toThrow('Unknown location')
   })
+
+  it.each([
+    [
+      'a missing manifest',
+      {},
+      'Unable to load DATA resource: /data/manifest.json',
+    ],
+    [
+      'a missing referenced resource',
+      { '/data/manifest.json': manifest },
+      'Unable to load DATA resource:',
+    ],
+  ])('rejects %s', async (_case, resources, message) => {
+    await expect(fetchRuntimeData(runtimeFetcher(resources))).rejects.toThrow(
+      message,
+    )
+  })
+
+  it('rejects malformed JSON and an invalid manifest package', async () => {
+    const malformed: JsonFetcher = vi.fn(
+      async () => new Response('{', { status: 200 }),
+    )
+    await expect(fetchRuntimeData(malformed)).rejects.toThrow()
+
+    await expect(
+      fetchRuntimeData(runtimeFetcher({ '/data/manifest.json': {} })),
+    ).rejects.toThrow()
+  })
 })

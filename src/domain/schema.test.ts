@@ -7,7 +7,13 @@ import {
   type Day,
 } from '../data/schema'
 import { localDate } from './date'
-import { currentItem, dayProgress, nextItem, sortItems } from './itinerary'
+import {
+  activeLocationItems,
+  currentItem,
+  dayProgress,
+  nextItem,
+  sortItems,
+} from './itinerary'
 import { validateDataPackage, validateItineraryData } from './validation'
 
 const day: Day = {
@@ -35,6 +41,67 @@ const day: Day = {
     },
   ],
 }
+
+describe('active Location Item intervals', () => {
+  const intervalDay = {
+    date: '2026-08-27',
+    items: [
+      {
+        itemId: 'location-a',
+        title: 'Location A',
+        startTime: '08:00',
+        locationId: 'a',
+        durationMinutes: 30,
+      },
+      {
+        itemId: 'transport',
+        title: 'Transfer',
+        startTime: '08:30',
+        transport: { mode: 'walk' as const },
+      },
+      {
+        itemId: 'location-b',
+        title: 'Location B',
+        startTime: '10:00',
+        locationId: 'b',
+      },
+      {
+        itemId: 'location-c',
+        title: 'Location C',
+        startTime: '11:00',
+        locationId: 'c',
+        durationMinutes: 60,
+      },
+    ],
+  } satisfies Day
+
+  const at = (hours: number, minutes: number) =>
+    new Date(2026, 7, 27, hours, minutes)
+
+  it('uses the next Location start time before final-duration fallback', () => {
+    expect(
+      activeLocationItems(intervalDay, at(8, 0)).map((item) => item.itemId),
+    ).toEqual(['location-a'])
+    expect(
+      activeLocationItems(intervalDay, at(9, 29)).map((item) => item.itemId),
+    ).toEqual(['location-a'])
+    expect(
+      activeLocationItems(intervalDay, at(10, 0)).map((item) => item.itemId),
+    ).toEqual(['location-b'])
+    expect(
+      activeLocationItems(intervalDay, at(11, 30)).map((item) => item.itemId),
+    ).toEqual(['location-c'])
+    expect(activeLocationItems(intervalDay, at(12, 0))).toEqual([])
+  })
+
+  it('does not infer an interval for a final Location without a valid duration', () => {
+    const withoutFinalDuration = {
+      ...intervalDay,
+      items: intervalDay.items.slice(0, -1),
+    } satisfies Day
+    expect(activeLocationItems(withoutFinalDuration, at(11, 30))).toEqual([])
+  })
+})
 
 const behaviorDay: Day = {
   date: '2026-08-27',

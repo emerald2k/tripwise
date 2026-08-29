@@ -6,177 +6,241 @@
       "locationId": "quebec-city-le-dauphin-qu-bec",
       "name": "Le Dauphin Québec",
       "category": "hotel",
-      "address": "400 rue des Marais, Québec",
-      "description": "În afara Old Québec; transport necesar",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20%26%20Suites%20Le%20Dauphin%20Quebec%2C%20400%20Rue%20du%20Marais%2C%20Quebec%20City%2C%20QC%20G1M%203R1"
+      "address": "400 Rue des Marais, Québec City, QC, Canada",
+      "description": "Hotel in the Les Rivières area, outside Old Québec; local transport is needed for most sightseeing days.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Le%20Dauphin%20Qu%C3%A9bec%2C%20400%20Rue%20des%20Marais%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada"
     },
     {
       "locationId": "quebec-city-old-qu-bec",
       "name": "Old Québec",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Quebec%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Qu%C3%A9bec%2C%20Old%20Qu%C3%A9bec%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Old Québec, Québec City, QC, Canada",
+      "description": "Historic fortified district and the core sightseeing area of Québec City."
     },
     {
       "locationId": "quebec-city-porte-saint-jean",
       "name": "Porte Saint-Jean",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint-Jean%20Gate%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Porte%20Saint-Jean%2C%20Rue%20Saint-Jean%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Rue Saint-Jean, Québec City, QC, Canada",
+      "description": "Historic city gate marking an important entrance into Old Québec."
     },
     {
       "locationId": "quebec-city-rue-saint-jean",
       "name": "Rue Saint-Jean",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Jean%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Jean%2C%20Rue%20Saint-Jean%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Rue Saint-Jean, Québec City, QC, Canada",
+      "description": "Lively historic street with cafés, shops, restaurants and access to Old Québec."
     },
     {
       "locationId": "quebec-city-place-d-youville",
       "name": "Place d'Youville",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20d%27Youville%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20d%27Youville%2C%20Place%20D%27Youville%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Place D'Youville, Québec City, QC, Canada",
+      "description": "Central public square and event space immediately west of the Old Québec fortifications."
     },
     {
       "locationId": "quebec-city-fortifications-of-qu-bec",
       "name": "Fortifications of Québec",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Fortifications%20of%20Quebec%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Fortifications%20of%20Qu%C3%A9bec%2C%20Fortifications%20of%20Qu%C3%A9bec%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Fortifications of Québec, Québec City, QC, Canada",
+      "description": "Historic defensive walls and gates surrounding Old Québec."
     },
     {
       "locationId": "quebec-city-ch-teau-frontenac",
       "name": "Château Frontenac",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Fairmont%20Le%20Chateau%20Frontenac%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ch%C3%A2teau%20Frontenac%2C%201%20des%20Carri%C3%A8res%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1R%204P5%2C%20Canada",
+      "address": "1 des Carrières Street, Québec City, QC G1R 4P5, Canada",
+      "description": "Iconic historic hotel and Québec City landmark overlooking the Saint Lawrence River."
     },
     {
       "locationId": "quebec-city-dufferin-terrace",
       "name": "Dufferin Terrace",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Dufferin%20Terrace%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Dufferin%20Terrace%2C%20Dufferin%20Terrace%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Dufferin Terrace, Québec City, QC, Canada",
+      "description": "Scenic boardwalk beside Château Frontenac with river views and a classic Old Québec promenade."
     },
     {
       "locationId": "quebec-city-petit-champlain",
       "name": "Petit-Champlain",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Quartier%20Petit%20Champlain%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Petit-Champlain%2C%2061%20Petit-Champlain%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1K%204H5%2C%20Canada",
+      "address": "61 Petit-Champlain Street, Québec City, QC G1K 4H5, Canada",
+      "description": "Historic lower-town district with narrow streets, shops, restaurants and heritage buildings."
     },
     {
       "locationId": "quebec-city-place-royale",
       "name": "Place Royale",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Royale%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Royale%2C%20Place%20Royale%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Place Royale, Québec City, QC, Canada",
+      "description": "Historic square in Lower Town associated with the origins of Québec and New France."
     },
     {
       "locationId": "quebec-city-old-port-qu-bec",
       "name": "Old Port Québec",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Port%20of%20Quebec%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Port%20Qu%C3%A9bec%2C%20Old%20Port%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Old Port, Québec City, QC, Canada",
+      "description": "Waterfront district north of Lower Town with harbour views and historic streets."
     },
     {
       "locationId": "quebec-city-breakneck-steps",
       "name": "Breakneck Steps",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Breakneck%20Steps%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Breakneck%20Steps%2C%20Breakneck%20Steps%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Breakneck Steps, Québec City, QC, Canada",
+      "description": "Steep historic staircase connecting Upper and Lower Québec near Petit-Champlain."
     },
     {
       "locationId": "quebec-city-montmorency-falls",
       "name": "Montmorency Falls",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montmorency%20Falls%2C%20Quebec%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montmorency%20Falls%2C%205300%20Boulevard%20Sainte-Anne%2C%20Qu%C3%A9bec%2C%20QC%20G1C%200M3%2C%20Canada",
+      "address": "5300 Boulevard Sainte-Anne, Québec, QC G1C 0M3, Canada",
+      "description": "Major waterfall on the Montmorency River, higher than Niagara Falls and accessible from Québec City."
     },
     {
       "locationId": "quebec-city-le-d-orl-ans",
       "name": "Île d'Orléans",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ile%20d%27Orleans%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%C3%8Ele%20d%27Orl%C3%A9ans%2C%20%C3%8Ele%20d%27Orl%C3%A9ans%2C%20QC%2C%20Canada",
+      "address": "Île d'Orléans, QC, Canada",
+      "description": "Large island in the Saint Lawrence River known for rural landscapes, villages, farms and heritage sites."
     },
     {
       "locationId": "quebec-city-sainte-p-tronille",
       "name": "Sainte-Pétronille",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sainte-Petronille%2C%20Ile%20d%27Orleans%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sainte-P%C3%A9tronille%2C%20Sainte-P%C3%A9tronille%2C%20%C3%8Ele%20d%27Orl%C3%A9ans%2C%20QC%2C%20Canada",
+      "address": "Sainte-Pétronille, Île d'Orléans, QC, Canada",
+      "description": "Picturesque western-tip village with panoramic views toward Québec City and Montmorency Falls."
     },
     {
       "locationId": "quebec-city-saint-laurent-le-d-orl-ans",
       "name": "Saint-Laurent Île d'Orléans",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint-Laurent%2C%20Ile%20d%27Orleans%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint-Laurent%20%C3%8Ele%20d%27Orl%C3%A9ans%2C%20Saint-Laurent-de-l%27%C3%8Ele-d%27Orl%C3%A9ans%2C%20QC%2C%20Canada",
+      "address": "Saint-Laurent-de-l'Île-d'Orléans, QC, Canada",
+      "description": "Riverside village on Île d'Orléans with heritage buildings, farmland and St. Lawrence views."
     },
     {
       "locationId": "quebec-city-sainte-famille",
       "name": "Sainte-Famille",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sainte-Famille%2C%20Ile%20d%27Orleans%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sainte-Famille%2C%20Sainte-Famille%2C%20%C3%8Ele%20d%27Orl%C3%A9ans%2C%20QC%2C%20Canada",
+      "address": "Sainte-Famille, Île d'Orléans, QC, Canada",
+      "description": "Historic agricultural village with stone houses, heritage buildings and views toward the Côte-de-Beaupré."
     },
     {
       "locationId": "quebec-city-saint-pierre",
       "name": "Saint-Pierre",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint-Pierre%2C%20Ile%20d%27Orleans%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint-Pierre%2C%20Saint-Pierre-de-l%27%C3%8Ele-d%27Orl%C3%A9ans%2C%20QC%2C%20Canada",
+      "address": "Saint-Pierre-de-l'Île-d'Orléans, QC, Canada",
+      "description": "Village area on Île d'Orléans with rural landscapes, heritage buildings and access to the island road network."
     },
     {
       "locationId": "quebec-city-parliament-building",
       "name": "Parliament Building",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Parliament%20Building%20of%20Quebec%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Parliament%20Building%2C%201045%20des%20Parlementaires%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1A%201A3%2C%20Canada",
+      "address": "1045 des Parlementaires Street, Québec City, QC G1A 1A3, Canada",
+      "description": "Seat of Québec's National Assembly, an important Second Empire-style landmark on Parliament Hill."
     },
     {
       "locationId": "quebec-city-fontaine-de-tourny",
       "name": "Fontaine de Tourny",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Fontaine%20de%20Tourny%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Fontaine%20de%20Tourny%2C%20Place%20de%20l%27Assembl%C3%A9e-Nationale%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Place de l'Assemblée-Nationale, Québec City, QC, Canada",
+      "description": "Large historic fountain in front of Québec's Parliament Building at Place de l'Assemblée-Nationale."
     },
     {
       "locationId": "quebec-city-grande-all-e",
       "name": "Grande Allée",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Grande%20Allee%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Grande%20All%C3%A9e%2C%20Grande%20All%C3%A9e%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Grande Allée, Québec City, QC, Canada",
+      "description": "Historic avenue lined with restaurants, cafés, terraces and grand civic architecture."
     },
     {
       "locationId": "quebec-city-plains-of-abraham",
       "name": "Plains of Abraham",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Plains%20of%20Abraham%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Plains%20of%20Abraham%2C%20Plains%20of%20Abraham%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Plains of Abraham, Québec City, QC, Canada",
+      "description": "Large historic urban park and former battlefield overlooking the Saint Lawrence."
     },
     {
       "locationId": "quebec-city-gare-du-palais",
       "name": "Gare du Palais",
       "category": "station",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20du%20Palais%2C%20450%20Rue%20de%20la%20Gare%20du%20Palais%2C%20Quebec%20City%2C%20Quebec%2C%20Canada"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20du%20Palais%2C%20350%20Gare-du-Palais%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1K%203X2%2C%20Canada",
+      "address": "350 Gare-du-Palais Street, Québec City, QC G1K 3X2, Canada",
+      "description": "Historic rail and intercity bus station serving Québec City."
     },
     {
       "locationId": "quebec-city-phoenix-du-parvis",
       "name": "Phoenix du Parvis",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Phoenix%20du%20Parvis%2C%20441%20Rue%20du%20Parvis%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Phoenix%20du%20Parvis%2C%20441%20du%20Parvis%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1K%206H5%2C%20Canada",
+      "address": "441 du Parvis Street, Québec City, QC G1K 6H5, Canada",
+      "description": "Live-music/nightlife venue near Rue du Parvis."
     },
     {
       "locationId": "quebec-city-midnight-blue",
       "name": "Midnight Blue",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Midnight%20Blue%2C%20Quebec%20City%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Midnight%20Blue%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Québec City, QC, Canada",
+      "description": "Nightlife/club option in Québec City."
     },
     {
       "locationId": "quebec-city-bateau-de-nuit",
       "name": "Bateau de Nuit",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bateau%20de%20Nuit%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bateau%20de%20Nuit%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "Québec City, QC, Canada",
+      "description": "Nightlife option in Québec City."
     },
     {
       "locationId": "quebec-city-pub-st-patrick",
       "name": "Pub St-Patrick",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20St-Patrick%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20St-Patrick%2C%201200%20McGowan%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "1200 McGowan Street, Québec City, QC, Canada",
+      "description": "Irish-style pub option in Québec City."
     },
     {
       "locationId": "quebec-city-pub-l-oncle-antoine",
       "name": "Pub L'Oncle Antoine",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20L%27Oncle%20Antoine%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20L%27Oncle%20Antoine%2C%2029%20Saint-Pierre%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1K%203Z1%2C%20Canada",
+      "address": "29 Saint-Pierre Street, Québec City, QC G1K 3Z1, Canada",
+      "description": "Historic-style pub in Lower Town, suitable for an evening drink."
     },
     {
       "locationId": "quebec-city-ninkasi-bar-bistro",
       "name": "Ninkasi Bar & Bistro",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ninkasi%20Bar%20%26%20Bistro%2C%20Quebec%20City%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ninkasi%20Bar%20%26%20Bistro%2C%20811%20Saint-Jean%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
+      "address": "811 Saint-Jean Street, Québec City, QC, Canada",
+      "description": "Bar and bistro on Rue Saint-Jean, suitable for an evening stop."
+    },
+    {
+      "locationId": "quebec-city-terminus-chute-montmorency",
+      "name": "Terminus Chute-Montmorency",
+      "category": "station",
+      "address": "Terminus Chute-Montmorency, Québec City, QC, Canada",
+      "description": "RTC bus terminal serving the Montmorency Falls area, including Métrobus 800.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Terminus%20Chute-Montmorency%2C%20Terminus%20Chute-Montmorency%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada"
     }
   ]
 }

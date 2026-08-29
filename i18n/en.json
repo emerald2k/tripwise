@@ -1,6 +1,7 @@
 {
   "today": "Today",
   "days": "Days",
+  "itineraryDayByDay": "Your itinerary day by day",
   "search": "Search",
   "settings": "Settings",
   "language": "Language",
@@ -21,6 +22,7 @@
   "noDays": "No days.",
   "noItinerary": "No itinerary for this day.",
   "copyLink": "Copy Link",
+  "shareGoogleMapsLocation": "Share Google Maps location",
   "navigate": "Navigate GMaps",
   "noResults": "No matches in your itinerary.",
   "searchMatch": "Match",
@@ -29,5 +31,11 @@
   "itinerary": "Itinerary",
   "activeItinerary": "Current itinerary",
   "noItineraries": "No itinerary is currently available.",
-  "confirmReset": "Reset progress for this itinerary?"
+  "confirmReset": "Reset progress for this itinerary?",
+  "departureDay": "Departure day",
+  "arrivalDay": "Arrival day",
+  "journeyDay": "Departure and arrival day",
+  "recoveryTitle": "Unable to open the app",
+  "recoveryBody": "Please check your connection and try again.",
+  "recoveryRetry": "Try again"
 }

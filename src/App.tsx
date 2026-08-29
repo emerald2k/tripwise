@@ -8,7 +8,6 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom'
-import Fuse from 'fuse.js'
 import {
   getRuntimeData,
   persistActiveItineraryId,
@@ -16,14 +15,16 @@ import {
   resolveActiveItinerary,
 } from './data'
 import { localDate } from './domain/date'
+import { formatDurationMinutes } from './domain/duration'
 import {
+  activeLocationItems,
   currentItem,
   dayProgress,
   nextItem,
   sortItems,
 } from './domain/itinerary'
 import { isCompactStatus } from './domain/presentation'
-import type { Day, Itinerary, Item } from './data/schema'
+import type { City, Day, Itinerary, Item } from './data/schema'
 import {
   readProgress,
   resetItineraryProgress,
@@ -45,6 +46,13 @@ import './styles.css'
 type Language = 'ro' | 'en'
 type Copy = typeof ro
 const translations: Record<Language, Copy> = { ro, en }
+type SearchLocationResult = {
+  item: Extract<Item, { locationId: string }>
+  location: City['locations'][number]
+}
+type SearchResultDay =
+  | { day: Day; type: 'locations'; matches: SearchLocationResult[] }
+  | { day: Day; type: 'day' }
 
 interface AppProps {
   initialInstallPrompt?: BeforeInstallPromptEvent | null
@@ -77,9 +85,38 @@ function useLanguage() {
   return { language, change, t: translations[language] }
 }
 
+function useHeaderVisibility() {
+  const [visible, setVisible] = useState(true)
+  const previousScrollY = useRef(0)
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      const currentScrollY = window.scrollY
+      if (currentScrollY <= 8) {
+        previousScrollY.current = currentScrollY
+        setVisible(true)
+        return
+      }
+
+      const difference = currentScrollY - previousScrollY.current
+      if (Math.abs(difference) < 8) return
+
+      previousScrollY.current = currentScrollY
+      setVisible(difference < 0)
+    }
+
+    previousScrollY.current = window.scrollY
+    window.addEventListener('scroll', updateVisibility, { passive: true })
+    return () => window.removeEventListener('scroll', updateVisibility)
+  }, [])
+
+  return visible
+}
+
 export default function App({ initialInstallPrompt = null }: AppProps) {
   const { datasets } = getRuntimeData()
   const language = useLanguage()
+  const headerVisible = useHeaderVisibility()
   const [activeItinerary, setActiveItinerary] = useState<Itinerary | undefined>(
     () => {
       const savedId = readActiveItineraryId()
@@ -200,7 +237,7 @@ export default function App({ initialInstallPrompt = null }: AppProps) {
 
   return (
     <div className="app">
-      <header className="header">
+      <header className={`header ${headerVisible ? '' : 'is-hidden'}`}>
         <Link className="brand" to="/">
           {brand.name}
         </Link>
@@ -445,24 +482,33 @@ function DayView({
   const statuses = progress[itinerary.id]?.[day.date] || {}
   const ordered = sortItems(day.items)
   const [, refresh] = useState(0)
-  const currentRef = useRef<HTMLDivElement>(null)
+  const activeRef = useRef<HTMLDivElement>(null)
   const highlightedRef = useRef<HTMLDivElement>(null)
   const evaluationTime = now ?? new Date()
   const current = today ? currentItem(day, statuses, evaluationTime) : null
+  const activeItems = activeLocationItems(day, evaluationTime)
+  const firstActiveItemId = activeItems[0]?.itemId
   useEffect(() => {
     if (!today) return
     const timer = window.setInterval(() => refresh((value) => value + 1), 30000)
     return () => window.clearInterval(timer)
   }, [today])
   useEffect(() => {
-    if (!currentRef.current) return
+    if (highlightedItemId || !activeRef.current) return
+    const target = activeRef.current
+    const headerBottom =
+      document.querySelector<HTMLElement>('.header')?.getBoundingClientRect()
+        .bottom ?? 0
+    const targetBox = target.getBoundingClientRect()
+    if (targetBox.top >= headerBottom && targetBox.bottom <= window.innerHeight)
+      return
     const reduced =
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
-    currentRef.current.scrollIntoView?.({
+    target.scrollIntoView?.({
       behavior: reduced ? 'auto' : 'smooth',
       block: 'center',
     })
-  }, [current?.itemId])
+  }, [day.date, highlightedItemId])
   useEffect(() => {
     if (!highlightedRef.current) return
     const reduced =
@@ -505,19 +551,28 @@ function DayView({
               : undefined
           const supportsProgress =
             'locationId' in item && item.progress === true
+          const hasLocationActions =
+            supportsProgress || Boolean(location?.googleMapsUrl)
           const status = 'progress' in item ? statuses[item.itemId] : undefined
+          const duration =
+            'durationMinutes' in item
+              ? formatDurationMinutes(item.durationMinutes)
+              : undefined
           const compact = isCompactStatus(status)
           const highlighted = highlightedItemId === item.itemId
+          const active = activeItems.some(
+            (activeItem) => activeItem.itemId === item.itemId,
+          )
           return (
             <div
               ref={
                 highlighted
                   ? highlightedRef
-                  : current?.itemId === item.itemId
-                    ? currentRef
+                  : firstActiveItemId === item.itemId
+                    ? activeRef
                     : undefined
               }
-              className={`timeline-item ${current?.itemId === item.itemId ? 'is-current' : ''} ${highlighted ? 'is-search-match' : ''} ${compact ? 'is-compact' : ''}`}
+              className={`timeline-item ${current?.itemId === item.itemId ? 'is-current' : ''} ${active ? 'is-active' : ''} ${highlighted ? 'is-search-match' : ''} ${compact ? 'is-compact' : ''}`}
               key={item.itemId}
               tabIndex={highlighted ? -1 : undefined}
             >
@@ -536,7 +591,19 @@ function DayView({
                         {status === 'skipped' ? '−' : '✓'}
                       </span>
                     )}
-                    <h2>{location?.name || item.title}</h2>
+                    {compact ? (
+                      <h2>{location?.name || item.title}</h2>
+                    ) : (
+                      <div className="location-title-row">
+                        <h2>{location?.name || item.title}</h2>
+                        {duration && (
+                          <span className="location-duration muted">
+                            {duration}
+                            <DurationIcon />
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {highlighted && (
                       <span className="search-match-label">
                         {t.searchMatch}
@@ -549,53 +616,49 @@ function DayView({
                     )}
                     {!compact &&
                       location?.name &&
-                      item.title !== location.name && <p>{item.title}</p>}
+                      item.title !== location.name && (
+                        <p className="location-context">{item.title}</p>
+                      )}
                     {!compact && location?.description && (
-                      <p>{location.description}</p>
+                      <p className="location-primary-description">
+                        {location.description}
+                      </p>
                     )}
-                    {'durationMinutes' in item && item.durationMinutes && (
-                      <span className="muted">{item.durationMinutes} min</span>
+                    {!compact && location?.address && (
+                      <p className="location-secondary-description">
+                        {location.address}
+                      </p>
                     )}
-                    {supportsProgress && (
-                      <div className="item-actions">
-                        {status ? (
+                  </div>
+                </div>
+                {hasLocationActions && (
+                  <div className="item-actions">
+                    {supportsProgress &&
+                      (status ? (
+                        <button
+                          onClick={() => updateStatus(day.date, item.itemId)}
+                        >
+                          {t.undo}
+                        </button>
+                      ) : (
+                        <>
                           <button
-                            onClick={() => updateStatus(day.date, item.itemId)}
+                            onClick={() =>
+                              updateStatus(day.date, item.itemId, 'done')
+                            }
                           >
-                            {t.undo}
+                            {t.done}
                           </button>
-                        ) : (
-                          <>
-                            <button
-                              onClick={() =>
-                                updateStatus(day.date, item.itemId, 'done')
-                              }
-                            >
-                              {t.done}
-                            </button>
-                            <button
-                              onClick={() =>
-                                updateStatus(day.date, item.itemId, 'skipped')
-                              }
-                            >
-                              {t.skip}
-                            </button>
-                          </>
-                        )}
-                        {location?.googleMapsUrl && (
-                          <a
-                            className="map-link"
-                            href={location.googleMapsUrl}
-                            target="_blank"
-                            rel="noreferrer"
+                          <button
+                            onClick={() =>
+                              updateStatus(day.date, item.itemId, 'skipped')
+                            }
                           >
-                            <GoogleMapsIcon />
-                            {t.navigate}
-                          </a>
-                        )}
-                      </div>
-                    )}
-                    {!supportsProgress && location?.googleMapsUrl && (
+                            {t.skip}
+                          </button>
+                        </>
+                      ))}
+                    {location?.googleMapsUrl && (
                       <a
                         className="map-link"
                         href={location.googleMapsUrl}
@@ -606,14 +669,28 @@ function DayView({
                         {t.navigate}
                       </a>
                     )}
+                    {location?.googleMapsUrl && (
+                      <ShareButton
+                        t={t}
+                        url={location.googleMapsUrl}
+                        label={t.shareGoogleMapsLocation}
+                        className="location-share"
+                        iconOnly
+                      />
+                    )}
                   </div>
-                </div>
+                )}
               </article>
             </div>
           )
         })}
       </div>
-      <ShareButton t={t} />
+      <ShareButton
+        t={t}
+        url={window.location.href}
+        label={t.copyLink}
+        className="share"
+      />
     </section>
   )
 }
@@ -643,6 +720,20 @@ function GoogleMapsIcon() {
   )
 }
 
+function DurationIcon() {
+  return (
+    <svg
+      className="duration-icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  )
+}
+
 function TransportInfo({
   transport,
 }: {
@@ -650,7 +741,7 @@ function TransportInfo({
 }) {
   const parts = [
     transport.mode,
-    transport.durationMinutes ? `${transport.durationMinutes} min` : '',
+    formatDurationMinutes(transport.durationMinutes) || '',
     transport.distanceMeters !== undefined
       ? formatDistance(transport.distanceMeters)
       : '',
@@ -668,10 +759,12 @@ function Days({
 }: SharedProps & { itinerary: Itinerary; progress: ProgressStore }) {
   const today = localDate()
   return (
-    <section className="page">
+    <section className="page days-page">
       <h1>{t.days}</h1>
+      <p className="days-subtitle">{t.itineraryDayByDay}</p>
       <div className="day-list">
-        {itinerary.days.map((day) => {
+        {itinerary.days.map((day, index) => {
+          const date = formatDayDateParts(day.date, language)
           const state = dayProgress(
             day,
             progress[itinerary.id]?.[day.date] || {},
@@ -679,10 +772,30 @@ function Days({
           )
           return (
             <Link to={`/day/${day.date}`} className="day-row" key={day.date}>
-              <span>{formatDate(day.date, language)}</span>
-              <strong>{cityNames(day)}</strong>
-              <span className="indicator">
-                {state === 'complete' ? '✓' : state === 'partial' ? '◐' : '○'}
+              <span
+                className="day-date"
+                aria-label={formatDate(day.date, language)}
+              >
+                <span className="day-date-month">{date.month}</span>
+                <strong className="day-date-number">{date.day}</strong>
+              </span>
+              <strong className="day-title">{cityNames(day)}</strong>
+              <span className="day-row-status">
+                <ItineraryDayIcon
+                  type={
+                    itinerary.days.length === 1
+                      ? 'journey'
+                      : index === 0
+                        ? 'departure'
+                        : index === itinerary.days.length - 1
+                          ? 'arrival'
+                          : undefined
+                  }
+                  t={t}
+                />
+                <span className="indicator">
+                  {state === 'complete' ? '✓' : state === 'partial' ? '◐' : '○'}
+                </span>
               </span>
             </Link>
           )
@@ -692,54 +805,59 @@ function Days({
   )
 }
 
+function ItineraryDayIcon({
+  type,
+  t,
+}: {
+  type: 'departure' | 'arrival' | 'journey' | undefined
+  t: Copy
+}) {
+  if (!type) return null
+  const label =
+    type === 'departure'
+      ? t.departureDay
+      : type === 'arrival'
+        ? t.arrivalDay
+        : t.journeyDay
+  return (
+    <svg
+      className={`itinerary-day-icon is-${type}`}
+      viewBox="0 0 24 24"
+      role="img"
+      aria-label={label}
+    >
+      <path d="M3 13h6l5 7 2-1-3-6h5l2 3 1-1-1-5 1-5-1-1-2 3h-5l3-6-2-1-5 7H3z" />
+    </svg>
+  )
+}
+
 function Search({
   t,
   language,
   itinerary,
 }: SharedProps & { itinerary: Itinerary }) {
   const [query, setQuery] = useState('')
-  const entries = useMemo(
-    () =>
-      itinerary.days.flatMap((day) =>
-        day.items.map((item) => {
-          const location =
-            'locationId' in item
-              ? getRuntimeData().locations.get(item.locationId)
-              : undefined
-          return {
-            day,
-            item,
-            location,
-            text: [
-              item.title,
-              location?.name,
-              location?.description,
-              location?.address,
-              location?.category,
-              'locationId' in item
-                ? getRuntimeData().locationCities.get(item.locationId)
-                : item.transport.mode,
-            ]
-              .filter(Boolean)
-              .join(' '),
-          }
-        }),
-      ),
-    [itinerary],
-  )
-  const fuse = useMemo(
-    () => new Fuse(entries, { keys: ['text'], threshold: 0.35 }),
-    [entries],
-  )
-  const matches = query.trim()
-    ? fuse.search(query).map((result) => result.item)
-    : []
-  const resultDays = itinerary.days
-    .map((day) => ({
-      day,
-      matches: matches.filter((match) => match.day.date === day.date),
-    }))
-    .filter((result) => result.matches.length)
+  const normalizedQuery = query.trim().toLocaleLowerCase()
+  const resultDays = useMemo(() => {
+    if (!normalizedQuery) return []
+    return itinerary.days.flatMap<SearchResultDay>((day) => {
+      const matches: SearchLocationResult[] = []
+      for (const item of day.items) {
+        if (!('locationId' in item)) continue
+        const location = getRuntimeData().locations.get(item.locationId)
+        if (!location) continue
+        const text = [location.name, location.description, location.address]
+          .filter(Boolean)
+          .join(' ')
+          .toLocaleLowerCase()
+        if (text.includes(normalizedQuery)) matches.push({ item, location })
+      }
+      if (matches.length) return [{ day, type: 'locations' as const, matches }]
+      return day.title?.toLocaleLowerCase().includes(normalizedQuery)
+        ? [{ day, type: 'day' as const }]
+        : []
+    })
+  }, [itinerary, normalizedQuery])
   return (
     <section className="page">
       <h1>{t.search}</h1>
@@ -753,33 +871,43 @@ function Search({
       {query.trim() && (
         <div className="search-results">
           {resultDays.length ? (
-            resultDays.map(({ day, matches }) => (
-              <section className="search-day" key={day.date}>
+            resultDays.map((result) => (
+              <section className="search-day" key={result.day.date}>
                 <h2>
-                  {formatDate(day.date, language)}
-                  {day.title && <span>{day.title}</span>}
+                  {formatDate(result.day.date, language)}
+                  {result.day.title && <span>{result.day.title}</span>}
                 </h2>
-                {matches.map(({ item, location }) => {
-                  const name = location?.name || item.title
-                  const detail =
-                    location?.name && item.title !== location.name
-                      ? item.title
-                      : location?.description || location?.address
-                  return (
-                    <Link
-                      to={`/day/${day.date}?item=${encodeURIComponent(item.itemId)}`}
-                      className="result-row"
-                      key={item.itemId}
-                      aria-label={`${item.startTime} ${name}${detail ? `. ${detail}` : ''}`}
-                    >
-                      <span>{item.startTime}</span>
-                      <strong>{name}</strong>
-                      {detail && (
-                        <span className="search-result-detail">{detail}</span>
-                      )}
-                    </Link>
-                  )
-                })}
+                {result.type === 'day' ? (
+                  <Link
+                    to={`/day/${result.day.date}`}
+                    className="result-row"
+                    aria-label={`${formatDate(result.day.date, language)} ${result.day.title}`}
+                  >
+                    <strong>{result.day.title}</strong>
+                  </Link>
+                ) : (
+                  result.matches.map(({ item, location }) => {
+                    const name = location?.name || item.title
+                    const detail =
+                      location?.name && item.title !== location.name
+                        ? item.title
+                        : location?.description || location?.address
+                    return (
+                      <Link
+                        to={`/day/${result.day.date}?item=${encodeURIComponent(item.itemId)}`}
+                        className="result-row"
+                        key={item.itemId}
+                        aria-label={`${item.startTime} ${name}${detail ? `. ${detail}` : ''}`}
+                      >
+                        <span>{item.startTime}</span>
+                        <strong>{name}</strong>
+                        {detail && (
+                          <span className="search-result-detail">{detail}</span>
+                        )}
+                      </Link>
+                    )
+                  })
+                )}
               </section>
             ))
           ) : (
@@ -870,20 +998,40 @@ function Settings({
   )
 }
 
-function ShareButton({ t }: { t: Copy }) {
+function ShareButton({
+  t,
+  url,
+  label,
+  className,
+  iconOnly = false,
+}: {
+  t: Copy
+  url: string
+  label: string
+  className: string
+  iconOnly?: boolean
+}) {
   const [copied, setCopied] = useState(false)
   const share = async () => {
-    if (navigator.share)
-      await navigator.share({ title: brand.name, url: window.location.href })
-    else {
-      await navigator.clipboard?.writeText(window.location.href)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1800)
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: brand.name, url })
+      } catch {
+        return
+      }
+    } else if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(url)
+        setCopied(true)
+        window.setTimeout(() => setCopied(false), 1800)
+      } catch {
+        return
+      }
     }
   }
   return (
-    <button className="share" onClick={share}>
-      {copied ? t.copyLink : '↗'}
+    <button className={className} onClick={share} aria-label={label}>
+      {copied && !iconOnly ? t.copyLink : '↗'}
     </button>
   )
 }
@@ -908,6 +1056,19 @@ function formatDate(value: string, language: Language) {
   })
     .format(new Date(`${value}T12:00:00`))
     .toUpperCase()
+}
+
+function formatDayDateParts(value: string, language: Language) {
+  const parts = new Intl.DateTimeFormat(language === 'ro' ? 'ro-RO' : 'en-CA', {
+    day: '2-digit',
+    month: 'short',
+  }).formatToParts(new Date(`${value}T12:00:00`))
+  return {
+    day: parts.find((part) => part.type === 'day')?.value || '',
+    month: (
+      parts.find((part) => part.type === 'month')?.value || ''
+    ).toUpperCase(),
+  }
 }
 
 function formatDistance(meters: number) {

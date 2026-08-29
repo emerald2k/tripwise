@@ -61,17 +61,34 @@ describe('day item presentation', () => {
     ).toHaveClass('item-actions')
   })
 
-  it('does not give non-progress location items progress controls', () => {
-    renderDay()
+  it('does not report a copied link when Clipboard is unavailable or rejects', async () => {
+    const originalClipboard = navigator.clipboard
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: undefined,
+    })
+    const unavailable = renderDay()
+    fireEvent.click(screen.getByRole('button', { name: 'Copy Link' }))
+    expect(screen.getByRole('button', { name: 'Copy Link' })).toHaveTextContent(
+      '↗',
+    )
+    unavailable.unmount()
 
-    const item = screen
-      .getByRole('heading', { name: 'Hotel Le Roberval' })
-      .closest('article') as HTMLElement
-    expect(within(item).queryByRole('button', { name: 'DONE' })).toBeNull()
-    expect(within(item).queryByRole('button', { name: 'SKIP' })).toBeNull()
-    expect(
-      within(item).getByRole('link', { name: /Navigate GMaps/ }),
-    ).toBeVisible()
+    const writeText = vi.fn().mockRejectedValue(new Error('denied'))
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    })
+    renderDay()
+    fireEvent.click(screen.getByRole('button', { name: 'Copy Link' }))
+    await waitFor(() => expect(writeText).toHaveBeenCalled())
+    expect(screen.getByRole('button', { name: 'Copy Link' })).toHaveTextContent(
+      '↗',
+    )
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: originalClipboard,
+    })
   })
 
   it('renders DONE items compactly with UNDO and without secondary content', () => {
@@ -291,7 +308,7 @@ describe('day item presentation', () => {
     expect(item.closest('.timeline-item')).toBeInTheDocument()
   })
 
-  it('scrolls Today to CURRENT and does not scroll a manual Day route', () => {
+  it('does not scroll an already visible active Location Item', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date(2026, 8, 3, 20, 0))
     Object.defineProperty(window.HTMLElement.prototype, 'scrollIntoView', {
@@ -307,7 +324,7 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
-    expect(scrollIntoView).toHaveBeenCalledTimes(1)
+    expect(scrollIntoView).not.toHaveBeenCalled()
 
     cleanup()
     scrollIntoView.mockClear()

@@ -1,6 +1,7 @@
 {
   "today": "Astăzi",
   "days": "Zile",
+  "itineraryDayByDay": "Itinerarul tău, zi cu zi",
   "search": "Caută",
   "settings": "Setări",
   "language": "Limbă",
@@ -21,6 +22,7 @@
   "noDays": "Nu există zile.",
   "noItinerary": "Nu există itinerar pentru această zi.",
   "copyLink": "Copiază linkul",
+  "shareGoogleMapsLocation": "Distribuie locația Google Maps",
   "navigate": "Navigare GMaps",
   "noResults": "Nu există potriviri în itinerarul tău.",
   "searchMatch": "Potrivire",
@@ -29,5 +31,11 @@
   "itinerary": "Itinerar",
   "activeItinerary": "Itinerarul curent",
   "noItineraries": "Nu este disponibil niciun itinerar.",
-  "confirmReset": "Resetezi progresul pentru acest itinerar?"
+  "confirmReset": "Resetezi progresul pentru acest itinerar?",
+  "departureDay": "Zi de plecare",
+  "arrivalDay": "Zi de sosire",
+  "journeyDay": "Zi de plecare și sosire",
+  "recoveryTitle": "Aplicația nu poate fi deschisă",
+  "recoveryBody": "Verifică conexiunea și încearcă din nou.",
+  "recoveryRetry": "Încearcă din nou"
 }

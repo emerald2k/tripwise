@@ -3,6 +3,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -22,6 +23,7 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             startTime: '09:00',
             title: 'Alpha place',
             locationId: 'alpha-place',
+            durationMinutes: 90,
             progress: true,
           },
           {
@@ -48,6 +50,18 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             startTime: '17:00',
             title: 'Alpha transfer',
             transport: { mode: 'walk' },
+          },
+        ],
+      },
+      {
+        date: '2026-09-11',
+        title: 'Middle day',
+        items: [
+          {
+            itemId: 'alpha-middle-transfer',
+            startTime: '10:00',
+            title: 'Middle transfer',
+            transport: { mode: 'train' },
           },
         ],
       },
@@ -105,6 +119,7 @@ vi.mock('./data', () => ({
           name: 'Alpha place',
           category: 'attraction',
           description: 'Waterfront landmark',
+          address: 'Synthetic waterfront address',
         },
       ],
       [
@@ -113,6 +128,7 @@ vi.mock('./data', () => ({
           locationId: 'alpha-museum',
           name: 'Alpha museum',
           category: 'attraction',
+          address: 'Museum secondary detail',
         },
       ],
       [
@@ -158,10 +174,22 @@ vi.mock('./data', () => ({
 }))
 
 import App from './App'
+import { brand } from './brand'
 
 describe('Phase 3 itinerary selection', () => {
-  beforeEach(() => localStorage.clear())
+  beforeEach(() => {
+    localStorage.clear()
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 })
+  })
   afterEach(() => cleanup())
+
+  function scrollWindowTo(position: number) {
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: position,
+    })
+    fireEvent.scroll(window)
+  }
 
   it('keeps progress controls for visitable locations without Google Maps', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'alpha')
@@ -179,6 +207,61 @@ describe('Phase 3 itinerary selection', () => {
     expect(
       within(item).queryByRole('link', { name: /Navigate GMaps/ }),
     ).toBeNull()
+    expect(
+      within(item).queryByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeNull()
+  })
+
+  it('does not give progress-disabled locations progress controls', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const item = screen
+      .getByRole('heading', { name: 'Alpha museum' })
+      .closest('article') as HTMLElement
+    expect(within(item).queryByRole('button', { name: 'DONE' })).toBeNull()
+    expect(within(item).queryByRole('button', { name: 'SKIP' })).toBeNull()
+    expect(within(item).queryByRole('button', { name: 'UNDO' })).toBeNull()
+  })
+
+  it('renders location content in title, description, duration, and action hierarchy', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const item = screen
+      .getByRole('heading', { name: 'Alpha place' })
+      .closest('article') as HTMLElement
+    expect(
+      within(item).getByRole('heading', { name: 'Alpha place' }),
+    ).toBeVisible()
+    const primaryDescription = within(item).getByText('Waterfront landmark')
+    const secondaryDescription = within(item).getByText(
+      'Synthetic waterfront address',
+    )
+    expect(primaryDescription).toHaveClass('location-primary-description')
+    expect(secondaryDescription).toHaveClass('location-secondary-description')
+    expect(within(item).getByText('1h 30m')).toHaveClass('location-duration')
+    expect(item.querySelector('.location-title-row')).toContainElement(
+      within(item).getByText('1h 30m'),
+    )
+    expect(item.querySelector('.duration-icon')).toBeInTheDocument()
+    expect(within(item).getByRole('button', { name: 'DONE' })).toBeVisible()
+    expect(within(item).getByRole('button', { name: 'SKIP' })).toBeVisible()
+
+    const itemWithoutDuration = screen
+      .getByRole('heading', { name: 'Alpha museum' })
+      .closest('article') as HTMLElement
+    expect(itemWithoutDuration.querySelector('.duration-icon')).toBeNull()
   })
 
   it('renders actions from item progress and Maps availability independently', () => {
@@ -201,6 +284,11 @@ describe('Phase 3 itinerary selection', () => {
     expect(
       within(progressWithMaps).getByRole('link', { name: /Navigate GMaps/ }),
     ).toBeVisible()
+    expect(
+      within(progressWithMaps).getByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeVisible()
 
     fireEvent.click(
       within(progressWithMaps).getByRole('button', { name: 'DONE' }),
@@ -210,6 +298,11 @@ describe('Phase 3 itinerary selection', () => {
     ).toBeVisible()
     expect(
       within(progressWithMaps).getByRole('link', { name: /Navigate GMaps/ }),
+    ).toBeVisible()
+    expect(
+      within(progressWithMaps).getByRole('button', {
+        name: 'Share Google Maps location',
+      }),
     ).toBeVisible()
     fireEvent.click(
       within(progressWithMaps).getByRole('button', { name: 'UNDO' }),
@@ -235,6 +328,11 @@ describe('Phase 3 itinerary selection', () => {
         name: /Navigate GMaps/,
       }),
     ).toBeVisible()
+    expect(
+      within(informationWithMaps).getByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeVisible()
 
     const informationWithoutMaps = screen
       .getByRole('heading', { name: 'Alpha museum' })
@@ -247,11 +345,133 @@ describe('Phase 3 itinerary selection', () => {
         name: /Navigate GMaps/,
       }),
     ).toBeNull()
+    expect(
+      within(informationWithoutMaps).queryByRole('button', {
+        name: 'Share Google Maps location',
+      }),
+    ).toBeNull()
 
     const transport = screen
       .getByRole('heading', { name: 'Alpha transfer' })
       .closest('.timeline-item') as HTMLElement
     expect(within(transport).queryByRole('button')).toBeNull()
+  })
+
+  it('shares the selected Google Maps URL and keeps Day Share unchanged', async () => {
+    const originalShare = navigator.share
+    const share = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: share,
+    })
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+
+    try {
+      render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+
+      const item = screen
+        .getByRole('heading', { name: 'Alpha mapped place' })
+        .closest('article') as HTMLElement
+      fireEvent.click(
+        within(item).getByRole('button', {
+          name: 'Share Google Maps location',
+        }),
+      )
+      await waitFor(() =>
+        expect(share).toHaveBeenCalledWith({
+          title: brand.name,
+          url: 'https://www.google.com/maps/place/alpha',
+        }),
+      )
+
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Link' }))
+      await waitFor(() =>
+        expect(share).toHaveBeenLastCalledWith({
+          title: brand.name,
+          url: window.location.href,
+        }),
+      )
+    } finally {
+      Object.defineProperty(navigator, 'share', {
+        configurable: true,
+        value: originalShare,
+      })
+    }
+  })
+
+  it('does not report location sharing as copied when Clipboard is unavailable or rejects', async () => {
+    const originalShare = navigator.share
+    const originalClipboard = navigator.clipboard
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: undefined,
+    })
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    })
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+
+    try {
+      const copied = render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+      const locationShare = () =>
+        within(
+          screen
+            .getByRole('heading', { name: 'Alpha mapped place' })
+            .closest('article') as HTMLElement,
+        ).getByRole('button', { name: 'Share Google Maps location' })
+      fireEvent.click(locationShare())
+      await waitFor(() =>
+        expect(writeText).toHaveBeenCalledWith(
+          'https://www.google.com/maps/place/alpha',
+        ),
+      )
+      expect(locationShare()).toHaveTextContent('↗')
+      copied.unmount()
+
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: undefined,
+      })
+      const unavailable = render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+      fireEvent.click(locationShare())
+      expect(locationShare()).toHaveTextContent('↗')
+      unavailable.unmount()
+
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: vi.fn().mockRejectedValue(new Error('denied')) },
+      })
+      render(
+        <MemoryRouter initialEntries={['/day/2026-09-10']}>
+          <App />
+        </MemoryRouter>,
+      )
+      fireEvent.click(locationShare())
+      await waitFor(() => expect(locationShare()).toHaveTextContent('↗'))
+    } finally {
+      Object.defineProperty(navigator, 'share', {
+        configurable: true,
+        value: originalShare,
+      })
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: originalClipboard,
+      })
+    }
   })
 
   it('shows selection when multiple itineraries have no active selection', () => {
@@ -283,6 +503,38 @@ describe('Phase 3 itinerary selection', () => {
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
   })
 
+  it('hides the header on downward scroll and reveals it upward or at the top', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const header = screen.getByRole('banner')
+    expect(header).not.toHaveClass('is-hidden')
+    expect(screen.getByRole('link', { name: 'Volala' })).toBeVisible()
+    expect(screen.getByRole('link', { name: 'Settings' })).toBeVisible()
+
+    scrollWindowTo(20)
+    expect(header).toHaveClass('is-hidden')
+
+    scrollWindowTo(16)
+    expect(header).toHaveClass('is-hidden')
+
+    scrollWindowTo(10)
+    expect(header).not.toHaveClass('is-hidden')
+
+    scrollWindowTo(20)
+    expect(header).toHaveClass('is-hidden')
+
+    scrollWindowTo(0)
+    expect(header).not.toHaveClass('is-hidden')
+
+    fireEvent.click(screen.getByRole('link', { name: 'Settings' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
+  })
+
   it('changes the active itinerary from Settings and persists it', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'alpha')
     render(
@@ -301,6 +553,67 @@ describe('Phase 3 itinerary selection', () => {
     )
   })
 
+  it('marks first and last itinerary days without marking middle semantics', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const days = document.querySelectorAll('.day-row')
+    expect(screen.getByRole('heading', { name: 'Days' })).toBeVisible()
+    expect(screen.getByText('Your itinerary day by day')).toBeVisible()
+    expect(
+      (days[0] as HTMLElement).querySelector('.day-date-month'),
+    ).toHaveTextContent('SEP')
+    expect(
+      (days[0] as HTMLElement).querySelector('.day-date-number'),
+    ).toHaveTextContent('10')
+    expect((days[0] as HTMLElement).querySelector('.day-date')).toBeVisible()
+    expect((days[0] as HTMLElement).querySelector('.day-title')).toBeVisible()
+    const firstStatus = (days[0] as HTMLElement).querySelector(
+      '.day-row-status',
+    ) as HTMLElement
+    const middleStatus = (days[1] as HTMLElement).querySelector(
+      '.day-row-status',
+    ) as HTMLElement
+    const lastStatus = (days[2] as HTMLElement).querySelector(
+      '.day-row-status',
+    ) as HTMLElement
+    expect(
+      within(firstStatus).getByRole('img', {
+        name: 'Departure day',
+      }),
+    ).toBeVisible()
+    expect(within(firstStatus).getByText('○')).toBeVisible()
+    expect(within(middleStatus).queryByRole('img')).toBeNull()
+    expect(within(middleStatus).getByText('○')).toBeVisible()
+    expect(
+      within(lastStatus).getByRole('img', { name: 'Arrival day' }),
+    ).toBeVisible()
+    expect(within(lastStatus).getByText('○')).toBeVisible()
+  })
+
+  it('uses one combined indicator for a single-day itinerary', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'beta')
+    render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const status = document.querySelector('.day-row-status') as HTMLElement
+    expect(
+      within(status).getByRole('img', { name: 'Departure and arrival day' }),
+    ).toBeVisible()
+    expect(within(status).getByText('○')).toBeVisible()
+    expect(
+      within(status).queryByRole('img', { name: 'Departure day' }),
+    ).toBeNull()
+    expect(
+      within(status).queryByRole('img', { name: 'Arrival day' }),
+    ).toBeNull()
+  })
+
   it('uses the selected itinerary for Days, Search, and day routes', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
@@ -310,7 +623,7 @@ describe('Phase 3 itinerary selection', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Beta itinerary' }))
     fireEvent.click(screen.getByRole('link', { name: 'Days' }))
-    expect(screen.getByRole('strong')).toHaveTextContent('Beta day')
+    expect(document.querySelector('.day-title')).toHaveTextContent('Beta day')
 
     fireEvent.click(screen.getByRole('link', { name: /11/ }))
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
@@ -376,8 +689,41 @@ describe('Phase 3 itinerary selection', () => {
     fireEvent.change(screen.getByRole('textbox'), {
       target: { value: 'alpha' },
     })
+
     fireEvent.change(screen.getByRole('textbox'), { target: { value: '' } })
     expect(document.querySelectorAll('.search-day')).toHaveLength(0)
+  })
+
+  it('searches location title, primary and secondary descriptions in stable day order', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const search = screen.getByRole('textbox')
+    fireEvent.change(search, { target: { value: 'ALPHA PLACE' } })
+    expect(screen.getAllByRole('link', { name: /Alpha place/ })).toHaveLength(2)
+    fireEvent.change(search, { target: { value: 'waterfront' } })
+    expect(screen.getAllByRole('link', { name: /Alpha place/ })).toHaveLength(2)
+    fireEvent.change(search, { target: { value: 'SECONDARY DETAIL' } })
+    expect(screen.getByRole('link', { name: /Alpha museum/ })).toBeVisible()
+  })
+
+  it('returns a day-only result only when the day has no matching locations', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const search = screen.getByRole('textbox')
+    fireEvent.change(search, { target: { value: 'follow up' } })
+    expect(
+      screen.getByRole('link', { name: /Alpha follow up/ }),
+    ).toHaveAttribute('href', '/day/2026-09-12')
+    fireEvent.change(search, { target: { value: 'alpha' } })
+    expect(screen.queryByRole('link', { name: /Alpha day$/ })).toBeNull()
   })
 
   it('isolates persisted progress between itineraries and restores it', () => {

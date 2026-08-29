@@ -6,291 +6,441 @@
       "locationId": "montreal-hotel-le-roberval",
       "name": "Hotel Le Roberval",
       "category": "hotel",
-      "address": "505 René-Lévesque East, Montréal",
-      "description": "Berri-UQAM foarte aproape; bun pentru mers pe jos",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20Le%20Roberval%2C%20505%20Boulevard%20Rene-Levesque%20East%2C%20Montreal%2C%20QC%20H2L%205B6"
+      "address": "505 René-Lévesque East, Montréal, QC H2L 5B6, Canada",
+      "description": "Hotel in Montréal's Quartier Latin, about 250 m from Berri-UQAM and close to the 747 airport shuttle.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20Le%20Roberval%2C%20505%20Ren%C3%A9-L%C3%A9vesque%20East%2C%20Montr%C3%A9al%2C%20QC%20H2L%205B6%2C%20Canada"
     },
     {
       "locationId": "montreal-berri-uqam",
       "name": "Berri-UQAM",
       "category": "station",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Berri-UQAM%20Station%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Berri-UQAM%2C%201515%20Rue%20Berri%2C%20Montr%C3%A9al%2C%20QC%20H2L%202C9%2C%20Canada",
+      "address": "1515 Rue Berri, Montréal, QC H2L 2C9, Canada",
+      "description": "Major Montréal metro interchange and bus connection point, convenient for downtown and Plateau journeys."
+    },
+    {
+      "locationId": "montreal-gare-autocars",
+      "name": "Gare d'autocars de Montréal",
+      "category": "station",
+      "address": "1717 Rue Berri, Montréal, QC H2L 4E9, Canada",
+      "description": "Montréal's intercity bus terminal, immediately beside Berri-UQAM.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20d%27autocars%20de%20Montr%C3%A9al%2C%201717%20Rue%20Berri%2C%20Montr%C3%A9al%2C%20QC%20H2L%204E9%2C%20Canada"
     },
     {
       "locationId": "montreal-quartier-latin",
       "name": "Quartier Latin",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Quartier%20Latin%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Quartier%20Latin%2C%20Quartier%20Latin%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Quartier Latin, Montréal, QC, Canada",
+      "description": "Lively central neighbourhood around Rue Saint-Denis, known for restaurants, cafés, nightlife and student life."
     },
     {
       "locationId": "montreal-rue-saint-denis",
       "name": "Rue Saint-Denis",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Denis%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Denis%2C%20Rue%20Saint-Denis%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Rue Saint-Denis, Montréal, QC, Canada",
+      "description": "One of Montréal's best-known streets, lined with cafés, restaurants, shops and neighbourhood architecture."
     },
     {
       "locationId": "montreal-place-milie-gamelin",
       "name": "Place Émilie-Gamelin",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Emilie-Gamelin%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20%C3%89milie-Gamelin%2C%20Place%20%C3%89milie-Gamelin%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Place Émilie-Gamelin, Montréal, QC, Canada",
+      "description": "Central public square beside Berri-UQAM, used for seasonal events, markets and outdoor programming."
     },
     {
       "locationId": "montreal-old-montr-al",
       "name": "Old Montréal",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Montreal%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Montr%C3%A9al%2C%20Old%20Montr%C3%A9al%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Old Montréal, Montréal, QC, Canada",
+      "description": "Historic waterfront district with cobbled streets, heritage buildings, cafés, shops and major sights."
     },
     {
       "locationId": "montreal-place-d-armes",
       "name": "Place d'Armes",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20d%27Armes%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20d%27Armes%2C%20Place-d%27Armes%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Place-d'Armes, Montréal, QC, Canada",
+      "description": "Historic square directly in front of Notre-Dame Basilica and a key Old Montréal landmark."
     },
     {
       "locationId": "montreal-notre-dame-basilica",
       "name": "Notre-Dame Basilica",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Notre-Dame%20Basilica%20of%20Montreal%2C%20110%20Notre-Dame%20Street%20West%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Notre-Dame%20Basilica%2C%20110%20Notre-Dame%20Street%20West%2C%20Montr%C3%A9al%2C%20QC%20H2Y%201T1%2C%20Canada",
+      "address": "110 Notre-Dame Street West, Montréal, QC H2Y 1T1, Canada",
+      "description": "Landmark Gothic Revival basilica in Old Montréal, known for its richly decorated interior."
     },
     {
       "locationId": "montreal-rue-saint-paul",
       "name": "Rue Saint-Paul",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Paul%2C%20Old%20Montreal%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Saint-Paul%2C%20Rue%20Saint-Paul%2C%20Old%20Montr%C3%A9al%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Rue Saint-Paul, Old Montréal, Montréal, QC, Canada",
+      "description": "Historic Old Montréal street with stone buildings, restaurants, galleries and boutiques."
     },
     {
       "locationId": "montreal-place-jacques-cartier",
       "name": "Place Jacques-Cartier",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Jacques-Cartier%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Jacques-Cartier%2C%20Place%20Jacques-Cartier%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Place Jacques-Cartier, Montréal, QC, Canada",
+      "description": "Pedestrian-friendly historic square connecting Old Montréal with the waterfront."
     },
     {
       "locationId": "montreal-jardins-gamelin",
       "name": "Jardins Gamelin",
       "category": "activity",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jardins%20Gamelin%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jardins%20Gamelin%2C%20Place%20%C3%89milie-Gamelin%2C%20Montr%C3%A9al%2C%20QC%20H2L%202C4%2C%20Canada",
+      "address": "Place Émilie-Gamelin, Montréal, QC H2L 2C4, Canada",
+      "description": "Seasonal outdoor public space at Place Émilie-Gamelin with food, events and cultural programming."
     },
     {
       "locationId": "montreal-abreuvoir-132",
       "name": "Abreuvoir 132",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Abreuvoir%20132%2C%20132%20Rue%20Sainte-Catherine%20East%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Abreuvoir%20132%2C%20132%20Sainte-Catherine%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "132 Sainte-Catherine Street East, Montréal, QC, Canada",
+      "description": "Downtown/Quartier Latin nightlife venue suitable for an evening stop."
     },
     {
       "locationId": "montreal-pointe-calli-re",
       "name": "Pointe-à-Callière",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pointe-a-Calliere%2C%20350%20Place%20Royale%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pointe-%C3%A0-Calli%C3%A8re%2C%20350%20Place%20Royale%2C%20Montr%C3%A9al%2C%20QC%20H2Y%203Y5%2C%20Canada",
+      "address": "350 Place Royale, Montréal, QC H2Y 3Y5, Canada",
+      "description": "Archaeological and history museum at the birthplace of Montréal, beside Place Royale."
     },
     {
       "locationId": "montreal-place-royale",
       "name": "Place Royale",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Royale%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Royale%2C%20Place%20Royale%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Place Royale, Montréal, QC, Canada",
+      "description": "Historic square in Old Montréal surrounded by heritage architecture and waterfront access."
     },
     {
       "locationId": "montreal-march-bonsecours",
       "name": "Marché Bonsecours",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bonsecours%20Market%2C%20350%20Rue%20Saint-Paul%20East%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=March%C3%A9%20Bonsecours%2C%20350%20Saint-Paul%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%20H2Y%201G2%2C%20Canada",
+      "address": "350 Saint-Paul Street East, Montréal, QC H2Y 1G2, Canada",
+      "description": "Historic market building in Old Montréal with shops, galleries and a prominent heritage façade."
     },
     {
       "locationId": "montreal-notre-dame-de-bon-secours",
       "name": "Notre-Dame-de-Bon-Secours",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Notre-Dame-de-Bon-Secours%20Chapel%2C%20400%20Rue%20Saint-Paul%20East%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Notre-Dame-de-Bon-Secours%2C%20400%20Saint-Paul%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%20H2Y%201V2%2C%20Canada",
+      "address": "400 Saint-Paul Street East, Montréal, QC H2Y 1V2, Canada",
+      "description": "Historic chapel in Old Montréal near the waterfront and Marché Bonsecours."
     },
     {
       "locationId": "montreal-old-port-montr-al",
       "name": "Old Port Montréal",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Port%20of%20Montreal%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Old%20Port%20Montr%C3%A9al%2C%20Old%20Port%20of%20Montr%C3%A9al%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Old Port of Montréal, Montréal, QC, Canada",
+      "description": "Waterfront recreational district with promenades, views, activities and access to the Saint Lawrence."
     },
     {
       "locationId": "montreal-grand-quay",
       "name": "Grand Quay",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Grand%20Quay%20of%20the%20Port%20of%20Montreal%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Grand%20Quay%2C%20200%20de%20la%20Commune%20Street%20West%2C%20Montr%C3%A9al%2C%20QC%20H2Y%204B2%2C%20Canada",
+      "address": "200 de la Commune Street West, Montréal, QC H2Y 4B2, Canada",
+      "description": "Large waterfront public space with river and skyline views, promenade and green roof."
     },
     {
       "locationId": "montreal-clock-tower",
       "name": "Clock Tower",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal%20Clock%20Tower%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Clock%20Tower%2C%201%20Clock%20Tower%20Quay%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "1 Clock Tower Quay, Montréal, QC, Canada",
+      "description": "Historic waterfront tower and landmark at the eastern end of Montréal's Old Port."
     },
     {
       "locationId": "montreal-saint-lawrence-waterfront",
       "name": "Saint Lawrence waterfront",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint%20Lawrence%20River%20waterfront%2C%20Old%20Port%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint%20Lawrence%20waterfront%2C%20Saint%20Lawrence%20River%20waterfront%2C%20Old%20Port%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Saint Lawrence River waterfront, Old Port, Montréal, QC, Canada",
+      "description": "Waterfront promenade area offering open river views and an easy walking route through the Old Port."
     },
     {
       "locationId": "montreal-wolf-workman",
       "name": "Wolf & Workman",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Wolf%20%26%20Workman%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Wolf%20%26%20Workman%2C%20139%20Saint-Paul%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "139 Saint-Paul Street East, Montréal, QC, Canada",
+      "description": "Old Montréal pub known for its historic setting, drinks and evening atmosphere."
     },
     {
       "locationId": "montreal-pub-saint-pierre",
       "name": "Pub Saint Pierre",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20Saint%20Pierre%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20Saint%20Pierre%2C%20410%20Saint-Pierre%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "410 Saint-Pierre Street, Montréal, QC, Canada",
+      "description": "Old Montréal pub and restaurant suitable for an evening drink or casual stop."
     },
     {
       "locationId": "montreal-place-des-arts",
       "name": "Place des Arts",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20des%20Arts%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20des%20Arts%2C%20175%20Sainte-Catherine%20Street%20West%2C%20Montr%C3%A9al%2C%20QC%20H2X%203X5%2C%20Canada",
+      "address": "175 Sainte-Catherine Street West, Montréal, QC H2X 3X5, Canada",
+      "description": "Major performing-arts complex at the centre of Montréal's Quartier des Spectacles."
     },
     {
       "locationId": "montreal-sainte-catherine-street",
       "name": "Sainte-Catherine Street",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint%20Catherine%20Street%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Sainte-Catherine%20Street%2C%20Sainte-Catherine%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Sainte-Catherine Street, Montréal, QC, Canada",
+      "description": "Major downtown commercial street with shops, restaurants and urban sights."
     },
     {
       "locationId": "montreal-downtown-montr-al",
       "name": "Downtown Montréal",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Downtown%20Montreal%2C%20Quebec%2C%20Canada"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Downtown%20Montr%C3%A9al%2C%20Downtown%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Downtown Montréal, QC, Canada",
+      "description": "Central Montréal business and shopping district, including major streets, plazas and the Underground City."
     },
     {
       "locationId": "montreal-christ-church-cathedral",
       "name": "Christ Church Cathedral",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Christ%20Church%20Cathedral%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Christ%20Church%20Cathedral%2C%20635%20Saint-Catherine%20Street%20West%2C%20Montr%C3%A9al%2C%20QC%20H3B%201M7%2C%20Canada",
+      "address": "635 Saint-Catherine Street West, Montréal, QC H3B 1M7, Canada",
+      "description": "Historic Anglican cathedral in downtown Montréal, recognizable for its Gothic Revival architecture."
     },
     {
       "locationId": "montreal-place-ville-marie",
       "name": "Place Ville Marie",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Ville%20Marie%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Ville%20Marie%2C%201%20Place%20Ville%20Marie%2C%20Montr%C3%A9al%2C%20QC%20H3B%204M4%2C%20Canada",
+      "address": "1 Place Ville Marie, Montréal, QC H3B 4M4, Canada",
+      "description": "Major downtown landmark and office complex above the central business district."
     },
     {
       "locationId": "montreal-eaton-centre",
       "name": "Eaton Centre",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Eaton%20Centre%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Eaton%20Centre%2C%20705%20Sainte-Catherine%20Street%20West%2C%20Montr%C3%A9al%2C%20QC%20H3B%204G5%2C%20Canada",
+      "address": "705 Sainte-Catherine Street West, Montréal, QC H3B 4G5, Canada",
+      "description": "Large downtown shopping complex on Sainte-Catherine Street."
     },
     {
       "locationId": "montreal-olympic-park",
       "name": "Olympic Park",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Olympic%20Park%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Olympic%20Park%2C%204549%20Pierre-de%20Coubertin%20Avenue%2C%20Montr%C3%A9al%2C%20QC%20H1V%200B2%2C%20Canada",
+      "address": "4549 Pierre-de Coubertin Avenue, Montréal, QC H1V 0B2, Canada",
+      "description": "Large sports and public-space complex built for the 1976 Summer Olympics."
     },
     {
       "locationId": "montreal-olympic-stadium",
       "name": "Olympic Stadium",
       "category": "attraction",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal%20Olympic%20Stadium%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Olympic%20Stadium%2C%204549%20Pierre-de%20Coubertin%20Avenue%2C%20Montr%C3%A9al%2C%20QC%20H1V%200B2%2C%20Canada",
+      "address": "4549 Pierre-de Coubertin Avenue, Montréal, QC H1V 0B2, Canada",
+      "description": "Iconic Montréal stadium and the architectural centrepiece of Olympic Park."
     },
     {
       "locationId": "montreal-esplanade-olympic-park",
       "name": "Esplanade Olympic Park",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Esplanade%2C%20Olympic%20Park%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Esplanade%20Olympic%20Park%2C%20Esplanade%20du%20Parc%20olympique%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Esplanade du Parc olympique, Montréal, QC, Canada",
+      "description": "Open public esplanade around Olympic Park, useful for exterior views and photos."
     },
     {
       "locationId": "montreal-place-nadia-comaneci",
       "name": "Place Nadia-Comaneci",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Nadia%20Comaneci%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place%20Nadia-Comaneci%2C%20Olympic%20Park%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Olympic Park, Montréal, QC, Canada",
+      "description": "Public space associated with the Olympic Park commemoration of Nadia Comăneci."
     },
     {
       "locationId": "montreal-nadia-comaneci-mural",
       "name": "Nadia Comaneci mural",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Nadia%20Comaneci%20mural%2C%20Olympic%20Park%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Nadia%20Comaneci%20mural%2C%20Olympic%20Park%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Olympic Park, Montréal, QC, Canada",
+      "description": "Mural/commemorative stop connected with Nadia Comăneci and Montréal's Olympic legacy."
     },
     {
       "locationId": "montreal-mile-end",
       "name": "Mile End",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Mile%20End%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Mile%20End%2C%20Mile%20End%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Mile End, Montréal, QC, Canada",
+      "description": "Creative Montréal neighbourhood known for cafés, bakeries, independent shops and street life."
     },
     {
       "locationId": "montreal-little-italy",
       "name": "Little Italy",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Little%20Italy%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Little%20Italy%2C%20Little%20Italy%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Little Italy, Montréal, QC, Canada",
+      "description": "Neighbourhood centred around Italian-Canadian culture, cafés, restaurants and Jean-Talon Market."
     },
     {
       "locationId": "montreal-avenue-du-mont-royal",
       "name": "Avenue du Mont-Royal",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Avenue%20du%20Mont-Royal%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Avenue%20du%20Mont-Royal%2C%20Avenue%20du%20Mont-Royal%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Avenue du Mont-Royal, Montréal, QC, Canada",
+      "description": "Popular Plateau commercial street with cafés, restaurants, shops and local street life."
     },
     {
       "locationId": "montreal-square-saint-louis",
       "name": "Square Saint-Louis",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Square%20Saint-Louis%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Square%20Saint-Louis%2C%203500%20Saint-Denis%20Street%2C%20Montr%C3%A9al%2C%20QC%20H2X%203L7%2C%20Canada",
+      "address": "3500 Saint-Denis Street, Montréal, QC H2X 3L7, Canada",
+      "description": "Picturesque Victorian-era square in the Plateau-Mont-Royal area, surrounded by distinctive row houses."
     },
     {
       "locationId": "montreal-rue-prince-arthur",
       "name": "Rue Prince-Arthur",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Prince-Arthur%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rue%20Prince-Arthur%2C%20Rue%20Prince-Arthur%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Rue Prince-Arthur, Montréal, QC, Canada",
+      "description": "Pedestrian-oriented Plateau street with restaurants, cafés and neighbourhood atmosphere."
     },
     {
       "locationId": "montreal-parc-du-portugal",
       "name": "Parc du Portugal",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Parc%20du%20Portugal%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Parc%20du%20Portugal%2C%20Parc%20du%20Portugal%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Parc du Portugal, Montréal, QC, Canada",
+      "description": "Small neighbourhood park with distinctive local character near Mile End and Little Italy."
     },
     {
       "locationId": "montreal-jean-talon-market",
       "name": "Jean-Talon Market",
       "category": "other",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jean-Talon%20Market%2C%207070%20Avenue%20Henri-Julien%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jean-Talon%20Market%2C%207070%20Henri-Julien%20Avenue%2C%20Montr%C3%A9al%2C%20QC%20H2S%203S3%2C%20Canada",
+      "address": "7070 Henri-Julien Avenue, Montréal, QC H2S 3S3, Canada",
+      "description": "Large public market with fresh produce, specialty foods, vendors and seasonal outdoor stalls."
     },
     {
       "locationId": "montreal-hurley-s-irish-pub",
       "name": "Hurley's Irish Pub",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hurley%27s%20Irish%20Pub%2C%201225%20Crescent%20Street%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hurley%27s%20Irish%20Pub%2C%201225%20Crescent%20Street%2C%20Montr%C3%A9al%2C%20QC%20H3G%202B1%2C%20Canada",
+      "address": "1225 Crescent Street, Montréal, QC H3G 2B1, Canada",
+      "description": "Long-running Irish-style pub on Crescent Street, suited to a casual evening stop."
     },
     {
       "locationId": "montreal-bar-k-karaoke",
       "name": "Bar K Karaoke",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bar%20K%20Karaoke%2C%202110%20Crescent%20Street%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bar%20K%20Karaoke%2C%202100%20Crescent%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "2100 Crescent Street, Montréal, QC, Canada",
+      "description": "Karaoke/nightlife venue in downtown Montréal."
     },
     {
       "locationId": "montreal-pub-le-sainte-lisabeth",
       "name": "Pub Le Sainte-Élisabeth",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20Le%20Sainte-Elisabeth%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pub%20Le%20Sainte-%C3%89lisabeth%2C%201412%20Sainte-%C3%89lisabeth%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "1412 Sainte-Élisabeth Street, Montréal, QC, Canada",
+      "description": "Popular downtown/Quartier Latin pub with a relaxed evening atmosphere."
     },
     {
       "locationId": "montreal-ceo-karaoke",
       "name": "CEO Karaoke",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=CEO%20Karaoke%2C%20Montreal%2C%20QC"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=CEO%20Karaoke%2C%201234%20Sainte-Catherine%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "1234 Sainte-Catherine Street East, Montréal, QC, Canada",
+      "description": "Karaoke venue in central Montréal."
     },
     {
       "locationId": "montreal-gare-centrale-montr-al",
       "name": "Gare Centrale Montréal",
       "category": "station",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal%20Central%20Station%2C%20895%20Rue%20de%20la%20Gauchetiere%20O%2C%20Montreal%2C%20Quebec%2C%20Canada"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20Centrale%20Montr%C3%A9al%2C%20895%20Rue%20de%20la%20Gaucheti%C3%A8re%20Ouest%2C%20Montr%C3%A9al%2C%20QC%20H3B%204G1%2C%20Canada",
+      "address": "895 Rue de la Gauchetière Ouest, Montréal, QC H3B 4G1, Canada",
+      "description": "Downtown transport hub with commuter rail, REM, metro and several STM bus connections."
     },
     {
       "locationId": "montreal-montreal-trudeau-airport",
       "name": "Montréal-Trudeau Airport",
       "category": "airport",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montreal-Pierre%20Elliott%20Trudeau%20International%20Airport%2C%20Dorval%2C%20Quebec%2C%20Canada"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Montr%C3%A9al-Trudeau%20Airport%2C%20975%20Rom%C3%A9o-Vachon%20Boulevard%20North%2C%20Dorval%2C%20QC%20H4Y%201H1%2C%20Canada",
+      "address": "975 Roméo-Vachon Boulevard North, Dorval, QC H4Y 1H1, Canada",
+      "description": "Montréal's main international airport and the departure point for the return flight."
     },
     {
       "locationId": "montreal-club-unity",
       "name": "Club Unity",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Unity%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Club%20Unity%2C%201171%20Sainte-Catherine%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "1171 Sainte-Catherine Street East, Montréal, QC, Canada",
+      "description": "Downtown Montréal nightlife venue in the Village area."
     },
     {
       "locationId": "montreal-le-date-karaoke",
       "name": "Le Date Karaoke",
       "category": "nightlife",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Le%20Date%20Karaoke%2C%20Montreal%2C%20Quebec"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Le%20Date%20Karaoke%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
+      "address": "Montréal, QC, Canada",
+      "description": "Karaoke/nightlife option in Montréal."
+    },
+    {
+      "locationId": "montreal-metro-berri-uqam",
+      "name": "Berri-UQAM Métro",
+      "category": "station",
+      "address": "1470 Saint-Denis Street, Montréal, QC, Canada",
+      "description": "Métro interchange used by the itinerary. This is the metro entrance point, distinct from the nearby intercity bus terminal.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Berri-UQAM%20M%C3%A9tro%2C%201470%20Saint-Denis%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-pie-ix",
+      "name": "Pie-IX Métro",
+      "category": "station",
+      "address": "2705 Pie-IX Boulevard, Montréal, QC, Canada",
+      "description": "Métro station serving Olympic Park and the Pie-IX area.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pie-IX%20M%C3%A9tro%2C%202705%20Pie-IX%20Boulevard%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-mont-royal",
+      "name": "Mont-Royal Métro",
+      "category": "station",
+      "address": "470 du Mont-Royal Avenue East, Montréal, QC, Canada",
+      "description": "Métro station serving the Plateau-Mont-Royal area and the itinerary's Mont-Royal/Plateau visit.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Mont-Royal%20M%C3%A9tro%2C%20470%20du%20Mont-Royal%20Avenue%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-jean-talon",
+      "name": "Jean-Talon Métro",
+      "category": "station",
+      "address": "780 Jean-Talon Street East, Montréal, QC, Canada",
+      "description": "Métro station serving the Jean-Talon and Little Italy area, with an entrance on Chateaubriand Street.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jean-Talon%20M%C3%A9tro%2C%20780%20Jean-Talon%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-place-des-arts",
+      "name": "Place-des-Arts Métro",
+      "category": "station",
+      "address": "2020 De Bleury Street, Montréal, QC, Canada",
+      "description": "Métro station serving Place des Arts and the downtown cultural district. This address corresponds to the west entrance.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place-des-Arts%20M%C3%A9tro%2C%202020%20De%20Bleury%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-mcgill",
+      "name": "McGill Métro",
+      "category": "station",
+      "address": "2021 Union Avenue, Montréal, QC, Canada",
+      "description": "Central downtown métro station serving McGill University and the Sainte-Catherine/Union area. This address corresponds to the east entrance.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=McGill%20M%C3%A9tro%2C%202021%20Union%20Avenue%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
     }
   ]
 }

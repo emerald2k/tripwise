@@ -1476,17 +1476,82 @@ Other days do not auto-scroll.
 
 ---
 
+## Location Item presentation
+
+Location Items present their content in this order:
+
+1. Title
+2. Primary description
+3. Secondary description
+4. Suggested visit duration
+5. Actions
+
+The secondary description is the location address and uses a smaller font size
+than the primary description. Duration uses the compact duration format, while
+progress, Maps navigation, and sharing actions retain their existing
+eligibility rules.
+
+The estimated visit duration is displayed as right-aligned metadata in the
+Location Item title row, accompanied by a small decorative clock icon. It is
+omitted with the clock when no valid duration is available.
+
+All applicable Location Item actions remain in one horizontal row across
+supported viewport widths. Location Share is intentionally a minimal,
+transparent icon action.
+
+## Active Location Items
+
+A Location Item's temporary active state starts at its explicit `startTime`
+and ends exclusively at the next Location Item's `startTime` on the same day.
+For the final Location Item only, a valid `durationMinutes` value supplies the
+end boundary. Transport Items are ignored. All simultaneously active Location
+Items are highlighted, while the first in DATA order is the one automatic
+scroll target; no active item means no automatic scroll. Active state is not
+persisted, and explicit Search navigation takes priority over automatic
+scrolling.
+
+---
+
+# Header behavior
+
+The Header is visible at the top of the page. Scrolling down hides it, while
+scrolling up reveals it. The transition slides vertically when motion is
+allowed and is disabled when reduced motion is requested.
+
+---
+
 # Days
 
-The Days page lists all itinerary days.
+The Days page uses a prominent heading and localized subtitle, followed by
+generous, uniformly sized cards. Each card has a compact dedicated month/day
+date region, with the month and day vertically stacked. A subtle divider
+follows closely after the date, then a flexible central title region and a
+right-side status region.
 
-Each row contains:
+The first itinerary day is marked as departure/take-off and the final day as
+arrival/landing. Middle days have no journey-boundary icon. A one-day
+itinerary shows one combined departure-and-arrival indicator. These indicators
+are derived from itinerary order, so they apply to every manifest-loaded
+itinerary without DATA-specific conditions.
+
+Day titles receive the flexible central space and truncate with an ellipsis
+only when necessary. Departure/arrival and progress indicators remain inline
+in their dedicated, non-wrapping status region without altering card height.
+At narrow viewport widths, modestly reduced internal spacing preserves the
+stacked date, divider, title, and inline status hierarchy without overflow.
+
+## Duration display
+
+Visit and transport `durationMinutes` values are displayed compactly:
 
 ```text
-date
-city/context
-progress indicator
+<60 min -> X min
+60+ min -> Xh
+hours plus remaining minutes -> Xh Ym
 ```
+
+Examples: `45 min`, `1h`, and `2h 30m`. Missing or invalid durations are not
+displayed.
 
 Indicators:
 
@@ -1532,42 +1597,26 @@ Search is:
 
 - local;
 - instant;
-- fuzzy;
 - day-oriented.
 
-Fuse.js searches relevant textual DATA.
+Search is case-insensitive and deterministic. It inspects each active-itinerary
+day title and each Location Item's name, primary description, and secondary
+description. It does not index transport details, categories, city metadata, or
+serialized DATA.
 
-Potential searchable content includes:
+Matching locations are returned individually and grouped beneath their authored
+day, preserving day and Location Item order. Selecting a location result opens
+its day, scrolls to the matching item, and applies the search highlight.
 
-- location names;
-- descriptions;
-- categories;
-- transport details;
-- hotels;
-- restaurants;
-- flights;
-- notes.
-
-The search result is a day.
-
-Example:
-
-```text
-Search
-
-05 SEP
-Montréal
-
-06 SEP
-Québec City
-```
+A day-title-only match is returned as a standalone day result only when no
+Location Item on that day matches. Selecting it opens the day normally without
+an item target. Search is manifest/data-driven and applies to every itinerary
+without itinerary, city, or location-specific conditions.
 
 Do not display:
 
 - result count;
-- Fuse score;
-- snippets;
-- location result cards;
+- score;
 - advanced filters;
 - sorting controls;
 - AI semantic interpretation.
@@ -1661,6 +1710,11 @@ Do not create:
 # Google Maps
 
 Google Maps navigation is optional.
+
+Location Items with a verified Google Maps URL also provide a direct Share
+action. It uses the same native-share and Clipboard fallback behavior as Day
+Share, independently of DONE/SKIP eligibility. Locations without a Google
+Maps URL and Transport Items do not receive this action.
 
 If:
 
