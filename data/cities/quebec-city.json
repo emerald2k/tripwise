@@ -6,9 +6,9 @@
       "locationId": "quebec-city-le-dauphin-qu-bec",
       "name": "Le Dauphin Québec",
       "category": "hotel",
-      "address": "400 rue des Marais, Québec",
-      "description": "În afara Old Québec; transport necesar",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Le%20Dauphin%20Qu%C3%A9bec%2C%20400%20rue%20des%20Marais%2C%20Qu%C3%A9bec"
+      "address": "400 Rue des Marais, Québec City, QC, Canada",
+      "description": "Hotel in the Les Rivières area, outside Old Québec; local transport is needed for most sightseeing days.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Le%20Dauphin%20Qu%C3%A9bec%2C%20400%20Rue%20des%20Marais%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada"
     },
     {
       "locationId": "quebec-city-old-qu-bec",
@@ -184,7 +184,7 @@
       "category": "station",
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20du%20Palais%2C%20350%20Gare-du-Palais%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1K%203X2%2C%20Canada",
       "address": "350 Gare-du-Palais Street, Québec City, QC G1K 3X2, Canada",
-      "description": "Québec City's historic rail and bus station serving intercity connections."
+      "description": "Historic rail and intercity bus station serving Québec City."
     },
     {
       "locationId": "quebec-city-phoenix-du-parvis",
@@ -233,6 +233,14 @@
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ninkasi%20Bar%20%26%20Bistro%2C%20811%20Saint-Jean%20Street%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada",
       "address": "811 Saint-Jean Street, Québec City, QC, Canada",
       "description": "Bar and bistro on Rue Saint-Jean, suitable for an evening stop."
+    },
+    {
+      "locationId": "quebec-city-terminus-chute-montmorency",
+      "name": "Terminus Chute-Montmorency",
+      "category": "station",
+      "address": "Terminus Chute-Montmorency, Québec City, QC, Canada",
+      "description": "RTC bus terminal serving the Montmorency Falls area, including Métrobus 800.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Terminus%20Chute-Montmorency%2C%20Terminus%20Chute-Montmorency%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada"
     }
   ]
 }

@@ -88,13 +88,15 @@
           "itemId": "0903-11-cin-old-montr-al",
           "startTime": "20:30",
           "title": "Cină Old Montréal",
-          "locationId": "montreal-old-montr-al"
+          "locationId": "montreal-old-montr-al",
+          "progress": true
         },
         {
           "itemId": "0903-13-op-ional-jardins-gamelin",
           "startTime": "21:00",
           "title": "Opțional: Jardins Gamelin / Jardins d’Illusion",
-          "locationId": "montreal-jardins-gamelin"
+          "locationId": "montreal-jardins-gamelin",
+          "progress": true
         },
         {
           "itemId": "0903-14-jardins-alt",

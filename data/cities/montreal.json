@@ -6,17 +6,25 @@
       "locationId": "montreal-hotel-le-roberval",
       "name": "Hotel Le Roberval",
       "category": "hotel",
-      "address": "505 René-Lévesque East, Montréal",
-      "description": "Berri-UQAM foarte aproape; bun pentru mers pe jos",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20Le%20Roberval%2C%20505%20Ren%C3%A9-L%C3%A9vesque%20East%2C%20Montr%C3%A9al"
+      "address": "505 René-Lévesque East, Montréal, QC H2L 5B6, Canada",
+      "description": "Hotel in Montréal's Quartier Latin, about 250 m from Berri-UQAM and close to the 747 airport shuttle.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20Le%20Roberval%2C%20505%20Ren%C3%A9-L%C3%A9vesque%20East%2C%20Montr%C3%A9al%2C%20QC%20H2L%205B6%2C%20Canada"
     },
     {
       "locationId": "montreal-berri-uqam",
       "name": "Berri-UQAM",
       "category": "station",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Berri-UQAM%2C%20Berri-UQAM%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
-      "address": "Berri-UQAM, Montréal, QC, Canada",
-      "description": "Major Montréal metro interchange and a practical starting point for downtown and Plateau journeys."
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Berri-UQAM%2C%201515%20Rue%20Berri%2C%20Montr%C3%A9al%2C%20QC%20H2L%202C9%2C%20Canada",
+      "address": "1515 Rue Berri, Montréal, QC H2L 2C9, Canada",
+      "description": "Major Montréal metro interchange and bus connection point, convenient for downtown and Plateau journeys."
+    },
+    {
+      "locationId": "montreal-gare-autocars",
+      "name": "Gare d'autocars de Montréal",
+      "category": "station",
+      "address": "1717 Rue Berri, Montréal, QC H2L 4E9, Canada",
+      "description": "Montréal's intercity bus terminal, immediately beside Berri-UQAM.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20d%27autocars%20de%20Montr%C3%A9al%2C%201717%20Rue%20Berri%2C%20Montr%C3%A9al%2C%20QC%20H2L%204E9%2C%20Canada"
     },
     {
       "locationId": "montreal-quartier-latin",
@@ -358,9 +366,9 @@
       "locationId": "montreal-gare-centrale-montr-al",
       "name": "Gare Centrale Montréal",
       "category": "station",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20Centrale%20Montr%C3%A9al%2C%20895%20de%20la%20Gaucheti%C3%A8re%20Street%20West%2C%20Montr%C3%A9al%2C%20QC%20H3B%204G1%2C%20Canada",
-      "address": "895 de la Gauchetière Street West, Montréal, QC H3B 4G1, Canada",
-      "description": "Montréal's main intercity rail station and a major downtown transport hub."
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Gare%20Centrale%20Montr%C3%A9al%2C%20895%20Rue%20de%20la%20Gaucheti%C3%A8re%20Ouest%2C%20Montr%C3%A9al%2C%20QC%20H3B%204G1%2C%20Canada",
+      "address": "895 Rue de la Gauchetière Ouest, Montréal, QC H3B 4G1, Canada",
+      "description": "Downtown transport hub with commuter rail, REM, metro and several STM bus connections."
     },
     {
       "locationId": "montreal-montreal-trudeau-airport",
@@ -385,6 +393,54 @@
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Le%20Date%20Karaoke%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada",
       "address": "Montréal, QC, Canada",
       "description": "Karaoke/nightlife option in Montréal."
+    },
+    {
+      "locationId": "montreal-metro-berri-uqam",
+      "name": "Berri-UQAM Métro",
+      "category": "station",
+      "address": "1470 Saint-Denis Street, Montréal, QC, Canada",
+      "description": "Métro interchange used by the itinerary. This is the metro entrance point, distinct from the nearby intercity bus terminal.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Berri-UQAM%20M%C3%A9tro%2C%201470%20Saint-Denis%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-pie-ix",
+      "name": "Pie-IX Métro",
+      "category": "station",
+      "address": "2705 Pie-IX Boulevard, Montréal, QC, Canada",
+      "description": "Métro station serving Olympic Park and the Pie-IX area.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Pie-IX%20M%C3%A9tro%2C%202705%20Pie-IX%20Boulevard%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-mont-royal",
+      "name": "Mont-Royal Métro",
+      "category": "station",
+      "address": "470 du Mont-Royal Avenue East, Montréal, QC, Canada",
+      "description": "Métro station serving the Plateau-Mont-Royal area and the itinerary's Mont-Royal/Plateau visit.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Mont-Royal%20M%C3%A9tro%2C%20470%20du%20Mont-Royal%20Avenue%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-jean-talon",
+      "name": "Jean-Talon Métro",
+      "category": "station",
+      "address": "780 Jean-Talon Street East, Montréal, QC, Canada",
+      "description": "Métro station serving the Jean-Talon and Little Italy area, with an entrance on Chateaubriand Street.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Jean-Talon%20M%C3%A9tro%2C%20780%20Jean-Talon%20Street%20East%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-place-des-arts",
+      "name": "Place-des-Arts Métro",
+      "category": "station",
+      "address": "2020 De Bleury Street, Montréal, QC, Canada",
+      "description": "Métro station serving Place des Arts and the downtown cultural district. This address corresponds to the west entrance.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Place-des-Arts%20M%C3%A9tro%2C%202020%20De%20Bleury%20Street%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-metro-mcgill",
+      "name": "McGill Métro",
+      "category": "station",
+      "address": "2021 Union Avenue, Montréal, QC, Canada",
+      "description": "Central downtown métro station serving McGill University and the Sainte-Catherine/Union area. This address corresponds to the east entrance.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=McGill%20M%C3%A9tro%2C%202021%20Union%20Avenue%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
     }
   ]
 }
