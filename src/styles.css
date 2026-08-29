@@ -402,7 +402,7 @@ main {
 }
 .day-row {
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
   min-height: 88px;
   align-items: center;
   gap: 0.75rem;
@@ -427,6 +427,7 @@ main {
 .day-date {
   display: flex;
   height: 3.5rem;
+  padding-right: 0.6rem;
   flex-direction: column;
   justify-content: center;
   gap: 0.15rem;
@@ -459,7 +460,6 @@ main {
 }
 @media (max-width: 360px) {
   .day-row {
-    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
     gap: 0.5rem;
     padding: 0.875rem;
   }

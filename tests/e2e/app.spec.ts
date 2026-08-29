@@ -419,6 +419,7 @@ test('keeps generous Days cards structured and responsive', async ({
         const numberBox = date
           ?.querySelector('.day-date-number')
           ?.getBoundingClientRect()
+        const dateStyle = date ? getComputedStyle(date) : undefined
         const status = row.querySelector('.day-row-status')
         const statusBox = status?.getBoundingClientRect()
         const indicatorBox = status
@@ -435,10 +436,14 @@ test('keeps generous Days cards structured and responsive', async ({
           dateDirection: date
             ? getComputedStyle(date).flexDirection
             : undefined,
-          dateBorder: date
-            ? getComputedStyle(date).borderRightWidth
-            : undefined,
+          dateBorder: dateStyle?.borderRightWidth,
+          datePaddingRight: dateStyle?.paddingRight,
+          rowGap: getComputedStyle(row).columnGap,
+          dateWidth: dateBox?.width,
           dateRight: dateBox?.right,
+          dateTextRight: Math.max(monthBox?.right ?? 0, numberBox?.right ?? 0),
+          monthWidth: monthBox?.width,
+          numberWidth: numberBox?.width,
           monthBottom: monthBox?.bottom,
           numberTop: numberBox?.top,
           titleLeft: titleBox?.left,
@@ -468,7 +473,21 @@ test('keeps generous Days cards structured and responsive', async ({
       expect(row.dateDirection).toBe('column')
       expect(row.dateBorder).not.toBe('0px')
       expect(row.monthBottom).toBeLessThanOrEqual(row.numberTop!)
-      expect(row.dateRight).toBeLessThanOrEqual(row.titleLeft!)
+      expect(row.dateWidth).toBeLessThanOrEqual(
+        Math.max(row.monthWidth!, row.numberWidth!) +
+          Number.parseFloat(row.datePaddingRight!) +
+          Number.parseFloat(row.dateBorder!) +
+          1,
+      )
+      const dividerLeft = row.dateRight! - Number.parseFloat(row.dateBorder!)
+      expect(dividerLeft - row.dateTextRight).toBeLessThanOrEqual(
+        Number.parseFloat(row.datePaddingRight!) + 1,
+      )
+      expect(
+        Math.abs(
+          row.titleLeft! - row.dateRight! - Number.parseFloat(row.rowGap!),
+        ),
+      ).toBeLessThanOrEqual(1)
       expect(row.titleWhiteSpace).toBe('nowrap')
       expect(row.titleTop).toBeLessThan(row.statusBottom!)
       expect(row.titleBottom).toBeGreaterThan(row.statusTop!)

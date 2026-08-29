@@ -1512,8 +1512,9 @@ allowed and is disabled when reduced motion is requested.
 # Days
 
 The Days page uses a prominent heading and localized subtitle, followed by
-generous, uniformly sized cards. Each card has a vertically stacked month/day
-date region, a subtle divider, a flexible central title region, and a
+generous, uniformly sized cards. Each card has a compact dedicated month/day
+date region, with the month and day vertically stacked. A subtle divider
+follows closely after the date, then a flexible central title region and a
 right-side status region.
 
 The first itinerary day is marked as departure/take-off and the final day as
