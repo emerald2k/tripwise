@@ -178,6 +178,10 @@ main {
   background: rgba(65, 101, 170, 0.12);
   border-radius: 8px;
 }
+.is-active .item-card {
+  background: rgba(65, 101, 170, 0.12);
+  border-radius: 8px;
+}
 .item-time {
   min-width: 3rem;
   color: #b7c0cf;

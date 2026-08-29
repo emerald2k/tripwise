@@ -17,6 +17,7 @@ import {
 import { localDate } from './domain/date'
 import { formatDurationMinutes } from './domain/duration'
 import {
+  activeLocationItems,
   currentItem,
   dayProgress,
   nextItem,
@@ -481,24 +482,33 @@ function DayView({
   const statuses = progress[itinerary.id]?.[day.date] || {}
   const ordered = sortItems(day.items)
   const [, refresh] = useState(0)
-  const currentRef = useRef<HTMLDivElement>(null)
+  const activeRef = useRef<HTMLDivElement>(null)
   const highlightedRef = useRef<HTMLDivElement>(null)
   const evaluationTime = now ?? new Date()
   const current = today ? currentItem(day, statuses, evaluationTime) : null
+  const activeItems = activeLocationItems(day, evaluationTime)
+  const firstActiveItemId = activeItems[0]?.itemId
   useEffect(() => {
     if (!today) return
     const timer = window.setInterval(() => refresh((value) => value + 1), 30000)
     return () => window.clearInterval(timer)
   }, [today])
   useEffect(() => {
-    if (!currentRef.current) return
+    if (highlightedItemId || !activeRef.current) return
+    const target = activeRef.current
+    const headerBottom =
+      document.querySelector<HTMLElement>('.header')?.getBoundingClientRect()
+        .bottom ?? 0
+    const targetBox = target.getBoundingClientRect()
+    if (targetBox.top >= headerBottom && targetBox.bottom <= window.innerHeight)
+      return
     const reduced =
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
-    currentRef.current.scrollIntoView?.({
+    target.scrollIntoView?.({
       behavior: reduced ? 'auto' : 'smooth',
       block: 'center',
     })
-  }, [current?.itemId])
+  }, [day.date, highlightedItemId])
   useEffect(() => {
     if (!highlightedRef.current) return
     const reduced =
@@ -550,16 +560,19 @@ function DayView({
               : undefined
           const compact = isCompactStatus(status)
           const highlighted = highlightedItemId === item.itemId
+          const active = activeItems.some(
+            (activeItem) => activeItem.itemId === item.itemId,
+          )
           return (
             <div
               ref={
                 highlighted
                   ? highlightedRef
-                  : current?.itemId === item.itemId
-                    ? currentRef
+                  : firstActiveItemId === item.itemId
+                    ? activeRef
                     : undefined
               }
-              className={`timeline-item ${current?.itemId === item.itemId ? 'is-current' : ''} ${highlighted ? 'is-search-match' : ''} ${compact ? 'is-compact' : ''}`}
+              className={`timeline-item ${current?.itemId === item.itemId ? 'is-current' : ''} ${active ? 'is-active' : ''} ${highlighted ? 'is-search-match' : ''} ${compact ? 'is-compact' : ''}`}
               key={item.itemId}
               tabIndex={highlighted ? -1 : undefined}
             >

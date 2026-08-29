@@ -297,6 +297,7 @@ test('keeps Location Item duration metadata on the title row', async ({
       .filter({
         has: page.getByText(durationLocationItem.startTime, { exact: true }),
       })
+
       .filter({
         has: page.getByRole('heading', { name: durationLocationItem.name }),
       })
@@ -383,6 +384,29 @@ test('keeps Location Item duration metadata on the title row', async ({
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width)
   }
+})
+
+test('highlights and scrolls to the first active Location Item', async ({
+  page,
+}) => {
+  await page.clock.install({ time: new Date(2026, 8, 3, 20, 0) })
+  await page.goto('/day/2026-09-03')
+  await waitForApplication(page)
+
+  const active = page.locator('.timeline-item.is-active')
+  await expect(active).toHaveCount(1)
+  await expect(active).toContainText('19:25')
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(0)
+
+  const [activeBox, headerBox] = await Promise.all([
+    active.boundingBox(),
+    page.locator('.header').boundingBox(),
+  ])
+  expect(activeBox).not.toBeNull()
+  expect(headerBox).not.toBeNull()
+  expect(activeBox!.y).toBeGreaterThanOrEqual(headerBox!.y + headerBox!.height)
 })
 
 test('keeps generous Days cards structured and responsive', async ({

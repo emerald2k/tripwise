@@ -321,7 +321,7 @@ describe('day item presentation', () => {
     expect(item.closest('.timeline-item')).toBeInTheDocument()
   })
 
-  it('scrolls Today to CURRENT and does not scroll a manual Day route', () => {
+  it('does not scroll an already visible active Location Item', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date(2026, 8, 3, 20, 0))
     Object.defineProperty(window.HTMLElement.prototype, 'scrollIntoView', {
@@ -337,7 +337,7 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
-    expect(scrollIntoView).toHaveBeenCalledTimes(1)
+    expect(scrollIntoView).not.toHaveBeenCalled()
 
     cleanup()
     scrollIntoView.mockClear()

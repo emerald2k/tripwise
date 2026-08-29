@@ -1499,6 +1499,17 @@ All applicable Location Item actions remain in one horizontal row across
 supported viewport widths. Location Share is intentionally a minimal,
 transparent icon action.
 
+## Active Location Items
+
+A Location Item's temporary active state starts at its explicit `startTime`
+and ends exclusively at the next Location Item's `startTime` on the same day.
+For the final Location Item only, a valid `durationMinutes` value supplies the
+end boundary. Transport Items are ignored. All simultaneously active Location
+Items are highlighted, while the first in DATA order is the one automatic
+scroll target; no active item means no automatic scroll. Active state is not
+persisted, and explicit Search navigation takes priority over automatic
+scrolling.
+
 ---
 
 # Header behavior
