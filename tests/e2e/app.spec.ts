@@ -302,9 +302,7 @@ test('keeps Location Item duration metadata on the title row', async ({
       })
       .locator('article')
     const titleRow = item.locator('.location-title-row')
-    const title = item.getByRole('heading', {
-      name: durationLocationItem.name,
-    })
+    const title = titleRow.getByRole('heading')
     const duration = item.locator('.location-duration')
     const clock = item.locator('.duration-icon')
 
@@ -321,12 +319,66 @@ test('keeps Location Item duration metadata on the title row', async ({
     expect(titleBox).not.toBeNull()
     expect(durationBox).not.toBeNull()
     expect(clockBox).not.toBeNull()
-    expect(titleBox!.y).toBeLessThan(durationBox!.y + durationBox!.height)
-    expect(titleBox!.y + titleBox!.height).toBeGreaterThan(durationBox!.y)
-    expect(clockBox!.y).toBeGreaterThanOrEqual(titleRowBox!.y)
-    expect(clockBox!.y + clockBox!.height).toBeLessThanOrEqual(
-      titleRowBox!.y + titleRowBox!.height,
+    expect(durationBox!.x).toBeGreaterThan(titleBox!.x)
+    expect(
+      Math.abs(
+        durationBox!.y +
+          durationBox!.height / 2 -
+          (titleBox!.y + titleBox!.height / 2),
+      ),
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(
+        titleRowBox!.x +
+          titleRowBox!.width -
+          (durationBox!.x + durationBox!.width),
+      ),
+    ).toBeLessThanOrEqual(1)
+    expect(clockBox!.x).toBeGreaterThan(durationBox!.x)
+    expect(
+      Math.abs(
+        clockBox!.y +
+          clockBox!.height / 2 -
+          (durationBox!.y + durationBox!.height / 2),
+      ),
+    ).toBeLessThanOrEqual(1)
+
+    const [longTitle, longDuration] = await Promise.all([
+      title.elementHandle(),
+      duration.elementHandle(),
+    ])
+    expect(longTitle).not.toBeNull()
+    expect(longDuration).not.toBeNull()
+    await longTitle!.evaluate((element) => {
+      element.textContent =
+        'A very long location title that needs truncation at every supported mobile width'
+    })
+    const [longTitleBox, longDurationBox] = await Promise.all([
+      longTitle!.boundingBox(),
+      longDuration!.boundingBox(),
+    ])
+    expect(longTitleBox).not.toBeNull()
+    expect(longDurationBox).not.toBeNull()
+    expect(
+      await longTitle!.evaluate((element) => element.scrollWidth),
+    ).toBeGreaterThan(
+      await longTitle!.evaluate((element) => element.clientWidth),
     )
+    expect(
+      await longTitle!.evaluate(
+        (element) => getComputedStyle(element).textOverflow,
+      ),
+    ).toBe('ellipsis')
+    expect(longTitleBox!.x + longTitleBox!.width).toBeLessThanOrEqual(
+      longDurationBox!.x,
+    )
+    expect(
+      Math.abs(
+        longDurationBox!.y +
+          longDurationBox!.height / 2 -
+          (longTitleBox!.y + longTitleBox!.height / 2),
+      ),
+    ).toBeLessThanOrEqual(1)
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width)

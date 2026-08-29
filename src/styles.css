@@ -198,7 +198,8 @@ main {
   font-size: 1.08rem;
 }
 .location-title-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   flex: 1 1 100%;
   min-width: 0;
   align-items: center;
@@ -227,7 +228,6 @@ main {
 }
 .location-duration {
   display: inline-flex;
-  flex: 0 0 auto;
   align-items: center;
   gap: 0.25rem;
   font-size: 0.85rem;
