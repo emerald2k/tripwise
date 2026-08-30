@@ -786,9 +786,17 @@ Required fields:
 {
   "id": "canada-2026",
   "name": "Canada 2026",
+  "journey": {
+    "departureDate": "2026-09-03",
+    "destinationArrivalDate": "2026-09-03"
+  },
   "days": []
 }
 ```
+
+`journey.departureDate` and `journey.destinationArrivalDate` are required
+calendar dates (`YYYY-MM-DD`). The departure date must match the first
+itinerary day and cannot be after destination arrival.
 
 `days` contains at least one `Day`.
 

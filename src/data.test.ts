@@ -39,6 +39,10 @@ describe('runtime DATA delivery', () => {
     const alpha: Itinerary = {
       id: 'alpha',
       name: 'Alpha',
+      journey: {
+        departureDate: '2026-01-01',
+        destinationArrivalDate: '2026-01-01',
+      },
       days: [
         {
           date: '2026-01-01',

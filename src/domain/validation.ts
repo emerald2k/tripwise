@@ -47,6 +47,20 @@ function validateItinerary(
   itemIds: Set<string>,
 ) {
   const itinerary = itinerarySchema.parse(itineraryInput)
+  if (!validDate(itinerary.journey.departureDate))
+    throw new Error(
+      `Invalid journey departure date: ${itinerary.journey.departureDate}`,
+    )
+  if (!validDate(itinerary.journey.destinationArrivalDate))
+    throw new Error(
+      `Invalid journey destination arrival date: ${itinerary.journey.destinationArrivalDate}`,
+    )
+  if (
+    itinerary.journey.departureDate > itinerary.journey.destinationArrivalDate
+  )
+    throw new Error(
+      `Journey departure date is after destination arrival date: ${itinerary.id}`,
+    )
   const dayDates = new Set<string>()
   let previousDay = ''
   for (const day of itinerary.days) {
@@ -70,6 +84,10 @@ function validateItinerary(
       }
     }
   }
+  if (itinerary.days[0].date !== itinerary.journey.departureDate)
+    throw new Error(
+      `Journey departure date does not match first itinerary day: ${itinerary.id}`,
+    )
   return itinerary
 }
 

@@ -141,6 +141,10 @@ The JSON model is intentionally small and strict. Unknown fields are invalid. Zo
 {
   "id": "canada-2026",
   "name": "Canada 2026",
+  "journey": {
+    "departureDate": "2026-09-03",
+    "destinationArrivalDate": "2026-09-03"
+  },
   "days": []
 }
 ```
@@ -149,6 +153,8 @@ Required:
 
 - `id: string`
 - `name: string`
+- `journey.departureDate: YYYY-MM-DD`
+- `journey.destinationArrivalDate: YYYY-MM-DD`, on or after `departureDate`
 - `days: Day[]`, minimum 1
 
 #### Day

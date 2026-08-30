@@ -20,7 +20,7 @@ import {
   activeLocationItems,
   currentItem,
   dayProgress,
-  extractItineraryDayNumber,
+  deriveItineraryDayMetadata,
   nextItem,
   sortItems,
 } from './domain/itinerary'
@@ -528,16 +528,26 @@ function DayView({
   const next =
     today && !current ? nextItem(day, statuses, evaluationTime) : null
   const date = formatDayDateParts(day.date, language)
-  const itineraryDayNumber = extractItineraryDayNumber(day.title)
+  const { currentDayNumber, totalDays } = deriveItineraryDayMetadata(
+    itinerary,
+    day,
+  )
   return (
     <section className="page day-page">
       <div className="page-heading">
         <div>
-          <span className="eyebrow day-metadata">
-            {itineraryDayNumber !== undefined &&
-              `${t.day} ${itineraryDayNumber} | `}
-            {date.month} {date.day} {date.weekday}
-          </span>
+          <Link
+            className="eyebrow day-metadata"
+            to="/days"
+            aria-label={t.backToDays}
+          >
+            <span aria-hidden="true">← </span>
+            <span className="day-metadata-content">
+              {currentDayNumber !== undefined &&
+                `${t.day} ${currentDayNumber}/${totalDays} | `}
+              {date.month} {date.day} {date.weekday}
+            </span>
+          </Link>
           <h1>{day.title || cityNames(day)}</h1>
         </div>
         {today && current && <span className="current-label">{t.current}</span>}
@@ -765,8 +775,10 @@ function Days({
   const today = localDate()
   return (
     <section className="page days-page">
-      <h1>{t.days}</h1>
-      <p className="days-subtitle">{t.itineraryDayByDay}</p>
+      <div className="days-heading">
+        <h1>{t.days}</h1>
+        <p className="days-subtitle">{t.itineraryDayByDay}</p>
+      </div>
       <div className="day-list">
         {itinerary.days.map((day, index) => {
           const date = formatDayDateParts(day.date, language)

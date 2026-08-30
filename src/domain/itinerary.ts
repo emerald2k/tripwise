@@ -1,4 +1,4 @@
-import type { Day, Item, LocationItem } from '../data/schema'
+import type { Day, Item, Journey, LocationItem } from '../data/schema'
 import type { Status } from './progress'
 import { localDate } from './date'
 
@@ -9,6 +9,42 @@ export function sortItems(items: Item[]) {
 export function extractItineraryDayNumber(title?: string) {
   const match = /\b(?:Ziua|Day)\s+(\d+)\b/i.exec(title ?? '')
   return match ? Number(match[1]) : undefined
+}
+
+export function getInitialItineraryDayNumber(journey: Journey) {
+  return journey.departureDate < journey.destinationArrivalDate ? 0 : 1
+}
+
+export function deriveItineraryDayNumber(
+  itinerary: {
+    journey?: Journey
+    days: Pick<Day, 'date' | 'title'>[]
+  },
+  day: Pick<Day, 'date' | 'title'>,
+) {
+  const explicitNumber = extractItineraryDayNumber(day.title)
+  if (explicitNumber !== undefined) return explicitNumber
+
+  if (!itinerary.journey) return undefined
+  const dayIndex = itinerary.days.findIndex(
+    (candidate) => candidate.date === day.date,
+  )
+  return dayIndex >= 0
+    ? getInitialItineraryDayNumber(itinerary.journey) + dayIndex
+    : undefined
+}
+
+export function deriveItineraryDayMetadata(
+  itinerary: {
+    journey: Journey
+    days: Pick<Day, 'date' | 'title'>[]
+  },
+  day: Pick<Day, 'date' | 'title'>,
+) {
+  return {
+    currentDayNumber: deriveItineraryDayNumber(itinerary, day),
+    totalDays: itinerary.days.length,
+  }
 }
 
 export function currentItem(

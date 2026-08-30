@@ -1,6 +1,10 @@
 {
   "id": "canada-2026",
   "name": "Canada 2026",
+  "journey": {
+    "departureDate": "2026-09-03",
+    "destinationArrivalDate": "2026-09-03"
+  },
   "days": [
     {
       "date": "2026-09-03",
