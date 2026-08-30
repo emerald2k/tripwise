@@ -441,6 +441,30 @@
       "address": "2021 Union Avenue, Montréal, QC, Canada",
       "description": "Central downtown métro station serving McGill University and the Sainte-Catherine/Union area. This address corresponds to the east entrance.",
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=McGill%20M%C3%A9tro%2C%202021%20Union%20Avenue%2C%20Montr%C3%A9al%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-saint-joseph-oratory",
+      "name": "Saint Joseph's Oratory of Mount Royal",
+      "category": "attraction",
+      "address": "3800 Queen Mary Road, Montréal, QC H3V 1H6, Canada",
+      "description": "Montréal landmark and basilica on the north slope of Mount Royal. The visit is planned for the exterior only.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Saint%20Joseph%27s%20Oratory%20of%20Mount%20Royal%2C%203800%20Queen%20Mary%20Road%2C%20Montr%C3%A9al%2C%20QC%20H3V%201H6%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-mount-royal-park",
+      "name": "Mount Royal Park",
+      "category": "attraction",
+      "address": "2000 Remembrance Road, Montréal, QC H3H 1A2, Canada",
+      "description": "Large urban park on Mount Royal, used here as the walking approach to the Kondiaronk Belvedere.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Mount%20Royal%20Park%2C%202000%20Remembrance%20Road%2C%20Montr%C3%A9al%2C%20QC%20H3H%201A2%2C%20Canada"
+    },
+    {
+      "locationId": "montreal-kondiaronk-belvedere",
+      "name": "Kondiaronk Belvedere",
+      "category": "attraction",
+      "address": "1196 Camillien-Houde Way, Montréal, QC H3H 1A1, Canada",
+      "description": "Main Mount Royal viewpoint with panoramic views over downtown Montréal and the Saint Lawrence area.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Belvedere%20Kondiaronk%2C%201196%20Camillien-Houde%20Way%2C%20Montr%C3%A9al%2C%20QC%20H3H%201A1%2C%20Canada"
     }
   ]
 }
