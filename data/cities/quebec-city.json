@@ -241,6 +241,30 @@
       "address": "Terminus Chute-Montmorency, Québec City, QC, Canada",
       "description": "RTC bus terminal serving the Montmorency Falls area, including Métrobus 800.",
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Terminus%20Chute-Montmorency%2C%20Terminus%20Chute-Montmorency%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada"
+    },
+    {
+      "locationId": "quebec-city-notre-dame-de-quebec-basilica",
+      "name": "Notre-Dame de Québec Basilica-Cathedral",
+      "category": "attraction",
+      "address": "16 Rue De Buade, Québec City, QC G1R 4A1, Canada",
+      "description": "Historic Basilica-Cathedral in the heart of Old Québec. The itinerary includes the exterior only.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Basilique-Cath%C3%A9drale%20Notre-Dame%20de%20Qu%C3%A9bec%2C%2016%20Rue%20De%20Buade%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1R%204A1%2C%20Canada"
+    },
+    {
+      "locationId": "quebec-city-citadelle-de-quebec",
+      "name": "Citadelle de Québec",
+      "category": "attraction",
+      "address": "1 Côte de la Citadelle, Québec City, QC G1R 3R2, Canada",
+      "description": "Historic fortress on Cap Diamant. The itinerary includes the exterior only, with no museum or interior visit.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Citadelle%20de%20Qu%C3%A9bec%2C%201%20C%C3%B4te%20de%20la%20Citadelle%2C%20Qu%C3%A9bec%20City%2C%20QC%20G1R%203R2%2C%20Canada"
+    },
+    {
+      "locationId": "quebec-city-pierre-dugua-de-mons-terrace",
+      "name": "Pierre-Dugua-De Mons Terrace",
+      "category": "attraction",
+      "address": "Terrasse Pierre-Dugua-De Mons, Québec City, QC, Canada",
+      "description": "Scenic lookout on Cap Diamant with panoramic views toward Château Frontenac, Dufferin Terrace and the Saint Lawrence River.",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Terrasse%20Pierre-Dugua-De%20Mons%2C%20Qu%C3%A9bec%20City%2C%20QC%2C%20Canada"
     }
   ]
 }
