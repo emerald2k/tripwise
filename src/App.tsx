@@ -20,6 +20,7 @@ import {
   activeLocationItems,
   currentItem,
   dayProgress,
+  extractItineraryDayNumber,
   nextItem,
   sortItems,
 } from './domain/itinerary'
@@ -526,12 +527,16 @@ function DayView({
     trackable.length > 0 && trackable.every((item) => statuses[item.itemId])
   const next =
     today && !current ? nextItem(day, statuses, evaluationTime) : null
+  const date = formatDayDateParts(day.date, language)
+  const itineraryDayNumber = extractItineraryDayNumber(day.title)
   return (
     <section className="page day-page">
       <div className="page-heading">
         <div>
-          <span className="eyebrow">
-            {today ? t.today : formatDate(day.date, language)}
+          <span className="eyebrow day-metadata">
+            {itineraryDayNumber !== undefined &&
+              `${t.day} ${itineraryDayNumber} | `}
+            {date.month} {date.day} {date.weekday}
           </span>
           <h1>{day.title || cityNames(day)}</h1>
         </div>
@@ -774,10 +779,13 @@ function Days({
             <Link to={`/day/${day.date}`} className="day-row" key={day.date}>
               <span
                 className="day-date"
-                aria-label={formatDate(day.date, language)}
+                aria-label={`${date.month} ${date.day} ${date.weekday}`}
               >
-                <span className="day-date-month">{date.month}</span>
-                <strong className="day-date-number">{date.day}</strong>
+                <span className="day-date-primary">
+                  <span className="day-date-month">{date.month}</span>
+                  <strong className="day-date-number">{date.day}</strong>
+                </span>
+                <span className="day-date-weekday">{date.weekday}</span>
               </span>
               <strong className="day-title">{cityNames(day)}</strong>
               <span className="day-row-status">
@@ -1059,15 +1067,22 @@ function formatDate(value: string, language: Language) {
 }
 
 function formatDayDateParts(value: string, language: Language) {
-  const parts = new Intl.DateTimeFormat(language === 'ro' ? 'ro-RO' : 'en-CA', {
+  const locale = language === 'ro' ? 'ro-RO' : 'en-CA'
+  const date = new Date(`${value}T12:00:00`)
+  const parts = new Intl.DateTimeFormat(locale, {
     day: '2-digit',
     month: 'short',
-  }).formatToParts(new Date(`${value}T12:00:00`))
+  }).formatToParts(date)
+  const weekday = new Intl.DateTimeFormat(locale, {
+    weekday: 'long',
+  }).format(date)
   return {
     day: parts.find((part) => part.type === 'day')?.value || '',
-    month: (
-      parts.find((part) => part.type === 'month')?.value || ''
-    ).toUpperCase(),
+    month: (parts.find((part) => part.type === 'month')?.value || '')
+      .replace(/[^\p{L}]/gu, '')
+      .slice(0, 3)
+      .toUpperCase(),
+    weekday: weekday.charAt(0).toLocaleUpperCase(locale) + weekday.slice(1),
   }
 }
 

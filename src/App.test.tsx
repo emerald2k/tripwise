@@ -251,6 +251,43 @@ describe('day item presentation', () => {
     )
   })
 
+  it('renders Romanian Days and DayView date metadata from the itinerary title', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'halkidiki-2026')
+    localStorage.setItem('tripwise.language', 'ro')
+    const daysView = render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const firstDate = document.querySelector('.day-date') as HTMLElement
+    expect(firstDate).toHaveAccessibleName('SEP 05 Sâmbătă')
+    expect(firstDate).toHaveTextContent('Sâmbătă')
+    expect(firstDate.querySelector('.day-date-weekday')).toHaveTextContent(
+      'Sâmbătă',
+    )
+    daysView.unmount()
+
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-05']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(screen.getByText('Ziua 0 | SEP 05 Sâmbătă')).toBeVisible()
+  })
+
+  it('renders English DayView metadata using the title-derived day number', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'halkidiki-2026')
+    localStorage.setItem('tripwise.language', 'en')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-06']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Day 1 | SEP 06 Sunday')).toBeVisible()
+  })
+
   it('renders the existing not-found state for an invalid day route', () => {
     render(
       <MemoryRouter initialEntries={['/day/2099-01-01']}>

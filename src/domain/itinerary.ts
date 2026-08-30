@@ -6,6 +6,11 @@ export function sortItems(items: Item[]) {
   return [...items].sort((a, b) => a.startTime.localeCompare(b.startTime))
 }
 
+export function extractItineraryDayNumber(title?: string) {
+  const match = /\b(?:Ziua|Day)\s+(\d+)\b/i.exec(title ?? '')
+  return match ? Number(match[1]) : undefined
+}
+
 export function currentItem(
   day: Day,
   statuses: Record<string, Status>,

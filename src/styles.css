@@ -438,6 +438,12 @@ main {
   border-right: 1px solid #3a4454;
   font-variant-numeric: tabular-nums;
 }
+.day-date-primary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
 .day-date-month {
   font-size: 0.72rem;
   font-weight: 700;
@@ -447,6 +453,18 @@ main {
   color: #e9f0ff;
   font-size: 1.35rem;
   line-height: 1;
+}
+.day-date-weekday {
+  color: #8994a4;
+  font-size: 0.68rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.day-metadata {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .day-title {
   min-width: 0;

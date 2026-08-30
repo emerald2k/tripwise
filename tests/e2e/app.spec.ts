@@ -104,6 +104,19 @@ const durationLocationItem = (() => {
   throw new Error('Expected a Location Item with a duration')
 })()
 
+const numberedItinerary = (() => {
+  const entry = manifest.itineraries.find(
+    (itinerary) => itinerary.id === 'halkidiki-2026',
+  )
+  if (!entry) throw new Error('Expected the Halkidiki itinerary')
+  const itinerary = readDataFile(entry.file) as {
+    days: { date: string; title?: string }[]
+  }
+  if (!itinerary.days.every((day) => /^Ziua \d+\b/.test(day.title ?? '')))
+    throw new Error('Expected explicit itinerary day numbers')
+  return { id: entry.id, days: itinerary.days }
+})()
+
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(
     (itineraryId) =>
@@ -437,12 +450,17 @@ test('keeps generous Days cards structured and responsive', async ({
           ?.getBoundingClientRect()
         const date = row.querySelector('.day-date')
         const dateBox = date?.getBoundingClientRect()
+        const datePrimaryBox = date
+          ?.querySelector('.day-date-primary')
+          ?.getBoundingClientRect()
         const monthBox = date
           ?.querySelector('.day-date-month')
           ?.getBoundingClientRect()
         const numberBox = date
           ?.querySelector('.day-date-number')
           ?.getBoundingClientRect()
+        const weekday = date?.querySelector('.day-date-weekday')
+        const weekdayBox = weekday?.getBoundingClientRect()
         const dateStyle = date ? getComputedStyle(date) : undefined
         const status = row.querySelector('.day-row-status')
         const statusBox = status?.getBoundingClientRect()
@@ -462,14 +480,24 @@ test('keeps generous Days cards structured and responsive', async ({
             : undefined,
           dateBorder: dateStyle?.borderRightWidth,
           datePaddingRight: dateStyle?.paddingRight,
+          dateChildCount: date?.children.length,
           rowGap: getComputedStyle(row).columnGap,
           dateWidth: dateBox?.width,
           dateRight: dateBox?.right,
-          dateTextRight: Math.max(monthBox?.right ?? 0, numberBox?.right ?? 0),
+          dateTextRight: Math.max(
+            datePrimaryBox?.right ?? 0,
+            weekdayBox?.right ?? 0,
+          ),
           monthWidth: monthBox?.width,
           numberWidth: numberBox?.width,
+          datePrimaryBottom: datePrimaryBox?.bottom,
+          weekdayTop: weekdayBox?.top,
+          weekdayWhiteSpace: weekday
+            ? getComputedStyle(weekday).whiteSpace
+            : undefined,
           monthBottom: monthBox?.bottom,
           numberTop: numberBox?.top,
+          numberBottom: numberBox?.bottom,
           titleLeft: titleBox?.left,
           titleTop: titleBox?.top,
           titleBottom: titleBox?.bottom,
@@ -496,9 +524,14 @@ test('keeps generous Days cards structured and responsive', async ({
       expect(row.dateDisplay).toBe('flex')
       expect(row.dateDirection).toBe('column')
       expect(row.dateBorder).not.toBe('0px')
-      expect(row.monthBottom).toBeLessThanOrEqual(row.numberTop!)
+      expect(row.dateChildCount).toBe(2)
+      expect(
+        Math.abs(row.monthBottom! - row.numberBottom!),
+      ).toBeLessThanOrEqual(1)
+      expect(row.datePrimaryBottom).toBeLessThanOrEqual(row.weekdayTop!)
+      expect(row.weekdayWhiteSpace).toBe('nowrap')
       expect(row.dateWidth).toBeLessThanOrEqual(
-        Math.max(row.monthWidth!, row.numberWidth!) +
+        Math.max(row.dateTextRight! - (row.dateRight! - row.dateWidth!), 0) +
           Number.parseFloat(row.datePaddingRight!) +
           Number.parseFloat(row.dateBorder!) +
           1,
@@ -534,6 +567,53 @@ test('keeps generous Days cards structured and responsive', async ({
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width)
   }
+})
+
+test('keeps localized itinerary date metadata compact on mobile widths', async ({
+  page,
+}) => {
+  await page.addInitScript((itineraryId) => {
+    localStorage.setItem('tripwise.activeItineraryId', itineraryId)
+    localStorage.setItem('tripwise.language', 'ro')
+  }, numberedItinerary.id)
+
+  for (const width of [320, 375, 390, 430]) {
+    await page.setViewportSize({ width, height: 700 })
+    await page.goto('/days')
+    await waitForApplication(page)
+
+    const firstDate = page.locator('.day-date').first()
+    await expect(firstDate).toHaveAccessibleName('SEP 05 Sâmbătă')
+    await expect(firstDate).toContainText('Sâmbătă')
+    await expect(firstDate.locator('.day-date-weekday')).toHaveText('Sâmbătă')
+    await expect(firstDate.locator('.day-date-weekday')).toHaveCSS(
+      'white-space',
+      'nowrap',
+    )
+    await expect(page.locator('.day-title').first()).toBeVisible()
+    await expect(page.locator('.day-row-status').first()).toBeVisible()
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width)
+
+    await page.goto(`/day/${numberedItinerary.days[1].date}`)
+    await waitForApplication(page)
+    const metadata = page.locator('.day-metadata')
+    await expect(metadata).toHaveText('Ziua 1 | SEP 06 Duminică')
+    await expect(metadata).toHaveCSS('white-space', 'nowrap')
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width)
+  }
+
+  await page.addInitScript(() =>
+    localStorage.setItem('tripwise.language', 'en'),
+  )
+  await page.goto(`/day/${numberedItinerary.days[1].date}`)
+  await waitForApplication(page)
+  await expect(page.locator('.day-metadata')).toHaveText(
+    'Day 1 | SEP 06 Sunday',
+  )
 })
 
 test('search groups planned item matches and opens the selected activity', async ({
