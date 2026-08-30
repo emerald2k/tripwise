@@ -393,13 +393,25 @@ main {
   display: grid;
   gap: 0.55rem;
 }
+.days-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
 .days-page h1 {
-  margin-bottom: 0.2rem;
+  flex: none;
+  margin: 0;
+  font-size: 1.125rem;
 }
 .days-subtitle {
-  margin: 0 0 1rem;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
   color: #9ba5b5;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .days-page .day-list {
   gap: 0.6rem;
@@ -445,13 +457,13 @@ main {
   white-space: nowrap;
 }
 .day-date-month {
-  font-size: 0.72rem;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.08em;
 }
 .day-date-number {
   color: #e9f0ff;
-  font-size: 1.35rem;
+  font-size: 1.125rem;
   line-height: 1;
 }
 .day-date-weekday {
@@ -461,10 +473,23 @@ main {
   white-space: nowrap;
 }
 .day-metadata {
-  display: block;
+  display: flex;
+  max-width: 100%;
+  min-height: 44px;
+  align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.day-metadata-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.day-page .page-heading h1 {
+  margin-bottom: 0.75rem;
+}
+.day-page .timeline {
+  margin-top: 0.75rem;
 }
 .day-title {
   min-width: 0;

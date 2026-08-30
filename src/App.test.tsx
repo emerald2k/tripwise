@@ -251,7 +251,7 @@ describe('day item presentation', () => {
     )
   })
 
-  it('renders Romanian Days and DayView date metadata from the itinerary title', () => {
+  it('renders Romanian DayView metadata as one accessible Days link', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'halkidiki-2026')
     localStorage.setItem('tripwise.language', 'ro')
     const daysView = render(
@@ -273,10 +273,14 @@ describe('day item presentation', () => {
         <App />
       </MemoryRouter>,
     )
-    expect(screen.getByText('Ziua 0 | SEP 05 Sâmbătă')).toBeVisible()
+    const metadata = screen.getByRole('link', { name: 'Înapoi la zile' })
+    expect(metadata).toHaveTextContent('← Ziua 0/6 | SEP 05 Sâmbătă')
+    expect(metadata).toHaveClass('day-metadata')
+    fireEvent.click(metadata)
+    expect(screen.getByRole('heading', { name: 'Zile' })).toBeVisible()
   })
 
-  it('renders English DayView metadata using the title-derived day number', () => {
+  it('renders English DayView metadata using explicit day numbers', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'halkidiki-2026')
     localStorage.setItem('tripwise.language', 'en')
     render(
@@ -285,20 +289,43 @@ describe('day item presentation', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('Day 1 | SEP 06 Sunday')).toBeVisible()
+    expect(
+      screen.getByRole('link', { name: 'Back to days' }),
+    ).toHaveTextContent('← Day 1/6 | SEP 06 Sunday')
   })
 
-  it('does not invent DayView metadata when the title has no day number', () => {
+  it('derives DayView metadata from canonical Canada journey dates', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'canada-2026')
     localStorage.setItem('tripwise.language', 'en')
     render(
-      <MemoryRouter initialEntries={['/day/2026-09-11']}>
+      <MemoryRouter initialEntries={['/day/2026-09-05']}>
         <App />
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('SEP 11 Friday')).toBeVisible()
-    expect(screen.queryByText(/^Day \d+ \|/)).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Back to days' }),
+    ).toHaveTextContent('← Day 3/10 | SEP 05 Saturday')
+  })
+
+  it('returns to Days instead of Search from a search-selected DayView', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'canada-2026')
+    localStorage.setItem('tripwise.language', 'en')
+    render(
+      <MemoryRouter
+        initialEntries={[
+          '/search',
+          '/day/2026-09-04?item=0904-20-revenire-la-hotel-le-roberval',
+        ]}
+        initialIndex={1}
+      >
+        <App />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('link', { name: 'Back to days' }))
+    expect(screen.getByRole('heading', { name: 'Days' })).toBeVisible()
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
   })
 
   it('renders the existing not-found state for an invalid day route', () => {

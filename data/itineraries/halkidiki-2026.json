@@ -1,6 +1,10 @@
 {
   "id": "halkidiki-2026",
   "name": "Halkidiki 2026",
+  "journey": {
+    "departureDate": "2026-09-05",
+    "destinationArrivalDate": "2026-09-06"
+  },
   "days": [
     {
       "date": "2026-09-05",

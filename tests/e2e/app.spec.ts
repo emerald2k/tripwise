@@ -117,6 +117,17 @@ const numberedItinerary = (() => {
   return { id: entry.id, days: itinerary.days }
 })()
 
+const canadaItinerary = (() => {
+  const entry = manifest.itineraries.find(
+    (itinerary) => itinerary.id === 'canada-2026',
+  )
+  if (!entry) throw new Error('Expected the Canada itinerary')
+  const itinerary = readDataFile(entry.file) as {
+    days: { date: string; title?: string }[]
+  }
+  return { id: entry.id, days: itinerary.days }
+})()
+
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(
     (itineraryId) =>
@@ -215,7 +226,7 @@ test('renders accessible production recovery when runtime DATA fails', async ({
 test('loads Today and navigates through core pages', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
-  await page.getByRole('link', { name: 'Days' }).click()
+  await page.getByRole('link', { name: 'Days', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Days' })).toBeVisible()
   await page.getByRole('link', { name: /05/ }).click()
   await expect(
@@ -612,7 +623,12 @@ test('keeps localized itinerary date metadata compact on mobile widths', async (
     await page.goto(`/day/${numberedItinerary.days[1].date}`)
     await waitForApplication(page)
     const metadata = page.locator('.day-metadata')
-    await expect(metadata).toHaveText('Ziua 1 | SEP 06 Duminică')
+    await expect(metadata).toHaveCount(1)
+    await expect(metadata).toHaveAttribute('href', '/days')
+    await expect(metadata).toHaveText('← Ziua 1/6 | SEP 06 Duminică')
+    await expect(metadata).toHaveAttribute('aria-label', 'Înapoi la zile')
+    await metadata.focus()
+    await expect(metadata).toBeFocused()
     await expect(metadata).toHaveCSS('white-space', 'nowrap')
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
@@ -625,8 +641,75 @@ test('keeps localized itinerary date metadata compact on mobile widths', async (
   await page.goto(`/day/${numberedItinerary.days[1].date}`)
   await waitForApplication(page)
   await expect(page.locator('.day-metadata')).toHaveText(
-    'Day 1 | SEP 06 Sunday',
+    '← Day 1/6 | SEP 06 Sunday',
   )
+  await page.locator('.day-metadata').click()
+  await expect(page).toHaveURL(/\/days$/)
+})
+
+test('derives Canada day metadata from canonical journey dates', async ({
+  page,
+}) => {
+  await page.addInitScript((itineraryId) => {
+    localStorage.setItem('tripwise.activeItineraryId', itineraryId)
+    localStorage.setItem('tripwise.language', 'ro')
+  }, canadaItinerary.id)
+
+  for (const width of [320, 375, 390, 430]) {
+    await page.setViewportSize({ width, height: 700 })
+    await page.goto('/days')
+    await waitForApplication(page)
+
+    const heading = page.locator('.days-heading')
+    await expect(heading).toHaveCSS('display', 'flex')
+    const title = heading.getByRole('heading')
+    const subtitle = heading.locator('.days-subtitle')
+    await expect(title).toBeVisible()
+    await expect(subtitle).toBeVisible()
+    const [titleBox, subtitleBox] = await Promise.all([
+      title.boundingBox(),
+      subtitle.boundingBox(),
+    ])
+    expect(titleBox).not.toBeNull()
+    expect(subtitleBox).not.toBeNull()
+    expect(
+      Math.abs(
+        titleBox!.y + titleBox!.height - (subtitleBox!.y + subtitleBox!.height),
+      ),
+    ).toBeLessThanOrEqual(2)
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width)
+    await page.goto(`/day/${canadaItinerary.days[0].date}`)
+    await waitForApplication(page)
+    await expect(page.locator('.day-metadata')).toHaveText(
+      '← Ziua 1/10 | SEP 03 Joi',
+    )
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width)
+  }
+
+  await page.addInitScript(() =>
+    localStorage.setItem('tripwise.language', 'en'),
+  )
+  await page.goto(`/day/${canadaItinerary.days[1].date}`)
+  await waitForApplication(page)
+  await expect(page.locator('.day-metadata')).toHaveText(
+    '← Day 2/10 | SEP 04 Friday',
+  )
+  await page.goto(`/day/${canadaItinerary.days[2].date}`)
+  await waitForApplication(page)
+  await expect(page.locator('.day-metadata')).toHaveText(
+    '← Day 3/10 | SEP 05 Saturday',
+  )
+  await expect(page.locator('.day-metadata')).toHaveAttribute(
+    'aria-label',
+    'Back to days',
+  )
+  await page.locator('.day-metadata').click()
+  await expect(page).toHaveURL(/\/days$/)
+  await expect(page.getByRole('heading', { name: 'Days' })).toBeVisible()
 })
 
 test('search groups planned item matches and opens the selected activity', async ({
@@ -932,7 +1015,7 @@ test('application routes survive direct refresh', async ({ page }) => {
 
 test('browser back and forward preserve route navigation', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('link', { name: 'Days' }).click()
+  await page.getByRole('link', { name: 'Days', exact: true }).click()
   await page.getByRole('link', { name: /05/ }).click()
   await expect(page).toHaveURL(/\/day\//)
   await page.goBack()
@@ -946,7 +1029,9 @@ test('mobile shell has usable navigation without horizontal overflow', async ({
 }) => {
   await page.setViewportSize({ width: 375, height: 667 })
   await page.goto('/')
-  await expect(page.getByRole('link', { name: 'Days' })).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: 'Days', exact: true }),
+  ).toBeVisible()
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(375)

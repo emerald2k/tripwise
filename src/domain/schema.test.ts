@@ -41,6 +41,10 @@ const day: Day = {
     },
   ],
 }
+const journey = {
+  departureDate: '2026-08-27',
+  destinationArrivalDate: '2026-08-27',
+}
 
 describe('active Location Item intervals', () => {
   const intervalDay = {
@@ -161,6 +165,7 @@ describe('itinerary domain rules', () => {
       itinerarySchema.parse({
         id: 'trip',
         name: 'Trip',
+        journey,
         days: [
           { ...day, items: [{ ...day.items[0], transport: { mode: 'walk' } }] },
         ],
@@ -227,6 +232,67 @@ describe('itinerary domain rules', () => {
         locations: [{ locationId: 'place', name: 'Place', category: 'visit' }],
       }),
     ).toThrow()
+  })
+
+  it('requires valid chronological journey calendar dates on the first itinerary day', () => {
+    const itinerary = {
+      id: 'trip',
+      name: 'Trip',
+      journey,
+      days: [day],
+    }
+    expect(() =>
+      validateItineraryData(
+        {
+          ...itinerary,
+          journey: {
+            ...journey,
+            departureDate: '2026-02-31',
+          },
+        },
+        [
+          {
+            cityId: 'city',
+            name: 'City',
+            locations: [
+              { locationId: 'location', name: 'Place', category: 'other' },
+            ],
+          },
+        ],
+      ),
+    ).toThrow(/Invalid journey departure date/)
+    expect(() =>
+      validateItineraryData(
+        {
+          ...itinerary,
+          journey: {
+            departureDate: '2026-08-28',
+            destinationArrivalDate: '2026-08-27',
+          },
+        },
+        [],
+      ),
+    ).toThrow(/after destination arrival/)
+    expect(() =>
+      validateItineraryData(
+        {
+          ...itinerary,
+          journey: {
+            departureDate: '2026-08-26',
+            destinationArrivalDate: '2026-08-27',
+          },
+        },
+        [
+          {
+            cityId: 'city',
+            name: 'City',
+            locations: [
+              { locationId: 'location', name: 'Place', category: 'other' },
+            ],
+          },
+        ],
+      ),
+    ).toThrow(/does not match first itinerary day/)
   })
 
   it('sorts items by start time without mutating the source', () => {
@@ -321,6 +387,7 @@ describe('itinerary domain rules', () => {
         {
           id: 'trip',
           name: 'Trip',
+          journey,
           days: [
             {
               date: '2026-08-27',
@@ -352,6 +419,7 @@ describe('itinerary domain rules', () => {
         {
           id: 'trip',
           name: 'Trip',
+          journey,
           days: [
             {
               date: '2026-02-31',
@@ -392,6 +460,7 @@ describe('itinerary domain rules', () => {
         {
           id: 'trip',
           name: 'Trip',
+          journey,
           days: [
             {
               date: '2026-08-27',
@@ -446,7 +515,7 @@ describe('itinerary domain rules', () => {
       ],
       cities: ['./cities/city.json'],
     }
-    const itinerary = { id: 'trip', name: 'Trip', days: [day] }
+    const itinerary = { id: 'trip', name: 'Trip', journey, days: [day] }
     const city = {
       cityId: 'city',
       name: 'City',

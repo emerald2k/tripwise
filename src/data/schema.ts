@@ -27,6 +27,11 @@ const strict = <T extends z.ZodRawShape>(shape: T) => z.object(shape).strict()
 const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/)
 const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
 
+export const journeySchema = strict({
+  departureDate: dateSchema,
+  destinationArrivalDate: dateSchema,
+})
+
 export const coordinatesSchema = strict({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
@@ -75,6 +80,7 @@ export const daySchema = strict({
 export const itinerarySchema = strict({
   id: z.string().min(1),
   name: z.string().min(1),
+  journey: journeySchema,
   days: z.array(daySchema).min(1),
 })
 
@@ -96,6 +102,7 @@ export const manifestSchema = strict({
 })
 
 export type Itinerary = z.infer<typeof itinerarySchema>
+export type Journey = z.infer<typeof journeySchema>
 export type Day = z.infer<typeof daySchema>
 export type Item = z.infer<typeof itemSchema>
 export type LocationItem = z.infer<typeof locationItemSchema>
