@@ -288,6 +288,19 @@ describe('day item presentation', () => {
     expect(screen.getByText('Day 1 | SEP 06 Sunday')).toBeVisible()
   })
 
+  it('does not invent DayView metadata when the title has no day number', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'canada-2026')
+    localStorage.setItem('tripwise.language', 'en')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-11']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('SEP 11 Friday')).toBeVisible()
+    expect(screen.queryByText(/^Day \d+ \|/)).not.toBeInTheDocument()
+  })
+
   it('renders the existing not-found state for an invalid day route', () => {
     render(
       <MemoryRouter initialEntries={['/day/2099-01-01']}>

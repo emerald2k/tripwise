@@ -495,6 +495,17 @@ test('keeps generous Days cards structured and responsive', async ({
           weekdayWhiteSpace: weekday
             ? getComputedStyle(weekday).whiteSpace
             : undefined,
+          weekdayFontSize: weekday
+            ? Number.parseFloat(getComputedStyle(weekday).fontSize)
+            : undefined,
+          weekdayColor: weekday ? getComputedStyle(weekday).color : undefined,
+          numberFontSize: numberBox
+            ? Number.parseFloat(
+                getComputedStyle(
+                  row.querySelector('.day-date-number') as Element,
+                ).fontSize,
+              )
+            : undefined,
           monthBottom: monthBox?.bottom,
           numberTop: numberBox?.top,
           numberBottom: numberBox?.bottom,
@@ -530,6 +541,8 @@ test('keeps generous Days cards structured and responsive', async ({
       ).toBeLessThanOrEqual(1)
       expect(row.datePrimaryBottom).toBeLessThanOrEqual(row.weekdayTop!)
       expect(row.weekdayWhiteSpace).toBe('nowrap')
+      expect(row.weekdayFontSize).toBeLessThan(row.numberFontSize!)
+      expect(row.weekdayColor).not.toBe('rgb(233, 240, 255)')
       expect(row.dateWidth).toBeLessThanOrEqual(
         Math.max(row.dateTextRight! - (row.dateRight! - row.dateWidth!), 0) +
           Number.parseFloat(row.datePaddingRight!) +
