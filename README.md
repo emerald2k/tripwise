@@ -1866,6 +1866,14 @@ Background DATA candidates are validated before activation; invalid candidates
 leave the previous valid DATA package active. Google Maps URLs remain external
 resources.
 
+### Verifying a production PWA update
+
+1. Install production version `0.9.0`, then create and confirm DONE/SKIP progress.
+2. Deploy `0.9.1` and open the still-installed PWA while online.
+3. It updates without interaction; after reload, Settings displays `0.9.1` and the progress remains.
+4. Repeat by launching offline, restoring connectivity, and confirming the same automatic update.
+5. Optionally deploy an older stable version: any unequal remote version still updates, supporting rollback.
+
 ## Media
 
 No large images.

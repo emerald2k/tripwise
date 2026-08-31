@@ -246,9 +246,19 @@ describe('day item presentation', () => {
     )
 
     expect(appVersion).toBe(packageJson.version)
-    expect(screen.getByRole('paragraph')).toHaveTextContent(
-      `Version ${packageJson.version}`,
+    expect(screen.getByText('App version')).toBeVisible()
+    expect(screen.getByText(packageJson.version)).toBeVisible()
+    expect(screen.queryByText('Up to date')).not.toBeInTheDocument()
+  })
+
+  it('shows the verified production status in Settings', () => {
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App versionChecked />
+      </MemoryRouter>,
     )
+
+    expect(screen.getByText('Up to date')).toBeVisible()
   })
 
   it('renders Romanian DayView metadata as one accessible Days link', () => {

@@ -7,6 +7,8 @@
   "settings": "Setări",
   "language": "Limbă",
   "version": "Versiunea",
+  "appVersion": "Versiunea aplicației",
+  "upToDate": "Actualizată",
   "install": "Instalează aplicația",
   "installPromptTitle": "Instalează {brandName}",
   "installPromptBody": "Instalează aplicația pentru acces rapid și utilizare offline.",

@@ -741,7 +741,8 @@ test('search groups planned item matches and opens the selected activity', async
 
 test('settings persists the selected language', async ({ page }) => {
   await page.goto('/settings')
-  await expect(page.getByText(/^Version \d+\.\d+\.\d+$/)).toBeVisible()
+  await expect(page.getByText('App version')).toBeVisible()
+  await expect(page.locator('.app-version strong')).toHaveText(/\d+\.\d+\.\d+/)
   await page.getByRole('button', { name: 'RO', exact: true }).click()
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
   await page.reload()

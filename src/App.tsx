@@ -57,6 +57,7 @@ type SearchResultDay =
 
 interface AppProps {
   initialInstallPrompt?: BeforeInstallPromptEvent | null
+  versionChecked?: boolean
 }
 
 const installPromptSeenKey = 'tripwise.installPromptSeen'
@@ -114,7 +115,10 @@ function useHeaderVisibility() {
   return visible
 }
 
-export default function App({ initialInstallPrompt = null }: AppProps) {
+export default function App({
+  initialInstallPrompt = null,
+  versionChecked = false,
+}: AppProps) {
   const { datasets } = getRuntimeData()
   const language = useLanguage()
   const headerVisible = useHeaderVisibility()
@@ -302,6 +306,7 @@ export default function App({ initialInstallPrompt = null }: AppProps) {
                 selectItinerary={setActiveItinerary}
                 canInstall={!!deferredInstall}
                 install={install}
+                versionChecked={versionChecked}
               />
             }
           />
@@ -949,6 +954,7 @@ function Settings({
   selectItinerary,
   canInstall,
   install,
+  versionChecked,
 }: SharedProps & {
   change: (language: Language) => void
   reset: () => void
@@ -957,6 +963,7 @@ function Settings({
   selectItinerary: (itinerary: Itinerary) => void
   canInstall: boolean
   install: () => void
+  versionChecked: boolean
 }) {
   const navigate = useNavigate()
   return (
@@ -1005,9 +1012,11 @@ function Settings({
           {t.install}
         </button>
       )}
-      <p className="app-version">
-        {t.version} {appVersion}
-      </p>
+      <div className="app-version">
+        <span>{t.appVersion}</span>
+        <strong>{appVersion}</strong>
+        {versionChecked && <span>{t.upToDate}</span>}
+      </div>
       <button
         className="danger wide-button"
         onClick={() => window.confirm(t.confirmReset) && reset()}
