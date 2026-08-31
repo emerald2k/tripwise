@@ -1837,6 +1837,14 @@ Manual language selection is persisted locally.
 
 Tripwise is an offline-capable PWA.
 
+The application version is derived from `package.json`. Production builds emit
+`/version.json` from that value. When online, the PWA checks this file at
+startup and after the browser regains connectivity. Any exact version mismatch
+(including an intentional rollback) requests the existing service-worker update
+and reloads after activation. Failed, unavailable, or invalid version checks
+are ignored so offline startup continues normally. This process does not alter
+locally persisted DONE/SKIP progress.
+
 Required capabilities:
 
 - Web App Manifest;

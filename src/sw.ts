@@ -47,6 +47,10 @@ function isDataRequest(request: Request) {
   return new URL(request.url).pathname.startsWith('/data/')
 }
 
+function isVersionRequest(request: Request) {
+  return new URL(request.url).pathname === '/version.json'
+}
+
 async function cacheAppResponse(request: Request, response: Response) {
   if (!response.ok) return response
   const cache = await cacheStorage.open(appCacheName)
@@ -195,6 +199,10 @@ worker.addEventListener('activate', (event) => {
 
 worker.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || !isSameOrigin(event.request)) return
+  if (isVersionRequest(event.request)) {
+    event.respondWith(fetch(event.request))
+    return
+  }
   event.respondWith(
     isDataRequest(event.request)
       ? cacheFirstDataRequest(event.request, event)

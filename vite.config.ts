@@ -26,6 +26,27 @@ function webManifest(): Plugin {
   }
 }
 
+function versionFile(): Plugin {
+  const packageFile = fileURLToPath(new URL('./package.json', import.meta.url))
+  const { version } = JSON.parse(readFileSync(packageFile, 'utf8')) as {
+    version: string
+  }
+  const source = `${JSON.stringify({ version })}\n`
+
+  return {
+    name: 'version-file',
+    configureServer(server) {
+      server.middlewares.use('/version.json', (_request, response) => {
+        response.setHeader('Content-Type', 'application/json')
+        response.end(source)
+      })
+    },
+    generateBundle() {
+      this.emitFile({ type: 'asset', fileName: 'version.json', source })
+    },
+  }
+}
+
 function runtimeData(): Plugin {
   const dataDirectory = fileURLToPath(new URL('./data', import.meta.url))
   const manifest = JSON.parse(
@@ -64,7 +85,7 @@ function runtimeData(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), webManifest(), runtimeData()],
+  plugins: [react(), webManifest(), versionFile(), runtimeData()],
   worker: {
     format: 'es',
     rollupOptions: {

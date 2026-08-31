@@ -843,6 +843,15 @@ Use:
 
 - Web App Manifest
 - Service Worker
+
+The application version is sourced from `package.json`; the production build
+must generate `/version.json` from that value. While online, startup and the
+browser `online` event check this static file. Any exact installed/deployed
+version mismatch triggers the existing service-worker update and reload flow,
+including a deployed rollback. Failed or invalid checks remain silent and do
+not block offline use. Locally persisted DONE/SKIP progress must survive this
+flow.
+
 - Cache Storage
 
 The application should function offline after required assets and DATA have been cached.

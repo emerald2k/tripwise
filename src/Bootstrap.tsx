@@ -8,12 +8,15 @@ import {
   type BeforeInstallPromptEvent,
 } from './install-prompt'
 import { RecoveryScreen } from './recovery'
+import { startPwaVersionSync } from './pwa-version-sync'
+import { appVersion } from './version'
 
 export function Bootstrap() {
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<unknown>(null)
   const [installPrompt, setInstallPrompt] =
     useState<BeforeInstallPromptEvent | null>(readInstallPrompt)
+  const [updatingVersion, setUpdatingVersion] = useState<string>()
 
   useEffect(() => {
     let cancelled = false
@@ -40,12 +43,31 @@ export function Bootstrap() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!ready) return
+    return startPwaVersionSync({
+      installedVersion: appVersion,
+      isOnline: () => navigator.onLine,
+      fetcher: fetch,
+      serviceWorker: navigator.serviceWorker,
+      onUpdating: setUpdatingVersion,
+      reload: () => window.location.reload(),
+    })
+  }, [ready])
+
   if (error) return <RecoveryScreen error={error} />
   if (!ready) return null
 
   return (
-    <BrowserRouter>
-      <App initialInstallPrompt={installPrompt} />
-    </BrowserRouter>
+    <>
+      {updatingVersion && (
+        <p className="version-update-status" role="status">
+          Updating to latest version v{updatingVersion}
+        </p>
+      )}
+      <BrowserRouter>
+        <App initialInstallPrompt={installPrompt} />
+      </BrowserRouter>
+    </>
   )
 }
