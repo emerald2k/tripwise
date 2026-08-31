@@ -103,14 +103,6 @@
           "progress": true
         },
         {
-          "itemId": "0903-14-jardins-alt",
-          "startTime": "21:45",
-          "title": "Opțional: Jardins Gamelin / Jardins d’Illusion",
-          "locationId": "montreal-jardins-gamelin",
-          "durationMinutes": 90,
-          "progress": true
-        },
-        {
           "itemId": "0903-15-abreuvoir-132",
           "startTime": "21:45",
           "title": "Alternativ: Abreuvoir 132, Jam Night",
@@ -261,6 +253,14 @@
           "progress": true
         },
         {
+          "itemId": "0904-NEW-duck-shoppe",
+          "startTime": "13:30",
+          "title": "Le Petit Duck Shoppe: oprire scurtă",
+          "locationId": "montreal-le-petit-duck-shoppe",
+          "durationMinutes": 15,
+          "progress": true
+        },
+        {
           "itemId": "0904-08-to-next",
           "startTime": "13:45",
           "title": "→ Prânz Old Montréal",
@@ -315,6 +315,22 @@
           "progress": true
         },
         {
+          "itemId": "0904-NEW-bonjour-montreal",
+          "startTime": "15:20",
+          "title": "Bonjour Montréal: photo spot",
+          "locationId": "montreal-bonjour-montreal",
+          "durationMinutes": 20,
+          "progress": true
+        },
+        {
+          "itemId": "0904-NEW-grande-roue",
+          "startTime": "15:40",
+          "title": "La Grande Roue de Montréal: exterior",
+          "locationId": "montreal-la-grande-roue",
+          "durationMinutes": 30,
+          "progress": true
+        },
+        {
           "itemId": "0904-11-to-next",
           "startTime": "16:30",
           "title": "→ Clock Tower + waterfront",
@@ -348,6 +364,14 @@
           "title": "Grand Quay / Old Port golden hour",
           "locationId": "montreal-grand-quay",
           "durationMinutes": 60,
+          "progress": true
+        },
+        {
+          "itemId": "0904-NEW-la-joute",
+          "startTime": "17:32",
+          "title": "La Joute / Place Jean-Paul-Riopelle",
+          "locationId": "montreal-la-joute",
+          "durationMinutes": 35,
           "progress": true
         },
         {
@@ -573,6 +597,14 @@
           "progress": true
         },
         {
+          "itemId": "0905-NEW-dieppe",
+          "startTime": "18:30",
+          "title": "Parc de Dieppe: belvedere + sunset",
+          "locationId": "montreal-parc-de-dieppe",
+          "durationMinutes": 90,
+          "progress": true
+        },
+        {
           "itemId": "0905-18-downtown-hotel",
           "startTime": "19:25",
           "title": "Downtown → Hotel Le Roberval",
@@ -619,6 +651,14 @@
           "title": "Avenue du Mont-Royal",
           "locationId": "montreal-avenue-du-mont-royal",
           "durationMinutes": 60,
+          "progress": true
+        },
+        {
+          "itemId": "0906-NEW-hadio",
+          "startTime": "11:15",
+          "title": "Hadio - Friperie Vintage: oprire scurtă",
+          "locationId": "montreal-hadio-friperie-vintage",
+          "durationMinutes": 15,
           "progress": true
         },
         {
@@ -704,6 +744,14 @@
           }
         },
         {
+          "itemId": "0906-09-jean-talon-market",
+          "startTime": "15:10",
+          "title": "Jean-Talon Market",
+          "locationId": "montreal-jean-talon-market",
+          "durationMinutes": 75,
+          "progress": true
+        },
+        {
           "itemId": "0906-07-parc-du-portugal",
           "startTime": "15:14",
           "title": "Parc du Portugal",
@@ -738,14 +786,6 @@
             "distanceMeters": 800,
             "durationMinutes": 10
           }
-        },
-        {
-          "itemId": "0906-09-jean-talon-market",
-          "startTime": "17:00",
-          "title": "Jean-Talon Market",
-          "locationId": "montreal-jean-talon-market",
-          "durationMinutes": 60,
-          "progress": true
         },
         {
           "itemId": "0906-10-little-italy-jean-talon",
@@ -863,6 +903,14 @@
           }
         },
         {
+          "itemId": "0907-NEW-timeout",
+          "startTime": "13:20",
+          "title": "Time Out Market Montréal: prânz",
+          "locationId": "montreal-time-out-market",
+          "durationMinutes": 70,
+          "progress": true
+        },
+        {
           "itemId": "0907-07-pranz-downtown",
           "startTime": "13:30",
           "title": "Prânz Downtown",
@@ -936,6 +984,14 @@
             "mode": "taxi",
             "durationMinutes": 25
           }
+        },
+        {
+          "itemId": "0908-NEW-quebec-letters",
+          "startTime": "10:10",
+          "title": "QUÉBEC giant letters: photo spot",
+          "locationId": "quebec-city-quebec-giant-letters-porte-saint-louis",
+          "durationMinutes": 15,
+          "progress": true
         },
         {
           "itemId": "0908-02-porte-saint-jean",
