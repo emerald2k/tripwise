@@ -7,6 +7,8 @@
   "settings": "Settings",
   "language": "Language",
   "version": "Version",
+  "appVersion": "App version",
+  "upToDate": "Up to date",
   "install": "Install App",
   "installPromptTitle": "Install {brandName}",
   "installPromptBody": "Install the app for quick access and offline use.",

@@ -20,6 +20,7 @@ export interface PwaVersionSyncOptions {
   fetcher: typeof fetch
   serviceWorker?: VersionServiceWorker
   onUpdating: (version: string) => void
+  onUpToDate: () => void
   reload: () => void
   timeoutMs?: number
 }
@@ -34,6 +35,7 @@ export async function checkPwaVersion({
   fetcher,
   serviceWorker,
   onUpdating,
+  onUpToDate,
   reload,
   timeoutMs = 5000,
 }: PwaVersionSyncOptions) {
@@ -60,8 +62,11 @@ export async function checkPwaVersion({
   } catch {
     return false
   }
-  if (!isValidVersion(payload.version) || payload.version === installedVersion)
+  if (!isValidVersion(payload.version)) return false
+  if (payload.version === installedVersion) {
+    onUpToDate()
     return false
+  }
 
   try {
     const registration = await serviceWorker.ready

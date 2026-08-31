@@ -17,6 +17,7 @@ export function Bootstrap() {
   const [installPrompt, setInstallPrompt] =
     useState<BeforeInstallPromptEvent | null>(readInstallPrompt)
   const [updatingVersion, setUpdatingVersion] = useState<string>()
+  const [versionChecked, setVersionChecked] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -45,14 +46,24 @@ export function Bootstrap() {
 
   useEffect(() => {
     if (!ready) return
-    return startPwaVersionSync({
+    const clearVersionCheck = () => setVersionChecked(false)
+    window.addEventListener('offline', clearVersionCheck)
+    const stopVersionSync = startPwaVersionSync({
       installedVersion: appVersion,
       isOnline: () => navigator.onLine,
       fetcher: fetch,
       serviceWorker: navigator.serviceWorker,
-      onUpdating: setUpdatingVersion,
+      onUpdating: (version) => {
+        setVersionChecked(false)
+        setUpdatingVersion(version)
+      },
+      onUpToDate: () => setVersionChecked(true),
       reload: () => window.location.reload(),
     })
+    return () => {
+      stopVersionSync()
+      window.removeEventListener('offline', clearVersionCheck)
+    }
   }, [ready])
 
   if (error) return <RecoveryScreen error={error} />
@@ -66,7 +77,10 @@ export function Bootstrap() {
         </p>
       )}
       <BrowserRouter>
-        <App initialInstallPrompt={installPrompt} />
+        <App
+          initialInstallPrompt={installPrompt}
+          versionChecked={versionChecked}
+        />
       </BrowserRouter>
     </>
   )

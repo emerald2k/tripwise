@@ -22,6 +22,7 @@ function options(overrides: Partial<PwaVersionSyncOptions> = {}) {
       removeEventListener: vi.fn(),
     },
     onUpdating: vi.fn(),
+    onUpToDate: vi.fn(),
     reload: vi.fn(),
     ...overrides,
   }
@@ -41,6 +42,7 @@ describe('PWA version synchronization', () => {
 
     await expect(checkPwaVersion(config)).resolves.toBe(false)
     expect(config.onUpdating).not.toHaveBeenCalled()
+    expect(config.onUpToDate).toHaveBeenCalledOnce()
   })
 
   it.each(['0.9.0', '0.8.1'])(
