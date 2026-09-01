@@ -323,7 +323,7 @@ export default function App({
           />
         </Routes>
       </main>
-      <nav className="bottom-nav">
+      <nav className={`bottom-nav ${headerVisible ? '' : 'is-hidden'}`}>
         <NavLink to="/">
           <NavIcon type="today" />
           <span>{language.t.today}</span>
@@ -460,10 +460,13 @@ function DayRoute(props: DayProps) {
         </Link>
       </section>
     )
+  const now = new Date()
   return (
     <DayView
       {...props}
       day={day}
+      today={day.date === localDate(now)}
+      now={now}
       highlightedItemId={searchParams.get('item') ?? undefined}
     />
   )
@@ -500,7 +503,7 @@ function DayView({
     return () => window.clearInterval(timer)
   }, [today])
   useEffect(() => {
-    if (highlightedItemId || !activeRef.current) return
+    if (!today || highlightedItemId || !activeRef.current) return
     const target = activeRef.current
     const headerBottom =
       document.querySelector<HTMLElement>('.header')?.getBoundingClientRect()
@@ -514,7 +517,7 @@ function DayView({
       behavior: reduced ? 'auto' : 'smooth',
       block: 'center',
     })
-  }, [day.date, highlightedItemId])
+  }, [day.date, highlightedItemId, today])
   useEffect(() => {
     if (!highlightedRef.current) return
     const reduced =
@@ -793,7 +796,12 @@ function Days({
             today,
           )
           return (
-            <Link to={`/day/${day.date}`} className="day-row" key={day.date}>
+            <Link
+              to={`/day/${day.date}`}
+              className={`day-row ${day.date === today ? 'is-today' : ''}`}
+              aria-current={day.date === today ? 'date' : undefined}
+              key={day.date}
+            >
               <span
                 className="day-date"
                 aria-label={`${date.month} ${date.day} ${date.weekday}`}
@@ -1023,6 +1031,14 @@ function Settings({
       >
         {t.reset}
       </button>
+      <a
+        className="author-credit"
+        href="https://www.linkedin.com/in/mateipetrutbogdan/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Built by Bogdan Matei
+      </a>
     </section>
   )
 }

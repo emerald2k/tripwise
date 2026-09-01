@@ -422,6 +422,61 @@ describe('day item presentation', () => {
     vi.useRealTimers()
   })
 
+  it('auto-scrolls an explicitly opened day only when it is today', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 8, 3, 20, 0))
+    const scrollIntoView = vi
+      .spyOn(window.HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => undefined)
+    const getBoundingClientRect = vi
+      .spyOn(window.HTMLElement.prototype, 'getBoundingClientRect')
+      .mockReturnValue({
+        bottom: 1000,
+        height: 50,
+        left: 0,
+        right: 100,
+        top: 950,
+        width: 100,
+        x: 0,
+        y: 950,
+        toJSON: () => ({}),
+      })
+
+    try {
+      render(
+        <MemoryRouter initialEntries={['/day/2026-09-03']}>
+          <App />
+        </MemoryRouter>,
+      )
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      })
+
+      cleanup()
+      scrollIntoView.mockClear()
+      render(
+        <MemoryRouter initialEntries={['/day/2026-09-04']}>
+          <App />
+        </MemoryRouter>,
+      )
+      expect(scrollIntoView).not.toHaveBeenCalled()
+
+      cleanup()
+      vi.setSystemTime(new Date(2026, 8, 4, 20, 0))
+      render(
+        <MemoryRouter initialEntries={['/day/2026-09-03']}>
+          <App />
+        </MemoryRouter>,
+      )
+      expect(scrollIntoView).not.toHaveBeenCalled()
+    } finally {
+      getBoundingClientRect.mockRestore()
+      scrollIntoView.mockRestore()
+      vi.useRealTimers()
+    }
+  })
+
   it('shows a first-visit install awareness prompt', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
