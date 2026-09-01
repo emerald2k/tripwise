@@ -323,7 +323,7 @@ export default function App({
           />
         </Routes>
       </main>
-      <nav className="bottom-nav">
+      <nav className={`bottom-nav ${headerVisible ? '' : 'is-hidden'}`}>
         <NavLink to="/">
           <NavIcon type="today" />
           <span>{language.t.today}</span>
@@ -793,7 +793,12 @@ function Days({
             today,
           )
           return (
-            <Link to={`/day/${day.date}`} className="day-row" key={day.date}>
+            <Link
+              to={`/day/${day.date}`}
+              className={`day-row ${day.date === today ? 'is-today' : ''}`}
+              aria-current={day.date === today ? 'date' : undefined}
+              key={day.date}
+            >
               <span
                 className="day-date"
                 aria-label={`${date.month} ${date.day} ${date.weekday}`}
@@ -1023,6 +1028,14 @@ function Settings({
       >
         {t.reset}
       </button>
+      <a
+        className="author-credit"
+        href="https://www.linkedin.com/in/mateipetrutbogdan/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        (C) Bogdan Matei
+      </a>
     </section>
   )
 }

@@ -181,7 +181,10 @@ describe('Phase 3 itinerary selection', () => {
     localStorage.clear()
     Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 })
   })
-  afterEach(() => cleanup())
+  afterEach(() => {
+    vi.useRealTimers()
+    cleanup()
+  })
 
   function scrollWindowTo(position: number) {
     Object.defineProperty(window, 'scrollY', {
@@ -503,7 +506,7 @@ describe('Phase 3 itinerary selection', () => {
     expect(screen.getByRole('heading', { name: 'Beta day' })).toBeVisible()
   })
 
-  it('hides the header on downward scroll and reveals it upward or at the top', () => {
+  it('hides the shell navigation on downward scroll and reveals it upward or at the top', () => {
     localStorage.setItem('tripwise.activeItineraryId', 'alpha')
     render(
       <MemoryRouter initialEntries={['/day/2026-09-10']}>
@@ -512,27 +515,97 @@ describe('Phase 3 itinerary selection', () => {
     )
 
     const header = screen.getByRole('banner')
+    const navigation = screen.getByRole('navigation')
     expect(header).not.toHaveClass('is-hidden')
+    expect(navigation).not.toHaveClass('is-hidden')
     expect(screen.getByRole('link', { name: 'Volala' })).toBeVisible()
     expect(screen.getByRole('link', { name: 'Settings' })).toBeVisible()
 
     scrollWindowTo(20)
     expect(header).toHaveClass('is-hidden')
+    expect(navigation).toHaveClass('is-hidden')
 
     scrollWindowTo(16)
     expect(header).toHaveClass('is-hidden')
+    expect(navigation).toHaveClass('is-hidden')
 
     scrollWindowTo(10)
     expect(header).not.toHaveClass('is-hidden')
+    expect(navigation).not.toHaveClass('is-hidden')
 
     scrollWindowTo(20)
     expect(header).toHaveClass('is-hidden')
+    expect(navigation).toHaveClass('is-hidden')
 
     scrollWindowTo(0)
     expect(header).not.toHaveClass('is-hidden')
+    expect(navigation).not.toHaveClass('is-hidden')
 
     fireEvent.click(screen.getByRole('link', { name: 'Settings' }))
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
+  })
+
+  it('highlights only the itinerary day matching the local calendar date', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 8, 10, 23, 59, 59))
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const rows = document.querySelectorAll('.day-row')
+    expect(rows).toHaveLength(3)
+    expect(rows[0]).toHaveClass('is-today')
+    expect(rows[0]).toHaveAttribute('aria-current', 'date')
+    expect(rows[1]).not.toHaveClass('is-today')
+    expect(rows[2]).not.toHaveClass('is-today')
+  })
+
+  it('does not highlight a day when no local calendar date matches', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 11, 31, 23, 59, 59))
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(document.querySelector('.day-row.is-today')).toBeNull()
+  })
+
+  it('compares today using the local calendar date across a year boundary', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 0, 1, 0, 0, 1))
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/days']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(document.querySelector('.day-row.is-today')).toBeNull()
+  })
+
+  it('keeps the Settings author credit a safe external link', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('link', { name: '(C) Bogdan Matei' }),
+    ).toHaveAttribute('href', 'https://www.linkedin.com/in/mateipetrutbogdan/')
+    expect(
+      screen.getByRole('link', { name: '(C) Bogdan Matei' }),
+    ).toHaveAttribute('target', '_blank')
+    expect(
+      screen.getByRole('link', { name: '(C) Bogdan Matei' }),
+    ).toHaveAttribute('rel', 'noreferrer')
   })
 
   it('changes the active itinerary from Settings and persists it', () => {

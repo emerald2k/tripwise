@@ -234,7 +234,7 @@ test('loads Today and navigates through core pages', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('auto-hides the Header on page scroll and restores it at the top', async ({
+test('auto-hides shell navigation on scroll and restores it at the top', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 480 })
@@ -245,24 +245,29 @@ test('auto-hides the Header on page scroll and restores it at the top', async ({
   })
 
   const header = page.getByRole('banner')
+  const navigation = page.getByRole('navigation').last()
   await expect(header).not.toHaveClass(/is-hidden/)
+  await expect(navigation).not.toHaveClass(/is-hidden/)
   await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible()
 
   await page.evaluate(() => window.scrollTo(0, 120))
   await expect(header).toHaveClass(/is-hidden/)
+  await expect(navigation).toHaveClass(/is-hidden/)
 
   await page.evaluate(() => window.scrollTo(0, 80))
   await expect(header).not.toHaveClass(/is-hidden/)
+  await expect(navigation).not.toHaveClass(/is-hidden/)
 
   await page.evaluate(() => window.scrollTo(0, 0))
   await expect(header).not.toHaveClass(/is-hidden/)
+  await expect(navigation).not.toHaveClass(/is-hidden/)
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(320)
 })
 
-test('disables Header slide animation when reduced motion is requested', async ({
+test('disables shell slide animations when reduced motion is requested', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -273,9 +278,12 @@ test('disables Header slide animation when reduced motion is requested', async (
   })
 
   const header = page.getByRole('banner')
+  const navigation = page.getByRole('navigation').last()
   await expect(header).toHaveCSS('transition-duration', '0s')
+  await expect(navigation).toHaveCSS('transition-duration', '0s')
   await page.evaluate(() => window.scrollTo(0, 120))
   await expect(header).toHaveClass(/is-hidden/)
+  await expect(navigation).toHaveClass(/is-hidden/)
 })
 
 test('renders the secondary location description smaller than the primary description', async ({
@@ -747,6 +755,20 @@ test('settings persists the selected language', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
   await page.reload()
   await expect(page.getByRole('heading', { name: 'Setări' })).toBeVisible()
+})
+
+test('settings displays the author credit as a safe external link', async ({
+  page,
+}) => {
+  await page.goto('/settings')
+  const credit = page.getByRole('link', { name: '(C) Bogdan Matei' })
+  await expect(credit).toBeVisible()
+  await expect(credit).toHaveAttribute(
+    'href',
+    'https://www.linkedin.com/in/mateipetrutbogdan/',
+  )
+  await expect(credit).toHaveAttribute('target', '_blank')
+  await expect(credit).toHaveAttribute('rel', 'noreferrer')
 })
 
 test('reloads the application shell and cached manifest DATA while offline', async ({
