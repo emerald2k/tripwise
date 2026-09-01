@@ -598,13 +598,13 @@ describe('Phase 3 itinerary selection', () => {
     )
 
     expect(
-      screen.getByRole('link', { name: '(C) Bogdan Matei' }),
+      screen.getByRole('link', { name: 'Built by Bogdan Matei' }),
     ).toHaveAttribute('href', 'https://www.linkedin.com/in/mateipetrutbogdan/')
     expect(
-      screen.getByRole('link', { name: '(C) Bogdan Matei' }),
+      screen.getByRole('link', { name: 'Built by Bogdan Matei' }),
     ).toHaveAttribute('target', '_blank')
     expect(
-      screen.getByRole('link', { name: '(C) Bogdan Matei' }),
+      screen.getByRole('link', { name: 'Built by Bogdan Matei' }),
     ).toHaveAttribute('rel', 'noreferrer')
   })
 

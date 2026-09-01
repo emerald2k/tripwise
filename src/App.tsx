@@ -460,10 +460,13 @@ function DayRoute(props: DayProps) {
         </Link>
       </section>
     )
+  const now = new Date()
   return (
     <DayView
       {...props}
       day={day}
+      today={day.date === localDate(now)}
+      now={now}
       highlightedItemId={searchParams.get('item') ?? undefined}
     />
   )
@@ -500,7 +503,7 @@ function DayView({
     return () => window.clearInterval(timer)
   }, [today])
   useEffect(() => {
-    if (highlightedItemId || !activeRef.current) return
+    if (!today || highlightedItemId || !activeRef.current) return
     const target = activeRef.current
     const headerBottom =
       document.querySelector<HTMLElement>('.header')?.getBoundingClientRect()
@@ -514,7 +517,7 @@ function DayView({
       behavior: reduced ? 'auto' : 'smooth',
       block: 'center',
     })
-  }, [day.date, highlightedItemId])
+  }, [day.date, highlightedItemId, today])
   useEffect(() => {
     if (!highlightedRef.current) return
     const reduced =
@@ -1034,7 +1037,7 @@ function Settings({
         target="_blank"
         rel="noreferrer"
       >
-        (C) Bogdan Matei
+        Built by Bogdan Matei
       </a>
     </section>
   )

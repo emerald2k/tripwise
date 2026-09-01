@@ -248,6 +248,13 @@ test('auto-hides shell navigation on scroll and restores it at the top', async (
   const navigation = page.getByRole('navigation').last()
   await expect(header).not.toHaveClass(/is-hidden/)
   await expect(navigation).not.toHaveClass(/is-hidden/)
+  await expect(header).toHaveCSS('transition-duration', '0.22s, 0.22s')
+  await expect(navigation).toHaveCSS('transition-duration', '0.22s, 0.22s')
+  await expect(header).toHaveCSS('transition-property', 'transform, opacity')
+  await expect(navigation).toHaveCSS(
+    'transition-property',
+    'transform, opacity',
+  )
   await expect(page.getByRole('link', { name: 'Volala' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible()
 
@@ -267,7 +274,7 @@ test('auto-hides shell navigation on scroll and restores it at the top', async (
   ).toBeLessThanOrEqual(320)
 })
 
-test('disables shell slide animations when reduced motion is requested', async ({
+test('disables shell visibility animations when reduced motion is requested', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -761,7 +768,7 @@ test('settings displays the author credit as a safe external link', async ({
   page,
 }) => {
   await page.goto('/settings')
-  const credit = page.getByRole('link', { name: '(C) Bogdan Matei' })
+  const credit = page.getByRole('link', { name: 'Built by Bogdan Matei' })
   await expect(credit).toBeVisible()
   await expect(credit).toHaveAttribute(
     'href',
