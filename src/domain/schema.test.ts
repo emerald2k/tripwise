@@ -288,12 +288,12 @@ describe('itinerary domain rules', () => {
       {
         title: '✈️ Paris → Montréal, Air France',
         durationMinutes: 455,
-        flightStatusUrl: 'https://www.flightradar24.com/data/flights/af0344',
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/af344',
       },
       {
         title: '✈️ Montréal → Amsterdam, KLM',
         durationMinutes: 415,
-        flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl0672',
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl672',
       },
       {
         title: '✈️ Amsterdam → București, KLM',

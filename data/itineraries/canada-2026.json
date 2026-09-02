@@ -27,7 +27,7 @@
           "transport": {
             "mode": "flight",
             "durationMinutes": 455,
-            "flightStatusUrl": "https://www.flightradar24.com/data/flights/af0344"
+            "flightStatusUrl": "https://www.flightradar24.com/data/flights/af344"
           }
         },
         {
@@ -1846,7 +1846,7 @@
           "transport": {
             "mode": "flight",
             "durationMinutes": 415,
-            "flightStatusUrl": "https://www.flightradar24.com/data/flights/kl0672"
+            "flightStatusUrl": "https://www.flightradar24.com/data/flights/kl672"
           }
         }
       ]
