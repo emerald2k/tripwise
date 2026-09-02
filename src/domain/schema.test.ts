@@ -4,8 +4,11 @@ import {
   itemSchema,
   itinerarySchema,
   manifestSchema,
+  transportSchema,
   type Day,
 } from '../data/schema'
+import canadaItinerary from '../../data/itineraries/canada-2026.json'
+import halkidikiItinerary from '../../data/itineraries/halkidiki-2026.json'
 import { localDate } from './date'
 import {
   activeLocationItems,
@@ -232,6 +235,78 @@ describe('itinerary domain rules', () => {
         locations: [{ locationId: 'place', name: 'Place', category: 'visit' }],
       }),
     ).toThrow()
+  })
+
+  it('keeps optional flight status URLs backward compatible', () => {
+    const existingFlight = {
+      mode: 'flight',
+      durationMinutes: 455,
+    }
+    const flightWithStatusUrl = {
+      ...existingFlight,
+      flightStatusUrl: 'https://www.flightradar24.com/data/flights/af344',
+    }
+    const existingNonFlight = {
+      mode: 'walk',
+      durationMinutes: 20,
+    }
+
+    expect(transportSchema.parse(existingFlight)).toEqual(existingFlight)
+    expect(transportSchema.parse(flightWithStatusUrl)).toEqual(
+      flightWithStatusUrl,
+    )
+    expect(transportSchema.parse(existingNonFlight)).toEqual(existingNonFlight)
+    expect(() =>
+      transportSchema.parse({
+        ...existingFlight,
+        flightStatusUrl: 'not-a-url',
+      }),
+    ).toThrow()
+  })
+
+  it('keeps the authored Canada flight status URLs and durations', () => {
+    const parsedCanadaItinerary = itinerarySchema.parse(canadaItinerary)
+    const flights = parsedCanadaItinerary.days.flatMap((day) =>
+      day.items.flatMap((item) =>
+        'transport' in item && item.transport.mode === 'flight'
+          ? [
+              {
+                title: item.title,
+                durationMinutes: item.transport.durationMinutes,
+                flightStatusUrl: item.transport.flightStatusUrl,
+              },
+            ]
+          : [],
+      ),
+    )
+    expect(flights).toEqual([
+      {
+        title: '✈️ București → Paris, TAROM',
+        durationMinutes: 140,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/af636',
+      },
+      {
+        title: '✈️ Paris → Montréal, Air France',
+        durationMinutes: 455,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/af344',
+      },
+      {
+        title: '✈️ Montréal → Amsterdam, KLM',
+        durationMinutes: 415,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl672',
+      },
+      {
+        title: '✈️ Amsterdam → București, KLM',
+        durationMinutes: 155,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl1373',
+      },
+    ])
+  })
+
+  it('validates existing Halkidiki DATA unchanged', () => {
+    expect(itinerarySchema.parse(halkidikiItinerary)).toEqual(
+      halkidikiItinerary,
+    )
   })
 
   it('requires valid chronological journey calendar dates on the first itinerary day', () => {

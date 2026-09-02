@@ -32,7 +32,8 @@ button,
 }
 button:focus-visible,
 a:focus-visible,
-input:focus-visible {
+input:focus-visible,
+.itinerary-select:focus-visible {
   outline: 3px solid #78a9ff;
   outline-offset: 3px;
 }
@@ -331,6 +332,24 @@ main {
   font-size: 0.8rem;
   white-space: nowrap;
 }
+.flight-status-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+  color: #8db6ff;
+  font-size: 0.8rem;
+}
+.external-link-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
 .maps-icon {
   width: 1.15rem;
   height: 1.15rem;
@@ -604,6 +623,20 @@ main {
   font-size: 1rem;
   color: #aeb8c7;
   margin-top: 2rem;
+}
+.itinerary-select {
+  min-height: 44px;
+  margin-left: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #3a4454;
+  border-radius: 12px;
+  background: #161c24;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+}
+.itinerary-select:hover {
+  border-color: #5379bd;
 }
 .language-buttons {
   display: flex;

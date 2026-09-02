@@ -843,6 +843,7 @@ itinerary day and cannot be after destination arrival.
 ```
 
 Transport items never have `locationId` or `progress`.
+`flightStatusUrl` is an optional valid external URL for `flight` transport only.
 
 Allowed modes:
 

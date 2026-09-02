@@ -51,6 +51,7 @@ export const transportSchema = strict({
   mode: transportModeSchema,
   distanceMeters: z.number().int().nonnegative().optional(),
   durationMinutes: z.number().int().positive().optional(),
+  flightStatusUrl: z.string().url().optional(),
 })
 
 export const locationItemSchema = strict({

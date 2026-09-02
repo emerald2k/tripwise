@@ -51,6 +51,22 @@ const { itineraryAlpha, itineraryBeta } = vi.hoisted(() => ({
             title: 'Alpha transfer',
             transport: { mode: 'walk' },
           },
+          {
+            itemId: 'alpha-flight-with-status',
+            startTime: '18:00',
+            title: 'Alpha flight with status',
+            transport: {
+              mode: 'flight',
+              flightStatusUrl:
+                'https://www.flightradar24.com/data/flights/af636',
+            },
+          },
+          {
+            itemId: 'alpha-flight-without-status',
+            startTime: '19:00',
+            title: 'Alpha flight without status',
+            transport: { mode: 'flight' },
+          },
         ],
       },
       {
@@ -358,6 +374,46 @@ describe('Phase 3 itinerary selection', () => {
       .getByRole('heading', { name: 'Alpha transfer' })
       .closest('.timeline-item') as HTMLElement
     expect(within(transport).queryByRole('button')).toBeNull()
+  })
+
+  it('renders a safe, accessible status link only for flights with a URL', () => {
+    localStorage.setItem('tripwise.activeItineraryId', 'alpha')
+    render(
+      <MemoryRouter initialEntries={['/day/2026-09-10']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    const flightWithStatus = screen
+      .getByRole('heading', { name: 'Alpha flight with status' })
+      .closest('article') as HTMLElement
+    const statusLink = within(flightWithStatus).getByRole('link', {
+      name: 'Check flight status',
+    })
+    expect(statusLink).toHaveAttribute(
+      'href',
+      'https://www.flightradar24.com/data/flights/af636',
+    )
+    expect(statusLink).toHaveAttribute('target', '_blank')
+    expect(statusLink).toHaveAttribute('rel', 'noreferrer')
+    expect(statusLink).toHaveClass('flight-status-link')
+    expect(statusLink.querySelector('.external-link-icon')).toBeInTheDocument()
+
+    const flightWithoutStatus = screen
+      .getByRole('heading', { name: 'Alpha flight without status' })
+      .closest('article') as HTMLElement
+    expect(
+      within(flightWithoutStatus).queryByRole('link', {
+        name: 'Check flight status',
+      }),
+    ).toBeNull()
+
+    const nonFlight = screen
+      .getByRole('heading', { name: 'Alpha transfer' })
+      .closest('article') as HTMLElement
+    expect(
+      within(nonFlight).queryByRole('link', { name: 'Check flight status' }),
+    ).toBeNull()
   })
 
   it('shares the selected Google Maps URL and keeps Day Share unchanged', async () => {
