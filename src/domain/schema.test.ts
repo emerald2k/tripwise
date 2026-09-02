@@ -4,9 +4,11 @@ import {
   itemSchema,
   itinerarySchema,
   manifestSchema,
+  transportSchema,
   type Day,
 } from '../data/schema'
 import canadaItinerary from '../../data/itineraries/canada-2026.json'
+import halkidikiItinerary from '../../data/itineraries/halkidiki-2026.json'
 import { localDate } from './date'
 import {
   activeLocationItems,
@@ -246,6 +248,33 @@ describe('itinerary domain rules', () => {
     ).toThrow()
   })
 
+  it('keeps optional flight status URLs backward compatible', () => {
+    const existingFlight = {
+      mode: 'flight',
+      durationMinutes: 455,
+    }
+    const flightWithStatusUrl = {
+      ...existingFlight,
+      flightStatusUrl: 'https://www.flightradar24.com/data/flights/af344',
+    }
+    const existingNonFlight = {
+      mode: 'walk',
+      durationMinutes: 20,
+    }
+
+    expect(transportSchema.parse(existingFlight)).toEqual(existingFlight)
+    expect(transportSchema.parse(flightWithStatusUrl)).toEqual(
+      flightWithStatusUrl,
+    )
+    expect(transportSchema.parse(existingNonFlight)).toEqual(existingNonFlight)
+    expect(() =>
+      transportSchema.parse({
+        ...existingFlight,
+        flightStatusUrl: 'not-a-url',
+      }),
+    ).toThrow()
+  })
+
   it('keeps the Canada flight-status URLs in canonical flight DATA', () => {
     const parsedCanadaItinerary = itinerarySchema.parse(canadaItinerary)
     const statusUrls = parsedCanadaItinerary.days.flatMap((day) =>
@@ -257,10 +286,16 @@ describe('itinerary domain rules', () => {
     )
     expect(statusUrls).toEqual([
       'https://www.flightradar24.com/data/flights/af636',
-      'https://www.flightradar24.com/data/flights/af0344',
-      'https://www.flightradar24.com/data/flights/kl0672',
+      'https://www.flightradar24.com/data/flights/af344',
+      'https://www.flightradar24.com/data/flights/kl672',
       'https://www.flightradar24.com/data/flights/kl1373',
     ])
+  })
+
+  it('validates existing Halkidiki DATA unchanged', () => {
+    expect(itinerarySchema.parse(halkidikiItinerary)).toEqual(
+      halkidikiItinerary,
+    )
   })
 
   it('requires valid chronological journey calendar dates on the first itinerary day', () => {
