@@ -231,6 +231,8 @@ Optional:
 
 - `transport.distanceMeters: non-negative integer`
 - `transport.durationMinutes: positive integer`
+- `transport.flightStatusUrl: valid external URL`, only when `transport.mode` is
+  `flight`
 
 Transport items never have `locationId` or `progress`.
 

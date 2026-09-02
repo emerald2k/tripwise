@@ -652,6 +652,19 @@ function DayView({
                         {location.address}
                       </p>
                     )}
+                    {'transport' in item &&
+                      item.transport.mode === 'flight' &&
+                      item.transport.flightStatusUrl && (
+                        <a
+                          className="flight-status-link"
+                          href={item.transport.flightStatusUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {t.checkFlightStatus}
+                          <ExternalLinkIcon />
+                        </a>
+                      )}
                   </div>
                 </div>
                 {hasLocationActions && (
@@ -753,6 +766,19 @@ function DurationIcon() {
     >
       <circle cx="12" cy="12" r="8.5" />
       <path d="M12 7v5l3 2" />
+    </svg>
+  )
+}
+
+function ExternalLinkIcon() {
+  return (
+    <svg
+      className="external-link-icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M14 4h6v6M20 4l-9 9M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5" />
     </svg>
   )
 }

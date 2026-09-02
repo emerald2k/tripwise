@@ -51,6 +51,15 @@ export const transportSchema = strict({
   mode: transportModeSchema,
   distanceMeters: z.number().int().nonnegative().optional(),
   durationMinutes: z.number().int().positive().optional(),
+  flightStatusUrl: z.string().url().optional(),
+}).superRefine((transport, context) => {
+  if (transport.flightStatusUrl && transport.mode !== 'flight') {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'flightStatusUrl is only valid for flight transport',
+      path: ['flightStatusUrl'],
+    })
+  }
 })
 
 export const locationItemSchema = strict({

@@ -6,6 +6,7 @@ import {
   manifestSchema,
   type Day,
 } from '../data/schema'
+import canadaItinerary from '../../data/itineraries/canada-2026.json'
 import { localDate } from './date'
 import {
   activeLocationItems,
@@ -188,6 +189,17 @@ describe('itinerary domain rules', () => {
         itemId: 'ride',
         title: 'Walk',
         startTime: '10:30',
+        transport: {
+          mode: 'walk',
+          flightStatusUrl: 'https://www.flightradar24.com/data/flights/af636',
+        },
+      }),
+    ).toThrow(/flightStatusUrl is only valid for flight transport/)
+    expect(() =>
+      itemSchema.parse({
+        itemId: 'ride',
+        title: 'Walk',
+        startTime: '10:30',
         transport: { mode: 'walking' },
       }),
     ).toThrow()
@@ -232,6 +244,23 @@ describe('itinerary domain rules', () => {
         locations: [{ locationId: 'place', name: 'Place', category: 'visit' }],
       }),
     ).toThrow()
+  })
+
+  it('keeps the Canada flight-status URLs in canonical flight DATA', () => {
+    const parsedCanadaItinerary = itinerarySchema.parse(canadaItinerary)
+    const statusUrls = parsedCanadaItinerary.days.flatMap((day) =>
+      day.items.flatMap((item) =>
+        'transport' in item && item.transport.mode === 'flight'
+          ? [item.transport.flightStatusUrl]
+          : [],
+      ),
+    )
+    expect(statusUrls).toEqual([
+      'https://www.flightradar24.com/data/flights/af636',
+      'https://www.flightradar24.com/data/flights/af0344',
+      'https://www.flightradar24.com/data/flights/kl0672',
+      'https://www.flightradar24.com/data/flights/kl1373',
+    ])
   })
 
   it('requires valid chronological journey calendar dates on the first itinerary day', () => {

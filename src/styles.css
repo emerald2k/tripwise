@@ -331,6 +331,24 @@ main {
   font-size: 0.8rem;
   white-space: nowrap;
 }
+.flight-status-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+  color: #8db6ff;
+  font-size: 0.8rem;
+}
+.external-link-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
 .maps-icon {
   width: 1.15rem;
   height: 1.15rem;
