@@ -271,6 +271,7 @@ describe('itinerary domain rules', () => {
         'transport' in item && item.transport.mode === 'flight'
           ? [
               {
+                title: item.title,
                 durationMinutes: item.transport.durationMinutes,
                 flightStatusUrl: item.transport.flightStatusUrl,
               },
@@ -280,18 +281,22 @@ describe('itinerary domain rules', () => {
     )
     expect(flights).toEqual([
       {
+        title: '✈️ București → Paris, TAROM',
         durationMinutes: 140,
         flightStatusUrl: 'https://www.flightradar24.com/data/flights/af636',
       },
       {
+        title: '✈️ Paris → Montréal, Air France',
         durationMinutes: 455,
         flightStatusUrl: 'https://www.flightradar24.com/data/flights/af0344',
       },
       {
+        title: '✈️ Montréal → Amsterdam, KLM',
         durationMinutes: 415,
         flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl0672',
       },
       {
+        title: '✈️ Amsterdam → București, KLM',
         durationMinutes: 155,
         flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl1373',
       },
