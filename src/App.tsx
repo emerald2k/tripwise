@@ -1010,6 +1010,7 @@ function Settings({
       <label>
         {t.activeItinerary}
         <select
+          className="itinerary-select"
           aria-label={t.itinerary}
           value={itinerary.id}
           onChange={(event) => {
