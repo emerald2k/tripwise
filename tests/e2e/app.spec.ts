@@ -1018,6 +1018,27 @@ test('timeline renders transport details and visit duration', async ({
   await expect(transport.getByRole('button')).toHaveCount(0)
 })
 
+test('renders authored flight status links as safe external links', async ({
+  page,
+}) => {
+  await page.addInitScript((itineraryId) => {
+    localStorage.setItem('tripwise.activeItineraryId', itineraryId)
+    localStorage.setItem('tripwise.language', 'en')
+  }, canadaItinerary.id)
+  await page.goto(`/day/${canadaItinerary.days[0].date}`)
+
+  const flight = page
+    .locator('article')
+    .filter({ hasText: 'București → Paris, TAROM' })
+  const statusLink = flight.getByRole('link', { name: 'Check flight status' })
+  await expect(statusLink).toHaveAttribute(
+    'href',
+    'https://www.flightradar24.com/data/flights/af636',
+  )
+  await expect(statusLink).toHaveAttribute('target', '_blank')
+  await expect(statusLink).toHaveAttribute('rel', 'noreferrer')
+})
+
 test('invalid day routes show the not-found state', async ({ page }) => {
   await page.goto('/day/2099-01-01')
   await expect(page.getByText('No itinerary for this day.')).toBeVisible()

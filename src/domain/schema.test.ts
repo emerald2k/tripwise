@@ -264,16 +264,38 @@ describe('itinerary domain rules', () => {
     ).toThrow()
   })
 
-  it('keeps Canada flights free of unverified status URLs', () => {
+  it('keeps the authored Canada flight status URLs and durations', () => {
     const parsedCanadaItinerary = itinerarySchema.parse(canadaItinerary)
-    const statusUrls = parsedCanadaItinerary.days.flatMap((day) =>
+    const flights = parsedCanadaItinerary.days.flatMap((day) =>
       day.items.flatMap((item) =>
         'transport' in item && item.transport.mode === 'flight'
-          ? [item.transport.flightStatusUrl]
+          ? [
+              {
+                durationMinutes: item.transport.durationMinutes,
+                flightStatusUrl: item.transport.flightStatusUrl,
+              },
+            ]
           : [],
       ),
     )
-    expect(statusUrls).toEqual([undefined, undefined, undefined, undefined])
+    expect(flights).toEqual([
+      {
+        durationMinutes: 140,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/af636',
+      },
+      {
+        durationMinutes: 455,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/af0344',
+      },
+      {
+        durationMinutes: 415,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl0672',
+      },
+      {
+        durationMinutes: 155,
+        flightStatusUrl: 'https://www.flightradar24.com/data/flights/kl1373',
+      },
+    ])
   })
 
   it('validates existing Halkidiki DATA unchanged', () => {
