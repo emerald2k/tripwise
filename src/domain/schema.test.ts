@@ -191,17 +191,6 @@ describe('itinerary domain rules', () => {
         itemId: 'ride',
         title: 'Walk',
         startTime: '10:30',
-        transport: {
-          mode: 'walk',
-          flightStatusUrl: 'https://www.flightradar24.com/data/flights/af636',
-        },
-      }),
-    ).toThrow(/flightStatusUrl is only valid for flight transport/)
-    expect(() =>
-      itemSchema.parse({
-        itemId: 'ride',
-        title: 'Walk',
-        startTime: '10:30',
         transport: { mode: 'walking' },
       }),
     ).toThrow()
@@ -275,7 +264,7 @@ describe('itinerary domain rules', () => {
     ).toThrow()
   })
 
-  it('keeps the Canada flight-status URLs in canonical flight DATA', () => {
+  it('keeps Canada flights free of unverified status URLs', () => {
     const parsedCanadaItinerary = itinerarySchema.parse(canadaItinerary)
     const statusUrls = parsedCanadaItinerary.days.flatMap((day) =>
       day.items.flatMap((item) =>
@@ -284,12 +273,7 @@ describe('itinerary domain rules', () => {
           : [],
       ),
     )
-    expect(statusUrls).toEqual([
-      'https://www.flightradar24.com/data/flights/af636',
-      'https://www.flightradar24.com/data/flights/af344',
-      'https://www.flightradar24.com/data/flights/kl672',
-      'https://www.flightradar24.com/data/flights/kl1373',
-    ])
+    expect(statusUrls).toEqual([undefined, undefined, undefined, undefined])
   })
 
   it('validates existing Halkidiki DATA unchanged', () => {

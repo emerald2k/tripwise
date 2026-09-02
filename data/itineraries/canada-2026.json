@@ -16,8 +16,7 @@
           "title": "✈️ București → Paris, TAROM",
           "transport": {
             "mode": "flight",
-            "durationMinutes": 140,
-            "flightStatusUrl": "https://www.flightradar24.com/data/flights/af636"
+            "durationMinutes": 140
           }
         },
         {
@@ -26,8 +25,7 @@
           "title": "✈️ Paris → Montréal, Air France",
           "transport": {
             "mode": "flight",
-            "durationMinutes": 455,
-            "flightStatusUrl": "https://www.flightradar24.com/data/flights/af344"
+            "durationMinutes": 455
           }
         },
         {
@@ -1844,8 +1842,7 @@
           "startTime": "18:50",
           "title": "Montréal → Amsterdam, KLM",
           "transport": {
-            "mode": "flight",
-            "flightStatusUrl": "https://www.flightradar24.com/data/flights/kl672"
+            "mode": "flight"
           }
         }
       ]
@@ -1860,8 +1857,7 @@
           "title": "✈️ Amsterdam → București, KLM",
           "transport": {
             "mode": "flight",
-            "durationMinutes": 155,
-            "flightStatusUrl": "https://www.flightradar24.com/data/flights/kl1373"
+            "durationMinutes": 155
           }
         }
       ]
